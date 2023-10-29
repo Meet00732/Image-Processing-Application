@@ -15,7 +15,7 @@ public class ImageController {
   }
 
   public void process() {
-    while (true) {  // Infinite loop for simplicity, can add exit logic
+    while (true) {
       String commandLine = view.getCommand();
       try {
         FeatureInterface cmd = CommandParser.parse(commandLine, model);
@@ -23,7 +23,7 @@ public class ImageController {
         this.view.displayMessage(message);
 
       } catch (Exception e) {
-        view.displayMessage("Exception!!!");
+        view.displayMessage(e.getMessage());
       }
     }
   }

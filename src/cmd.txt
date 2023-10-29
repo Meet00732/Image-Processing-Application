@@ -1,5 +1,37 @@
 load F:\PDP_Assignments\Assignment_4\code\manhattan-small.png TestMan
-
-save Meet.png TestMan
+save images\Meet.png TestMan
 
 red-component TestMan RedMan
+save F:\PDP_Assignments\Assignment4\images\MeetRed.png RedMan
+
+green-component TestMan GreenMan
+save F:\PDP_Assignments\Assignment4\images\MeetGreen.png GreenMan
+
+blue-component TestMan BlueMan
+save F:\PDP_Assignments\Assignment4\images\MeetBlue.png BlueMan
+
+value-component TestMan ValueMan
+save F:\PDP_Assignments\Assignment4\images\MeetValue.png ValueMan
+
+intensity-component TestMan IntensityMan
+save F:\PDP_Assignments\Assignment4\images\MeetIntensity.png IntensityMan
+
+luma-component TestMan LumaMan
+save F:\PDP_Assignments\Assignment4\images\MeetLuma.png LumaMan
+
+brighten 50 TestMan Brighten50Man
+save F:\PDP_Assignments\Assignment4\images\MeetBrighten50Man.png Brighten50Man
+
+brighten -50 TestMan Brighten-50Man
+save F:\PDP_Assignments\Assignment4\images\MeetBrighten-50Man.png Brighten-50Man
+
+brighten 500 TestMan Brighten500Man
+save F:\PDP_Assignments\Assignment4\images\MeetBrighten500Man.png Brighten500Man
+
+brighten -500 TestMan Brighten-500Man
+save F:\PDP_Assignments\Assignment4\images\MeetBrighten-500Man.png Brighten-500Man
+
+rgb-split TestMan splitRed splitGreen splitBlue
+save F:\PDP_Assignments\Assignment4\images\MeetSplitRed.png splitRed
+save F:\PDP_Assignments\Assignment4\images\MeetSplitGreen.png splitGreen
+save F:\PDP_Assignments\Assignment4\images\MeetSplitBlue.png splitBlue
