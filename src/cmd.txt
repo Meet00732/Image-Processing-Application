@@ -1,0 +1,5 @@
+load F:\PDP_Assignments\Assignment_4\code\manhattan-small.png TestMan
+
+save Meet.png TestMan
+
+red-component TestMan RedMan
