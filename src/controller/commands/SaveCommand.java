@@ -1,15 +1,15 @@
-package controller.features;
+package controller.commands;
 
 import model.Image;
 import model.ImageModel;
 
-public class SaveFeature extends AbstractImageFormat {
+public class SaveCommand extends AbstractImageFormat {
 
   private String path;
   private ImageModel model;
   private String name;
 
-  public SaveFeature (ImageModel model, String path, String name) {
+  public SaveCommand(ImageModel model, String path, String name) {
     this.path = path;
     this.model = model;
     this.name = name;

@@ -1,4 +1,4 @@
-package controller.features;
+package controller.commands;
 
 import java.io.File;
 import java.io.FileInputStream;

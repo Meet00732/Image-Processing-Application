@@ -19,4 +19,363 @@ public class ImageModel implements ImageModelInterface{
   public Map<String, Image> getImageMap() {
     return imageMap;
   }
+
+
+  public Image redComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        destPixel.setRed(imagePixel.getRed());
+        destPixel.setBlue(0);
+        destPixel.setGreen(0);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image greenComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        destPixel.setGreen(imagePixel.getGreen());
+        destPixel.setBlue(0);
+        destPixel.setRed(0);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image blueComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        destPixel.setBlue(imagePixel.getBlue());
+        destPixel.setGreen(0);
+        destPixel.setRed(0);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image valueComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        int maxRed = imagePixel.getRed();
+        int maxBlue = imagePixel.getBlue();
+        int maxGreen = imagePixel.getGreen();
+
+        int maxVal = Math.max(maxRed, Math.max(maxBlue, maxGreen));
+
+        destPixel.setBlue(maxVal);
+        destPixel.setGreen(maxVal);
+        destPixel.setRed(maxVal);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image intensityComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        int red = imagePixel.getRed();
+        int blue = imagePixel.getBlue();
+        int green = imagePixel.getGreen();
+
+        int avgVal = (red + green + blue) / 3;
+
+        destPixel.setBlue(avgVal);
+        destPixel.setGreen(avgVal);
+        destPixel.setRed(avgVal);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image lumaComponentCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        int red = imagePixel.getRed();
+        int blue = imagePixel.getBlue();
+        int green = imagePixel.getGreen();
+
+        int newRed = (int) Math.round(0.2126 * red);
+        int newBlue = (int) Math.round(0.0722 * blue);
+        int newGreen = (int) Math.round(0.7152 * green);
+
+        int newVal = newRed + newBlue + newGreen;
+
+        destPixel.setBlue(newVal);
+        destPixel.setGreen(newVal);
+        destPixel.setRed(newVal);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image brightenCommand(Image image, int increment) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+
+    Pixel[][] destinationPixels = new Pixel[width][height];
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        Pixel imagePixel = image.getPixels()[x][y];
+        Pixel destPixel = new Pixel();
+
+        int red = imagePixel.getRed();
+        int blue = imagePixel.getBlue();
+        int green = imagePixel.getGreen();
+
+        int newRed = clampPixels(red + increment);
+        int newBlue = clampPixels(blue + increment);
+        int newGreen = clampPixels(green + increment);
+
+        destPixel.setRed(newRed);
+        destPixel.setGreen(newGreen);
+        destPixel.setBlue(newBlue);
+
+        destinationPixels[x][y] = destPixel;
+      }
+    }
+    return new Image(destinationPixels);
+  }
+
+  public Image combineCommand(Image imageRed, Image imageGreen, Image imageBlue) {
+    int widthRed = imageRed.getPixels().length;
+    int heightRed = imageRed.getPixels()[0].length;
+
+    int widthGreen = imageGreen.getPixels().length;
+    int heightGreen = imageGreen.getPixels()[0].length;
+
+    int widthBlue = imageBlue.getPixels().length;
+    int heightBlue = imageBlue.getPixels()[0].length;
+
+    if ((widthRed != widthGreen) || (widthGreen != widthBlue)
+      || (heightRed != heightGreen) || (heightGreen != heightBlue)) {
+      throw new IllegalArgumentException("All images must have same dimensions!");
+    }
+    Pixel[][] pixels = new Pixel[widthRed][heightRed];
+
+    for (int x = 0; x < widthRed; x++) {
+      for (int y = 0; y < heightRed; y++) {
+
+        Pixel imageRedPixel = imageRed.getPixels()[x][y];
+        Pixel imageGreenPixel = imageGreen.getPixels()[x][y];
+        Pixel imageBluePixel = imageBlue.getPixels()[x][y];
+
+        Pixel destPixel = new Pixel();
+
+        int red = imageRedPixel.getRed();
+        int green = imageGreenPixel.getGreen();
+        int blue = imageBluePixel.getBlue();
+
+        destPixel.setRed(red);
+        destPixel.setGreen(green);
+        destPixel.setBlue(blue);
+
+        pixels[x][y] = destPixel;
+      }
+    }
+    return new Image(pixels);
+  }
+
+  public Image blurCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+    Pixel[][] pixels = new Pixel[width][height];
+
+    double[][] kernel = {
+            {1.0/16, 1.0/8, 1.0/16},
+            {1.0/8, 1.0/4, 1.0/8},
+            {1.0/16, 1.0/8, 1.0/16}
+    };
+
+    for (int x = 0; x < width; x++) {
+      for(int y = 0; y < height; y++) {
+        double red = 0;
+        double green = 0;
+        double blue = 0;
+
+        for(int i=-1; i<=1; i++) {
+          for(int j=-1; j<=1; j++) {
+            if (x + i < 0 || x + i >= width
+              || y + j < 0 || y + j >= height) {
+              continue;
+            }
+
+            Pixel tempPixel = image.getPixels()[x+i][y+j];
+            red += tempPixel.getRed() * kernel[i + 1][j + 1];
+            green += tempPixel.getGreen() * kernel[i + 1][j + 1];
+            blue += tempPixel.getBlue() * kernel[i + 1][j + 1];
+
+          }
+        }
+
+        int newRed = (int) Math.round(red);
+        int newGreen = (int) Math.round(green);
+        int newBlue = (int) Math.round(blue);
+
+        Pixel pixel = new Pixel();
+        pixel.setRed(newRed);
+        pixel.setGreen(newGreen);
+        pixel.setBlue(newBlue);
+
+        pixels[x][y] = pixel;
+      }
+    }
+    return new Image(pixels);
+  }
+
+
+  public Image sharpenCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+    Pixel[][] pixels = new Pixel[width][height];
+
+    double[][] kernel = {
+            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
+            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8},
+            {-1.0/8, 1.0/4, 1, 1.0/4, -1.0/8},
+            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
+            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8}
+    };
+
+    for (int x = 0; x < width; x++) {
+      for(int y = 0; y < height; y++) {
+        double red = 0;
+        double green = 0;
+        double blue = 0;
+
+        for(int i=-2; i<=2; i++) {
+          for(int j=-2; j<=2; j++) {
+            if (x + i < 0 || x + i >= width
+                    || y + j < 0 || y + j >= height) {
+              continue;
+            }
+
+            Pixel tempPixel = image.getPixels()[x+i][y+j];
+            red += tempPixel.getRed() * kernel[i + 2][j + 2];
+            green += tempPixel.getGreen() * kernel[i + 2][j + 2];
+            blue += tempPixel.getBlue() * kernel[i + 2][j + 2];
+          }
+        }
+
+        int newRed = Math.min(255, Math.max(0, (int) Math.round(red)));
+        int newGreen = Math.min(255, Math.max(0, (int) Math.round(green)));
+        int newBlue = Math.min(255, Math.max(0, (int) Math.round(blue)));
+
+        Pixel pixel = new Pixel();
+        pixel.setRed(newRed);
+        pixel.setGreen(newGreen);
+        pixel.setBlue(newBlue);
+
+        pixels[x][y] = pixel;
+      }
+    }
+    return new Image(pixels);
+  }
+
+
+  public Image sepiaCommand(Image image) {
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+    Pixel[][] pixels = new Pixel[width][height];
+
+
+    for (int x = 0; x < width; x++) {
+      for(int y = 0; y < height; y++) {
+        Pixel tempPixel = image.getPixels()[x][y];
+
+        int red = tempPixel.getRed();
+        int green = tempPixel.getGreen();
+        int blue = tempPixel.getBlue();
+
+        int newRed = (int) ((0.393 * red) + (0.769 * green) + (0.189 * blue));
+        int newGreen = (int) ((0.349 * red) + (0.686 * green) + (0.168 * blue));
+        int newBlue = (int) ((0.272 * red) + (0.534 * green) + (0.131 * blue));
+
+        newRed = Math.min(255, newRed);
+        newGreen = Math.min(255, newGreen);
+        newBlue = Math.min(255, newBlue);
+
+        Pixel pixel = new Pixel();
+        pixel.setRed(newRed);
+        pixel.setGreen(newGreen);
+        pixel.setBlue(newBlue);
+
+        pixels[x][y] = pixel;
+      }
+    }
+    return new Image(pixels);
+  }
+
+  private int clampPixels (int channel) {
+    if (channel <= 0) {
+      channel = 0;
+    }
+    else if (channel >= 255) {
+      channel = 255;
+    }
+    return channel;
+  }
+
 }

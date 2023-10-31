@@ -1,4 +1,4 @@
-package controller.features;
+package controller.commands;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,11 +10,10 @@ import javax.imageio.ImageIO;
 import model.Image;
 import model.Pixel;
 
-public class ImagePNG implements ImageParserInterface{
-
+public class ImageJPG implements ImageParserInterface{
   private String path;
 
-  public ImagePNG(String path) {
+  public ImageJPG(String path) {
     this.path = path;
   }
 
@@ -56,7 +55,6 @@ public class ImagePNG implements ImageParserInterface{
     }
     return new Image(pixels);
   }
-
 
   @Override
   public void save(String path, Image image) throws Exception {

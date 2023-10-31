@@ -1,8 +1,8 @@
-package controller.features;
+package controller.commands;
 
 
 
-public abstract class AbstractImageFormat implements FeatureInterface{
+public abstract class AbstractImageFormat implements CommandInterface {
 
   protected String getImageFormat(String path) {
     String[] tokens = path.split("\\.");

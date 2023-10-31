@@ -1,14 +1,14 @@
-package controller.features;
+package controller.commands;
 
 import model.Image;
 import model.ImageModel;
 
-public class LoadFeature extends AbstractImageFormat {
+public class LoadCommand extends AbstractImageFormat {
   private final String path;
   private final String name;
   private ImageModel model;
 
-  public LoadFeature(ImageModel model, String path,String name) {
+  public LoadCommand(ImageModel model, String path, String name) {
     this.model = model;
     this.path = path;
     this.name = name;
