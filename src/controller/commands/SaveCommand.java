@@ -10,7 +10,7 @@ public class SaveCommand extends AbstractLoaderSaver {
   }
 
   @Override
-  public void processImage() throws Exception {
+  protected void processImage() throws Exception {
     if (this.model.getImageMap().containsKey(this.imageName)) {
       ImageParserInterface parser = this.getFormattedImage(this.destinationImageName);
       Image image = this.model.getImageMap().get(this.imageName);

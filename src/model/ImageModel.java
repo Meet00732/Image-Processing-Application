@@ -11,7 +11,6 @@ public class ImageModel implements ImageModelInterface{
     this.imageMap = new HashMap<>();
   }
 
-
   public Map<String, Image> getImageMap() {
     return imageMap;
   }
