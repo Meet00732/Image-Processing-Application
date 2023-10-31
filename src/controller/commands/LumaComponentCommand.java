@@ -4,12 +4,14 @@ import model.Image;
 import model.ImageModel;
 
 public class LumaComponentCommand extends AbstractBaseCommand{
+  private String destinationImageName;
   public LumaComponentCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.lumaComponentCommand(image);
+  protected void processImage() {
+    this.model.lumaComponentCommand(this.imageName, this.destinationImageName);
   }
 }

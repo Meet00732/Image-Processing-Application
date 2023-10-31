@@ -5,6 +5,7 @@ import model.ImageModel;
 
 public class CombineCommand extends AbstractBaseCommand {
 
+  private String destinationImageRedName;
   private String destinationImageGreenName;
   private String destinationImageBlueName;
 
@@ -14,21 +15,15 @@ public class CombineCommand extends AbstractBaseCommand {
                         String destinationImageGreenName,
                         String destinationImageBlueName) {
 
-    super(model, destinationImageRedName, imageName);
+    super(model, imageName);
+    this.destinationImageRedName = destinationImageRedName;
     this.destinationImageGreenName = destinationImageGreenName;
     this.destinationImageBlueName = destinationImageBlueName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    if (imageExist(this.destinationImageGreenName)
-    && imageExist(this.destinationImageBlueName)) {
-      Image imageGreen = this.model.getImageMap().get(this.destinationImageGreenName);
-      Image imageBlue = this.model.getImageMap().get(this.destinationImageBlueName);
-      return this.model.combineCommand(image, imageGreen, imageBlue);
-    }
-    else {
-      throw new IllegalArgumentException("One or more images does not exist!");
-    }
+  protected void processImage() {
+    this.model.combineCommand(this.destinationImageRedName, this.destinationImageGreenName,
+            this.destinationImageBlueName, this.imageName);
   }
 }

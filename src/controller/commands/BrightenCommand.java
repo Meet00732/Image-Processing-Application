@@ -5,14 +5,16 @@ import model.ImageModel;
 
 public class BrightenCommand extends AbstractBaseCommand {
   private int increment;
+  private String destinationImageName;
   public BrightenCommand(ImageModel model, int increment,
                          String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
     this.increment = increment;
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.brightenCommand(image, this.increment);
+  protected void processImage() {
+    this.model.brightenCommand(imageName, destinationImageName, this.increment);
   }
 }

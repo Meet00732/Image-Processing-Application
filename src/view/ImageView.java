@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-public class ImageView {
+public class ImageView implements ImageViewInterface {
 
   private final Scanner scanner;
 

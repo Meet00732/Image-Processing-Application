@@ -1,8 +1,13 @@
 package controller.commands;
 
+import model.ImageModel;
 
+public abstract class AbstractLoaderSaver extends AbstractBaseCommand {
 
-public abstract class AbstractImageFormat implements CommandInterface {
+  public AbstractLoaderSaver( ImageModel model, String imageName, String destinationImageName) {
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
+  }
 
   protected String getImageFormat(String path) {
     String[] tokens = path.split("\\.");

@@ -4,12 +4,14 @@ import model.Image;
 import model.ImageModel;
 
 public class BlurCommand extends AbstractBaseCommand {
+  private String destinationImageName;
   public BlurCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.blurCommand(image);
+  protected void processImage() {
+    this.model.blurCommand(this.imageName, this.destinationImageName);
   }
 }

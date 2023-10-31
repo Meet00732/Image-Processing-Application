@@ -22,16 +22,18 @@ import controller.commands.ValueComponentCommand;
 import model.ImageModel;
 import view.ImageView;
 
-public class ImageController {
+public class ImageController implements ImageControllerInterface {
 
   private final ImageView view;
   private final ImageModel model;
 
-  public ImageController(ImageView view, ImageModel model) {
+  public ImageController(ImageView view, ImageModel model) throws IllegalArgumentException {
+
     this.view = view;
     this.model = model;
   }
 
+  @Override
   public void process() {
     boolean status = false;
     while (true) {
@@ -45,6 +47,7 @@ public class ImageController {
     }
   }
 
+  @Override
   public boolean processor(String command) {
     boolean status = false;
     CommandInterface feature;

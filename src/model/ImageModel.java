@@ -11,70 +11,92 @@ public class ImageModel implements ImageModelInterface{
     this.imageMap = new HashMap<>();
   }
 
-  @Override
-  public void addImage(String name, Image image) {
-    this.imageMap.put(name, image);
-  }
 
   public Map<String, Image> getImageMap() {
     return imageMap;
   }
 
+  @Override
+  public void addImage(String name, Image image) {
+    this.imageMap.put(name, image);
+  }
 
-  public Image redComponentCommand(Image image) {
+
+  @Override
+  public void redComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
         Pixel destPixel = new Pixel(imagePixel.getRed(), 0, 0);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image greenComponentCommand(Image image) {
+  @Override
+  public void greenComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
         Pixel destPixel = new Pixel(0, imagePixel.getGreen(), 0);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image blueComponentCommand(Image image) {
+  @Override
+  public void blueComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
         Pixel destPixel = new Pixel(0, 0, imagePixel.getBlue());
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image valueComponentCommand(Image image) {
+
+  @Override
+  public void valueComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
@@ -87,17 +109,22 @@ public class ImageModel implements ImageModelInterface{
         int maxVal = Math.max(maxRed, Math.max(maxBlue, maxGreen));
 
         Pixel destPixel = new Pixel(maxVal, maxVal, maxVal);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image intensityComponentCommand(Image image) {
+  @Override
+  public void intensityComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
@@ -110,22 +137,26 @@ public class ImageModel implements ImageModelInterface{
         int avgVal = (red + green + blue) / 3;
 
         Pixel destPixel = new Pixel(avgVal, avgVal, avgVal);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image lumaComponentCommand(Image image) {
+  @Override
+  public void lumaComponentCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-
 
         int red = imagePixel.getRed();
         int blue = imagePixel.getBlue();
@@ -138,17 +169,22 @@ public class ImageModel implements ImageModelInterface{
         int newVal = newRed + newBlue + newGreen;
 
         Pixel destPixel = new Pixel(newVal, newVal, newVal);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image brightenCommand(Image image, int increment) {
+  @Override
+  public void brightenCommand(String imageName, String destinationImageName, int increment) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] destinationPixels = new Pixel[width][height];
+    Pixel[][] pixels = new Pixel[width][height];
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
@@ -164,13 +200,27 @@ public class ImageModel implements ImageModelInterface{
         int newGreen = green + increment;
 
         Pixel destPixel = new Pixel(newRed, newGreen, newBlue);
-        destinationPixels[x][y] = destPixel;
+        pixels[x][y] = destPixel;
       }
     }
-    return new Image(destinationPixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image combineCommand(Image imageRed, Image imageGreen, Image imageBlue) {
+  @Override
+  public void combineCommand(String imageRedName,
+                             String imageGreenName,
+                             String imageBlueName,
+                             String destinationImageName) {
+
+    if (!imageExists(imageRedName) || !imageExists(imageGreenName)
+      || !imageExists(imageBlueName)) {
+      throw new IllegalArgumentException("One or More Images does not exist!");
+    }
+
+    Image imageRed = this.imageMap.get(imageRedName);
+    Image imageGreen = this.imageMap.get(imageGreenName);
+    Image imageBlue = this.imageMap.get(imageBlueName);
+
     int widthRed = imageRed.getPixels().length;
     int heightRed = imageRed.getPixels()[0].length;
 
@@ -203,10 +253,15 @@ public class ImageModel implements ImageModelInterface{
         pixels[x][y] = destPixel;
       }
     }
-    return new Image(pixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-  public Image blurCommand(Image image) {
+  @Override
+  public void blurCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
     Pixel[][] pixels = new Pixel[width][height];
@@ -246,11 +301,16 @@ public class ImageModel implements ImageModelInterface{
         pixels[x][y] = pixel;
       }
     }
-    return new Image(pixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
 
-  public Image sharpenCommand(Image image) {
+  @Override
+  public void sharpenCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
     Pixel[][] pixels = new Pixel[width][height];
@@ -291,18 +351,21 @@ public class ImageModel implements ImageModelInterface{
         pixels[x][y] = pixel;
       }
     }
-    return new Image(pixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
-
-  public Image sepiaCommand(Image image) {
+  @Override
+  public void sepiaCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
     Pixel[][] pixels = new Pixel[width][height];
 
-
     for (int x = 0; x < width; x++) {
-      for(int y = 0; y < height; y++) {
+      for (int y = 0; y < height; y++) {
         Pixel tempPixel = image.getPixels()[x][y];
 
         int red = tempPixel.getRed();
@@ -321,7 +384,10 @@ public class ImageModel implements ImageModelInterface{
         pixels[x][y] = pixel;
       }
     }
-    return new Image(pixels);
+    this.addImage(destinationImageName, new Image(pixels));
   }
 
+  private boolean imageExists(String imageName) {
+    return this.imageMap.containsKey(imageName);
+  }
 }

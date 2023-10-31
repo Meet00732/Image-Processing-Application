@@ -5,12 +5,14 @@ import model.ImageModel;
 
 public class SepiaCommand extends AbstractBaseCommand {
 
+  private String destinationImageName;
   public SepiaCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.sepiaCommand(image);
+  protected void processImage() {
+    this.model.sepiaCommand(this.imageName, this.destinationImageName);
   }
 }

@@ -5,12 +5,14 @@ import model.ImageModel;
 
 public class SharpenCommand extends AbstractBaseCommand {
 
+  private String destinationImageName;
   public SharpenCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.sharpenCommand(image);
+  protected void processImage() {
+    this.model.sharpenCommand(this.imageName, this.destinationImageName);
   }
 }

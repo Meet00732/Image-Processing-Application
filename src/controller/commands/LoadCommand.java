@@ -1,29 +1,19 @@
 package controller.commands;
 
+import java.io.IOException;
+
 import model.Image;
 import model.ImageModel;
 
-public class LoadCommand extends AbstractImageFormat {
-  private final String path;
-  private final String name;
-  private ImageModel model;
+public class LoadCommand extends AbstractLoaderSaver {
 
   public LoadCommand(ImageModel model, String path, String name) {
-    this.model = model;
-    this.path = path;
-    this.name = name;
+    super(model, name, path);
   }
   @Override
-  public boolean execute() {
-    boolean status;
-    try {
-      ImageParserInterface parser = this.getFormattedImage(path);
-      Image image = parser.load();
-      model.addImage(name,image);
-      status = true;
-    } catch (Exception e) {
-      status = false;
-    }
-    return status;
+  public void processImage() throws IOException {
+    ImageParserInterface parser = this.getFormattedImage(this.destinationImageName);
+    Image image = parser.load();
+    model.addImage(this.imageName,image);
   }
 }

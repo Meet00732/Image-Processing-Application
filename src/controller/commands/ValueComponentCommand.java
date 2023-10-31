@@ -4,12 +4,14 @@ import model.Image;
 import model.ImageModel;
 
 public class ValueComponentCommand extends AbstractBaseCommand {
+  private String destinationImageName;
   public ValueComponentCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.valueComponentCommand(image);
+  protected void processImage() {
+    this.model.valueComponentCommand(this.imageName, this.destinationImageName);
   }
 }

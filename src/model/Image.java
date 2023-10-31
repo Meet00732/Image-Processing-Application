@@ -11,9 +11,4 @@ public class Image {
   public Pixel[][] getPixels() {
     return pixels;
   }
-
-  public void setPixels(Pixel[][] pixels) {
-    this.pixels = pixels;
-  }
-
 }

@@ -5,12 +5,14 @@ import model.ImageModel;
 
 public class IntensityComponentCommand extends AbstractBaseCommand {
 
+  private String destinationImageName;
   public IntensityComponentCommand(ImageModel model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+    super(model, imageName);
+    this.destinationImageName = destinationImageName;
   }
 
   @Override
-  protected Image processImage(Image image) {
-    return this.model.intensityComponentCommand(image);
+  protected void processImage() {
+    this.model.intensityComponentCommand(this.imageName, this.destinationImageName);
   }
 }
