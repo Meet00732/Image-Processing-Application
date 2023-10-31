@@ -1,51 +1,51 @@
-load F:\PDP_Assignments\Assignment4_MVC\src\commands\nyc.jpeg testNYC
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\testNYC.jpeg testNYC
+load src\commands\nyc.jpeg testNYC
+save src\images\imageJPEG\testNYC.jpeg testNYC
 
 blur testNYC testBlur
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\blurNYC.jpeg testBlur
+save src\images\imageJPEG\blurNYC.jpeg testBlur
 
 sharpen testNYC testSharpen
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\sharpenNYC.jpeg testSharpen
+save src\images\imageJPEG\sharpenNYC.jpeg testSharpen
 
 sepia testNYC testSepia
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\sepiaNYC.jpeg testSepia
+save src\images\imageJPEG\sepiaNYC.jpeg testSepia
 
 red-component testNYC testRed
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\redNYC.jpeg testRed
+save src\images\imageJPEG\redNYC.jpeg testRed
 
 green-component testNYC testGreen
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\greenNYC.jpeg testGreen
+save src\images\imageJPEG\greenNYC.jpeg testGreen
 
 blue-component testNYC testBlue
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\blueNYC.jpeg testBlue
+save src\images\imageJPEG\blueNYC.jpeg testBlue
 
 value-component testNYC testValue
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\valueNYC.jpeg testValue
+save src\images\imageJPEG\valueNYC.jpeg testValue
 
 intensity-component testNYC testIntensity
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\intensityNYC.jpeg testIntensity
+save src\images\imageJPEG\intensityNYC.jpeg testIntensity
 
 luma-component testNYC testLuma
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\lumaNYC.jpeg testLuma
+save src\images\imageJPEG\lumaNYC.jpeg testLuma
 
 
 brighten 50 testNYC Brighten50Man
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCBrighten50Man.jpeg Brighten50Man
+save src\images\imageJPEG\NYCBrighten50Man.jpeg Brighten50Man
 
 brighten -50 testNYC Brighten-50Man
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCBrighten-50Man.jpeg Brighten-50Man
+save src\images\imageJPEG\NYCBrighten-50Man.jpeg Brighten-50Man
 
 brighten 500 testNYC Brighten500Man
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCBrighten500Man.jpeg Brighten500Man
+save src\images\imageJPEG\NYCBrighten500Man.jpeg Brighten500Man
 
 brighten -500 testNYC Brighten-500Man
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCBrighten-500Man.jpeg Brighten-500Man
+save src\images\imageJPEG\NYCBrighten-500Man.jpeg Brighten-500Man
 
 
 rgb-split testNYC splitRed splitGreen splitBlue
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCSplitRed.jpeg splitRed
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCSplitGreen.jpeg splitGreen
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\NYCSplitBlue.jpeg splitBlue
+save src\images\imageJPEG\NYCSplitRed.jpeg splitRed
+save src\images\imageJPEG\NYCSplitGreen.jpeg splitGreen
+save src\images\imageJPEG\NYCSplitBlue.jpeg splitBlue
 
 rgb-combine testCombineNYC testRed testGreen testBlue
-save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPEG\testCombineNYC.jpeg testCombineNYC
+save src\images\imageJPEG\testCombineNYC.jpeg testCombineNYC

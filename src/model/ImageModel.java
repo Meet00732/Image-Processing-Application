@@ -30,12 +30,7 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
-
-        destPixel.setRed(imagePixel.getRed());
-        destPixel.setBlue(0);
-        destPixel.setGreen(0);
-
+        Pixel destPixel = new Pixel(imagePixel.getRed(), 0, 0);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -51,12 +46,7 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
-
-        destPixel.setGreen(imagePixel.getGreen());
-        destPixel.setBlue(0);
-        destPixel.setRed(0);
-
+        Pixel destPixel = new Pixel(0, imagePixel.getGreen(), 0);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -73,12 +63,7 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
-
-        destPixel.setBlue(imagePixel.getBlue());
-        destPixel.setGreen(0);
-        destPixel.setRed(0);
-
+        Pixel destPixel = new Pixel(0, 0, imagePixel.getBlue());
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -94,7 +79,6 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
 
         int maxRed = imagePixel.getRed();
         int maxBlue = imagePixel.getBlue();
@@ -102,10 +86,7 @@ public class ImageModel implements ImageModelInterface{
 
         int maxVal = Math.max(maxRed, Math.max(maxBlue, maxGreen));
 
-        destPixel.setBlue(maxVal);
-        destPixel.setGreen(maxVal);
-        destPixel.setRed(maxVal);
-
+        Pixel destPixel = new Pixel(maxVal, maxVal, maxVal);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -121,7 +102,6 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
 
         int red = imagePixel.getRed();
         int blue = imagePixel.getBlue();
@@ -129,10 +109,7 @@ public class ImageModel implements ImageModelInterface{
 
         int avgVal = (red + green + blue) / 3;
 
-        destPixel.setBlue(avgVal);
-        destPixel.setGreen(avgVal);
-        destPixel.setRed(avgVal);
-
+        Pixel destPixel = new Pixel(avgVal, avgVal, avgVal);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -148,7 +125,7 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
+
 
         int red = imagePixel.getRed();
         int blue = imagePixel.getBlue();
@@ -160,10 +137,7 @@ public class ImageModel implements ImageModelInterface{
 
         int newVal = newRed + newBlue + newGreen;
 
-        destPixel.setBlue(newVal);
-        destPixel.setGreen(newVal);
-        destPixel.setRed(newVal);
-
+        Pixel destPixel = new Pixel(newVal, newVal, newVal);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -179,7 +153,7 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-        Pixel destPixel = new Pixel();
+
 
         int red = imagePixel.getRed();
         int blue = imagePixel.getBlue();
@@ -189,10 +163,7 @@ public class ImageModel implements ImageModelInterface{
         int newBlue = clampPixels(blue + increment);
         int newGreen = clampPixels(green + increment);
 
-        destPixel.setRed(newRed);
-        destPixel.setGreen(newGreen);
-        destPixel.setBlue(newBlue);
-
+        Pixel destPixel = new Pixel(newRed, newGreen, newBlue);
         destinationPixels[x][y] = destPixel;
       }
     }
@@ -222,16 +193,13 @@ public class ImageModel implements ImageModelInterface{
         Pixel imageGreenPixel = imageGreen.getPixels()[x][y];
         Pixel imageBluePixel = imageBlue.getPixels()[x][y];
 
-        Pixel destPixel = new Pixel();
+
 
         int red = imageRedPixel.getRed();
         int green = imageGreenPixel.getGreen();
         int blue = imageBluePixel.getBlue();
 
-        destPixel.setRed(red);
-        destPixel.setGreen(green);
-        destPixel.setBlue(blue);
-
+        Pixel destPixel = new Pixel(red, green, blue);
         pixels[x][y] = destPixel;
       }
     }
@@ -274,11 +242,7 @@ public class ImageModel implements ImageModelInterface{
         int newGreen = (int) Math.round(green);
         int newBlue = (int) Math.round(blue);
 
-        Pixel pixel = new Pixel();
-        pixel.setRed(newRed);
-        pixel.setGreen(newGreen);
-        pixel.setBlue(newBlue);
-
+        Pixel pixel = new Pixel(newRed, newGreen, newBlue);
         pixels[x][y] = pixel;
       }
     }
@@ -323,11 +287,7 @@ public class ImageModel implements ImageModelInterface{
         int newGreen = Math.min(255, Math.max(0, (int) Math.round(green)));
         int newBlue = Math.min(255, Math.max(0, (int) Math.round(blue)));
 
-        Pixel pixel = new Pixel();
-        pixel.setRed(newRed);
-        pixel.setGreen(newGreen);
-        pixel.setBlue(newBlue);
-
+        Pixel pixel = new Pixel(newRed, newGreen, newBlue);
         pixels[x][y] = pixel;
       }
     }
@@ -357,11 +317,7 @@ public class ImageModel implements ImageModelInterface{
         newGreen = Math.min(255, newGreen);
         newBlue = Math.min(255, newBlue);
 
-        Pixel pixel = new Pixel();
-        pixel.setRed(newRed);
-        pixel.setGreen(newGreen);
-        pixel.setBlue(newBlue);
-
+        Pixel pixel = new Pixel(newRed, newGreen, newBlue);
         pixels[x][y] = pixel;
       }
     }

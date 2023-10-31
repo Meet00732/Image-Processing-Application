@@ -37,11 +37,15 @@ public class ImageController {
       String command = view.getCommand();
       String[] tokens = command.split(" ");
       boolean status = this.processor(command);
-
-      if (status) {
-        view.display(tokens[0] + " executed successfully");
-      } else {
-        view.display("error executing " + tokens[0]);
+      try {
+        if (status) {
+          view.display(tokens[0] + " executed successfully");
+        } else {
+          view.display("error executing " + tokens[0]);
+        }
+      }
+      catch (Exception e) {
+        view.display("Please enter correct command format");
       }
     }
 
@@ -50,111 +54,107 @@ public class ImageController {
   public boolean processor(String command) {
     boolean status = false;
     CommandInterface feature;
-    try {
-      String[] tokens = command.split(" ");
 
-      switch (tokens[0]) {
-        case "load":
-          feature = new LoadCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
+    String[] tokens = command.split(" ");
+
+    switch (tokens[0]) {
+      case "load":
+        feature = new LoadCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+      case "save":
+        feature = new SaveCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "blur":
+        feature = new BlurCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "sharpen":
+        feature = new SharpenCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "sepia":
+        feature = new SepiaCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "red-component":
+        feature = new RedComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "green-component":
+        feature = new GreenComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "blue-component":
+        feature = new BlueComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "value-component":
+        feature = new ValueComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "intensity-component":
+        feature = new IntensityComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "luma-component":
+        feature = new LumaComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        break;
+
+      case "brighten":
+        int increment = Integer.parseInt(tokens[1]);
+        feature = new BrightenCommand(model, increment, tokens[2], tokens[3]);
+        status = feature.execute();
+        break;
+
+      case "rgb-split":
+        feature = new RedComponentCommand(model, tokens[1], tokens[2]);
+        status = feature.execute();
+        if (!status) {
           break;
-        case "save":
-          feature = new SaveCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
+        }
+
+        feature = new GreenComponentCommand(model, tokens[1], tokens[3]);
+        status = feature.execute();
+        if (!status) {
           break;
+        }
 
-        case "blur":
-          feature = new BlurCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
+        feature = new BlueComponentCommand(model, tokens[1], tokens[4]);
+        status = feature.execute();
+        if (!status) {
           break;
+        }
+        break;
 
-        case "sharpen":
-          feature = new SharpenCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
+      case "rgb-combine":
+        feature = new CombineCommand(model, tokens[2], tokens[1], tokens[3], tokens[4]);
+        status = feature.execute();
+        break;
 
-        case "sepia":
-          feature = new SepiaCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
+      case "run":
+        status = runScript(tokens[1]);
+        break;
 
-        case "red-component":
-          feature = new RedComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "green-component":
-          feature = new GreenComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "blue-component":
-          feature = new BlueComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "value-component":
-          feature = new ValueComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "intensity-component":
-          feature = new IntensityComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "luma-component":
-          feature = new LumaComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "brighten":
-          int increment = Integer.parseInt(tokens[1]);
-          feature = new BrightenCommand(model, increment, tokens[2], tokens[3]);
-          status = feature.execute();
-          break;
-
-        case "rgb-split":
-          feature = new RedComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new GreenComponentCommand(model, tokens[1], tokens[3]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new BlueComponentCommand(model, tokens[1], tokens[4]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
-          break;
-
-        case "rgb-combine":
-          feature = new CombineCommand(model, tokens[2], tokens[1], tokens[3], tokens[4]);
-          status = feature.execute();
-          break;
-
-        case "run":
-          status = runScript(tokens[1]);
-          break;
-
-        default:
-          throw new IllegalStateException("Invalid Input: " + tokens[0]);
-      }
-      if (status) {
-        view.display(tokens[0] + " executed successfully");
-      } else {
-        view.display("error executing " + tokens[0]);
-      }
-    } catch (Exception e) {
-      view.display("Please enter correct command format");
+      default:
+        throw new IllegalStateException("Invalid Input: " + tokens[0]);
     }
-
+    if (status) {
+      view.display(tokens[0] + " executed successfully");
+    } else {
+      view.display("error executing " + tokens[0]);
+    }
     return status;
   }
 

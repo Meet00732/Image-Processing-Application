@@ -46,11 +46,7 @@ public abstract class ImageFormat implements ImageParserInterface {
         int green = (rgb >> 8) & 0xFF;
         int blue = rgb & 0xFF;
 
-        Pixel pixel = new Pixel();
-        pixel.setRed(red);
-        pixel.setGreen(green);
-        pixel.setBlue(blue);
-
+        Pixel pixel = new Pixel(red, green, blue);
         pixels[x][y] = pixel;
       }
     }

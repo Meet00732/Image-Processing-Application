@@ -61,11 +61,7 @@ public class ImagePPM implements ImageParserInterface{
         int green = sc.nextInt();
         int blue = sc.nextInt();
 
-        Pixel pixel = new Pixel();
-        pixel.setRed(red);
-        pixel.setGreen(green);
-        pixel.setBlue(blue);
-
+        Pixel pixel = new Pixel(red, green, blue);
         pixels[x][y] = pixel;
       }
     }
