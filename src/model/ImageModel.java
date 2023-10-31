@@ -159,9 +159,9 @@ public class ImageModel implements ImageModelInterface{
         int blue = imagePixel.getBlue();
         int green = imagePixel.getGreen();
 
-        int newRed = clampPixels(red + increment);
-        int newBlue = clampPixels(blue + increment);
-        int newGreen = clampPixels(green + increment);
+        int newRed = red + increment;
+        int newBlue = blue + increment;
+        int newGreen = green + increment;
 
         Pixel destPixel = new Pixel(newRed, newGreen, newBlue);
         destinationPixels[x][y] = destPixel;
@@ -322,16 +322,6 @@ public class ImageModel implements ImageModelInterface{
       }
     }
     return new Image(pixels);
-  }
-
-  private int clampPixels (int channel) {
-    if (channel <= 0) {
-      channel = 0;
-    }
-    else if (channel >= 255) {
-      channel = 255;
-    }
-    return channel;
   }
 
 }
