@@ -49,3 +49,9 @@ save src\images\imageJPG\NYCSplitBlue.jpg splitBlue
 
 rgb-combine testCombineNYC testRed testGreen testBlue
 save src\images\imageJPG\testCombineNYC.jpg testCombineNYC
+
+vertical-flip testNYC testVerticalNYC
+save src\images\imageJPG\testVerticalNYC.jpg testVerticalNYC
+
+horizontal-flip testNYC testHorizontalNYC
+save src\images\imageJPG\testHorizontalNYC.jpg testHorizontalNYC

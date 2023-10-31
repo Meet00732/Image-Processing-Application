@@ -11,6 +11,7 @@ import controller.commands.BrightenCommand;
 import controller.commands.CombineCommand;
 import controller.commands.CommandInterface;
 import controller.commands.GreenComponentCommand;
+import controller.commands.HorizontalFlipCommand;
 import controller.commands.IntensityComponentCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LumaComponentCommand;
@@ -19,6 +20,7 @@ import controller.commands.SaveCommand;
 import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
 import controller.commands.ValueComponentCommand;
+import controller.commands.VerticalFlipCommand;
 import model.ImageModel;
 import view.ImageView;
 
@@ -114,6 +116,16 @@ public class ImageController implements ImageControllerInterface {
         case "brighten":
           int increment = Integer.parseInt(tokens[1]);
           feature = new BrightenCommand(model, increment, tokens[2], tokens[3]);
+          status = feature.execute();
+          break;
+
+        case "vertical-flip":
+          feature = new VerticalFlipCommand(model, tokens[1], tokens[2]);
+          status = feature.execute();
+          break;
+
+        case "horizontal-flip":
+          feature = new HorizontalFlipCommand(model, tokens[1], tokens[2]);
           status = feature.execute();
           break;
 

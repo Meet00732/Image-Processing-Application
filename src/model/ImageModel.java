@@ -386,6 +386,45 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+
+  @Override
+  public void verticalFlipCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+    Pixel[][] flippedPixels = new Pixel[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        flippedPixels[i][j] = image.getPixels()[i][height - j - 1];
+      }
+    }
+    this.addImage(destinationImageName, new Image(flippedPixels));
+  }
+
+  @Override
+  public void horizontalFlipCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
+    int width = image.getPixels().length;
+    int height = image.getPixels()[0].length;
+    Pixel[][] flippedPixels = new Pixel[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        flippedPixels[i][j] = image.getPixels()[width - i - 1][j];
+      }
+    }
+    this.addImage(destinationImageName, new Image(flippedPixels));
+  }
+
+
+
   private boolean imageExists(String imageName) {
     return this.imageMap.containsKey(imageName);
   }

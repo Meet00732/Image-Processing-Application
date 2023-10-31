@@ -24,4 +24,8 @@ public interface ImageModelInterface {
   void sharpenCommand(String imageName, String destinationImageName);
 
   void sepiaCommand(String imageName, String destinationImageName);
+
+  void verticalFlipCommand(String imageName, String destinationImageName);
+
+  void horizontalFlipCommand(String imageName, String destinationImageName);
 }

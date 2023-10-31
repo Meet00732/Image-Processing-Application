@@ -49,3 +49,9 @@ save src\images\imagePPM\NYCSplitBlue.ppm splitBlue
 
 rgb-combine testCombineNYC testRed testGreen testBlue
 save src\images\imagePPM\testCombineNYC.ppm testCombineNYC
+
+vertical-flip testNYC testVerticalNYC
+save src\images\imagePPM\testVerticalNYC.ppm testVerticalNYC
+
+horizontal-flip testNYC testHorizontalNYC
+save src\images\imagePPM\testHorizontalNYC.ppm testHorizontalNYC
