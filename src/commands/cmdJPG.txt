@@ -1,0 +1,51 @@
+load F:\PDP_Assignments\Assignment4_MVC\src\commands\nyc.jpg testNYC
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\testNYC.jpg testNYC
+
+blur testNYC testBlur
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\blurNYC.jpg testBlur
+
+sharpen testNYC testSharpen
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\sharpenNYC.jpg testSharpen
+
+sepia testNYC testSepia
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\sepiaNYC.jpg testSepia
+
+red-component testNYC testRed
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\redNYC.jpg testRed
+
+green-component testNYC testGreen
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\greenNYC.jpg testGreen
+
+blue-component testNYC testBlue
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\blueNYC.jpg testBlue
+
+value-component testNYC testValue
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\valueNYC.jpg testValue
+
+intensity-component testNYC testIntensity
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\intensityNYC.jpg testIntensity
+
+luma-component testNYC testLuma
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\lumaNYC.jpg testLuma
+
+
+brighten 50 testNYC Brighten50Man
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCBrighten50Man.jpg Brighten50Man
+
+brighten -50 testNYC Brighten-50Man
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCBrighten-50Man.jpg Brighten-50Man
+
+brighten 500 testNYC Brighten500Man
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCBrighten500Man.jpg Brighten500Man
+
+brighten -500 testNYC Brighten-500Man
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCBrighten-500Man.jpg Brighten-500Man
+
+
+rgb-split testNYC splitRed splitGreen splitBlue
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCSplitRed.jpg splitRed
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCSplitGreen.jpg splitGreen
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\NYCSplitBlue.jpg splitBlue
+
+rgb-combine testCombineNYC testRed testGreen testBlue
+save F:\PDP_Assignments\Assignment4_MVC\src\images\imageJPG\testCombineNYC.jpg testCombineNYC

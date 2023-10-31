@@ -18,6 +18,8 @@ public abstract class AbstractImageFormat implements CommandInterface {
         return new ImageJPG(path);
       case "ppm":
         return new ImagePPM(path);
+      case "jpeg":
+        return new ImageJPEG(path);
       default:
         throw new UnsupportedOperationException("Invalid File Format");
     }

@@ -2,22 +2,9 @@ package controller.commands;
 
 import model.Image;
 
-public class ImageJPEG implements ImageParserInterface {
-
-  private String path;
+public class ImageJPEG extends ImageFormat {
 
   public ImageJPEG(String path) {
-    this.path = path;
+    super(path);
   }
-
-  @Override
-  public Image load() {
-    return null;
-  }
-
-  @Override
-  public void save(String path, Image image) {
-
-  }
-
 }
