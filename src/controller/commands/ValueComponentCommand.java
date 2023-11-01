@@ -2,10 +2,11 @@ package controller.commands;
 
 import model.Image;
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public class ValueComponentCommand extends AbstractBaseCommand {
   private String destinationImageName;
-  public ValueComponentCommand(ImageModel model, String imageName, String destinationImageName) {
+  public ValueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
     super(model, imageName);
     this.destinationImageName = destinationImageName;
   }

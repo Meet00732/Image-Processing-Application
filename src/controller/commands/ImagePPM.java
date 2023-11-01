@@ -13,7 +13,10 @@ public class ImagePPM implements ImageParserInterface{
 
   private String path;
 
-  public ImagePPM(String path) {
+  public ImagePPM(String path) throws IllegalArgumentException {
+    if (path == null || path == "") {
+      throw new IllegalArgumentException("path cannot be empty or null");
+    }
     this.path = path;
   }
 

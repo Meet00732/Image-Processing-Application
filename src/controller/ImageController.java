@@ -15,6 +15,7 @@ import controller.commands.HorizontalFlipCommand;
 import controller.commands.IntensityComponentCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LumaComponentCommand;
+import controller.commands.RGBSplit;
 import controller.commands.RedComponentCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SepiaCommand;
@@ -22,25 +23,37 @@ import controller.commands.SharpenCommand;
 import controller.commands.ValueComponentCommand;
 import controller.commands.VerticalFlipCommand;
 import model.ImageModel;
+import model.ImageModelInterface;
 import view.ImageView;
+import view.ImageViewInterface;
 
 public class ImageController implements ImageControllerInterface {
 
-  private final ImageView view;
-  private final ImageModel model;
+  private final ImageViewInterface view;
+  private final ImageModelInterface model;
 
-  public ImageController(ImageView view, ImageModel model) throws IllegalArgumentException {
+  public ImageController(ImageViewInterface view, ImageModelInterface model) throws IllegalArgumentException {
+    if (view == null) {
+      throw new IllegalArgumentException("View Object is missing!");
+    }
 
+    if (model == null) {
+      throw new IllegalArgumentException("Model Object is missing!");
+    }
     this.view = view;
     this.model = model;
   }
 
   @Override
   public void process() {
-    boolean status = false;
+    boolean status;
     while (true) {
       String command = view.getCommand();
       String[] tokens = command.split(" ");
+
+      if (tokens[0].equals("q")) {
+        break;
+      }
       status = this.processor(command);
 
       if (!status) {
@@ -130,23 +143,8 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "rgb-split":
-          feature = new RedComponentCommand(model, tokens[1], tokens[2]);
+          feature = new RGBSplit(model, tokens[1], tokens[2], tokens[3], tokens[4]);
           status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new GreenComponentCommand(model, tokens[1], tokens[3]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new BlueComponentCommand(model, tokens[1], tokens[4]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
           break;
 
         case "rgb-combine":
@@ -159,7 +157,7 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         default:
-          throw new IllegalStateException("Invalid Input: " + tokens[0]);
+          throw new IllegalArgumentException("Invalid Input: " + tokens[0]);
       }
       if (status) {
         view.display(tokens[0] + " executed successfully");
@@ -171,7 +169,7 @@ public class ImageController implements ImageControllerInterface {
     return status;
   }
 
-  private boolean runScript(String path) {
+  private boolean runScript(String path) throws FileNotFoundException {
     boolean status = false;
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
       String line;
@@ -181,10 +179,8 @@ public class ImageController implements ImageControllerInterface {
         }
         status = this.processor(line);
       }
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new FileNotFoundException("File not Found!");
     }
     return status;
   }

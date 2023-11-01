@@ -1,11 +1,12 @@
 package controller.commands;
 
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public class HorizontalFlipCommand extends AbstractBaseCommand {
 
   private String destinationImageName;
-  public HorizontalFlipCommand(ImageModel model, String imageName, String destinationImageName) {
+  public HorizontalFlipCommand(ImageModelInterface model, String imageName, String destinationImageName) {
     super(model, imageName);
     this.destinationImageName = destinationImageName;
   }

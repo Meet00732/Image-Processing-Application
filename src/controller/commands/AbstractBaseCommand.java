@@ -3,14 +3,16 @@ package controller.commands;
 import java.io.IOException;
 
 import model.ImageModel;
+import model.ImageModelInterface;
 
-public abstract class AbstractBaseCommand implements CommandInterface {
+public abstract class
+AbstractBaseCommand implements CommandInterface {
 
   protected String destinationImageName;
   protected String imageName;
-  protected ImageModel model;
+  protected ImageModelInterface model;
 
-  public AbstractBaseCommand(ImageModel model, String imageName) {
+  public AbstractBaseCommand(ImageModelInterface model, String imageName) {
     this.imageName = imageName;
     this.model = model;
   }

@@ -1,8 +1,6 @@
 package controller.commands;
 
-import model.Image;
-
-public class ImageJPEG extends ImageFormat {
+public class ImageJPEG extends AbstractImageFormat {
 
   public ImageJPEG(String path) {
     super(path);

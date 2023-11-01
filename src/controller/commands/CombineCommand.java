@@ -2,6 +2,7 @@ package controller.commands;
 
 import model.Image;
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public class CombineCommand extends AbstractBaseCommand {
 
@@ -9,7 +10,7 @@ public class CombineCommand extends AbstractBaseCommand {
   private String destinationImageGreenName;
   private String destinationImageBlueName;
 
-  public CombineCommand(ImageModel model,
+  public CombineCommand(ImageModelInterface model,
                         String destinationImageRedName,
                         String imageName,
                         String destinationImageGreenName,

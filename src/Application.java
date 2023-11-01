@@ -1,13 +1,16 @@
 import controller.ImageController;
+import controller.ImageControllerInterface;
 import model.ImageModel;
+import model.ImageModelInterface;
 import view.ImageView;
+import view.ImageViewInterface;
 
 public class Application {
   public static void main(String[] args) {
-    ImageView view = new ImageView();
-    ImageModel model = new ImageModel();
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
 
-    ImageController controller = new ImageController(view,model);
+    ImageControllerInterface controller = new ImageController(view,model);
     controller.process();
   }
 }

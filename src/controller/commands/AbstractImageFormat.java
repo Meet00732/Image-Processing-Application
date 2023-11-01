@@ -10,20 +10,19 @@ import javax.imageio.ImageIO;
 import model.Image;
 import model.Pixel;
 
-public abstract class ImageFormat implements ImageParserInterface {
+public abstract class AbstractImageFormat implements ImageParserInterface {
 
   private String path;
 
-  public ImageFormat(String path) {
+  public AbstractImageFormat(String path) throws IllegalArgumentException {
+    if (path == null || path == "") {
+      throw new IllegalArgumentException("Path cannot be empty or null");
+    }
     this.path = path;
   }
 
   @Override
   public Image load() throws IOException {
-    if (path == null || path.trim().isEmpty()) {
-      throw new IllegalArgumentException("Path cannot be null or empty");
-    }
-
     BufferedImage bufferedImage;
     try {
       bufferedImage = ImageIO.read(new File(path));

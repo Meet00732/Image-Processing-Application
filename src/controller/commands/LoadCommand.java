@@ -4,10 +4,11 @@ import java.io.IOException;
 
 import model.Image;
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public class LoadCommand extends AbstractLoaderSaver {
 
-  public LoadCommand(ImageModel model, String path, String name) {
+  public LoadCommand(ImageModelInterface model, String path, String name) {
     super(model, name, path);
   }
   @Override

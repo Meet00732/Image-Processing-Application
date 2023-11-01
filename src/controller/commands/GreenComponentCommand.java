@@ -2,11 +2,12 @@ package controller.commands;
 
 import model.Image;
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public class GreenComponentCommand extends AbstractBaseCommand {
 
   private String destinationImageName;
-  public GreenComponentCommand(ImageModel model, String imageName, String destinationImageName) {
+  public GreenComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
     super(model, imageName);
     this.destinationImageName = destinationImageName;
   }
