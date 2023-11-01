@@ -11,9 +11,6 @@ public class ImageModel implements ImageModelInterface{
     this.imageMap = new HashMap<>();
   }
 
-  public Map<String, Image> getImageMap() {
-    return imageMap;
-  }
 
   @Override
   public void addImage(String name, Image image) {
@@ -188,7 +185,6 @@ public class ImageModel implements ImageModelInterface{
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         Pixel imagePixel = image.getPixels()[x][y];
-
 
         int red = imagePixel.getRed();
         int blue = imagePixel.getBlue();
@@ -423,9 +419,22 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(flippedPixels));
   }
 
+  @Override
+  public void rgbSplitCommand(String redImageName, String greenImageName,
+                       String blueImageName, String imageName) {
+    this.redComponentCommand(imageName, redImageName);
+    this.greenComponentCommand(imageName, greenImageName);
+    this.blueComponentCommand(imageName, blueImageName);
+  }
 
 
-  private boolean imageExists(String imageName) {
+  @Override
+  public boolean imageExists(String imageName) {
     return this.imageMap.containsKey(imageName);
+  }
+
+  @Override
+  public Image getImage(String imageName) {
+    return this.imageMap.get(imageName);
   }
 }

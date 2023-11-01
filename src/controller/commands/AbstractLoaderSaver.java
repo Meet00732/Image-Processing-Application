@@ -1,10 +1,11 @@
 package controller.commands;
 
 import model.ImageModel;
+import model.ImageModelInterface;
 
 public abstract class AbstractLoaderSaver extends AbstractBaseCommand {
 
-  public AbstractLoaderSaver( ImageModel model, String imageName, String destinationImageName) {
+  public AbstractLoaderSaver(ImageModelInterface model, String imageName, String destinationImageName) {
     super(model, imageName);
     this.destinationImageName = destinationImageName;
   }

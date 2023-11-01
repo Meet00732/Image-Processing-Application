@@ -28,4 +28,10 @@ public interface ImageModelInterface {
   void verticalFlipCommand(String imageName, String destinationImageName);
 
   void horizontalFlipCommand(String imageName, String destinationImageName);
+
+  boolean imageExists(String imageName);
+
+  Image getImage(String imageName);
+
+  void rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName);
 }

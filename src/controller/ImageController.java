@@ -15,6 +15,7 @@ import controller.commands.HorizontalFlipCommand;
 import controller.commands.IntensityComponentCommand;
 import controller.commands.LoadCommand;
 import controller.commands.LumaComponentCommand;
+import controller.commands.RGBSplit;
 import controller.commands.RedComponentCommand;
 import controller.commands.SaveCommand;
 import controller.commands.SepiaCommand;
@@ -30,17 +31,27 @@ public class ImageController implements ImageControllerInterface {
   private final ImageModel model;
 
   public ImageController(ImageView view, ImageModel model) throws IllegalArgumentException {
+    if (view == null) {
+      throw new IllegalArgumentException("View Object is missing!");
+    }
 
+    if (model == null) {
+      throw new IllegalArgumentException("Model Object is missing!");
+    }
     this.view = view;
     this.model = model;
   }
 
   @Override
   public void process() {
-    boolean status = false;
+    boolean status;
     while (true) {
       String command = view.getCommand();
       String[] tokens = command.split(" ");
+
+      if (tokens[0].equals("q")) {
+        break;
+      }
       status = this.processor(command);
 
       if (!status) {
@@ -130,23 +141,8 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "rgb-split":
-          feature = new RedComponentCommand(model, tokens[1], tokens[2]);
+          feature = new RGBSplit(model, tokens[1], tokens[2], tokens[3], tokens[4]);
           status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new GreenComponentCommand(model, tokens[1], tokens[3]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
-
-          feature = new BlueComponentCommand(model, tokens[1], tokens[4]);
-          status = feature.execute();
-          if (!status) {
-            break;
-          }
           break;
 
         case "rgb-combine":
