@@ -12,8 +12,6 @@ import model.ImageModelInterface;
  */
 public class IntensityComponentCommand extends AbstractBaseCommand {
 
-  private String destinationImageName;
-
   /**
    * The IntensityComponentCommand class is a concrete
    * implementation of AbstractBaseCommand. It represents a command
@@ -22,8 +20,7 @@ public class IntensityComponentCommand extends AbstractBaseCommand {
    * represents the luminance or brightness information of an image.
    */
   public IntensityComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

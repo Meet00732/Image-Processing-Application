@@ -3,10 +3,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 
 import javax.imageio.ImageIO;
-
 import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.Image;
@@ -16,8 +19,15 @@ import model.Pixel;
 import view.ImageView;
 import view.ImageViewInterface;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+
+/**
+ * This class conducts end-to-end testing to validate the controller's functionality,
+ * ensuring it handles user requests, imageModel logic, and interactions with other
+ * components effectively.
+ */
 public class ImageControllerCompleteTest {
 
   private final ByteArrayOutputStream outResult = new ByteArrayOutputStream();
@@ -27,6 +37,11 @@ public class ImageControllerCompleteTest {
   private final String savePath = "test\\res\\saveTestImage.png";
   private final String lineSeparator = System.lineSeparator();
 
+  /**
+   * Sets up the testing environment.
+   *
+   * @throws IOException if there's an issue creating the image.
+   */
   @Before
   public void setup() throws IOException {
     outResult.reset();
@@ -34,6 +49,9 @@ public class ImageControllerCompleteTest {
     createImage();
   }
 
+  /**
+   * Resets the testing environment after completion.
+   */
   @After
   public void reset() {
     System.setOut(originalOut);
@@ -918,13 +936,12 @@ public class ImageControllerCompleteTest {
     String greenImagePath = "test\\res\\greenImage.png";
     String blueImagePath = "test\\res\\BlueImage.png";
     String interMediateImage = "testImage";
-    String destinationImage = "testLumaImage";
 
     String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
             + "rgb-split" + " " + interMediateImage + " " + "redImage greenImage blueImage" + "\n"
-            + "save " + redImagePath + " " + destinationImage + "\n"
-            + "save " + greenImagePath + " " + destinationImage + "\n"
-            + "save " + blueImagePath + " " + destinationImage + "\nq";
+            + "save " + redImagePath + " " + "redImage" + "\n"
+            + "save " + greenImagePath + " " + "greenImage" + "\n"
+            + "save " + blueImagePath + " " + "blueImage" + "\nq";
     simulateUserInput(inputData);
 
     ImageViewInterface view = new ImageView();

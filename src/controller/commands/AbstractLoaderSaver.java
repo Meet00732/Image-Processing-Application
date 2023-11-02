@@ -19,8 +19,7 @@ public abstract class AbstractLoaderSaver extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to be saved.
    */
   public AbstractLoaderSaver(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**
@@ -42,7 +41,7 @@ public abstract class AbstractLoaderSaver extends AbstractBaseCommand {
    * @return An instance of the corresponding ImageParserInterface implementation.
    * @throws UnsupportedOperationException if the image format is not supported.
    */
-  protected ImageParserInterface getFormattedImage(String path) {
+  protected ImageParserInterface getFormattedImage(String path) throws UnsupportedOperationException {
     String format = this.getImageFormat(path);
     switch (format) {
       case "png":

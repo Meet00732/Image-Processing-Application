@@ -11,8 +11,6 @@ import model.ImageModelInterface;
  */
 public class SepiaCommand extends AbstractBaseCommand {
 
-  private String destinationImageName;
-
   /**
    * Constructs a new SepiaCommand with the given ImageModel, source image name,
    * and destination image name.
@@ -24,8 +22,7 @@ public class SepiaCommand extends AbstractBaseCommand {
    *                             the sepia-processed image.
    */
   public SepiaCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

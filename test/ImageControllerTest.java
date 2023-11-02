@@ -7,24 +7,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import controller.ImageController;
 import controller.ImageControllerInterface;
-
 import model.MockModel;
 import view.ImageView;
 import view.ImageViewInterface;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+/**
+ * This class conducts testing to validate the controller's functionality,
+ * ensuring it handles user requests, imageModel logic, and interactions with other
+ * components effectively with the help of MockModel. MockModel is used to make sure
+ * inputs and method invocation works correctly.
+ */
 public class ImageControllerTest {
 
   private final ByteArrayOutputStream outResult = new ByteArrayOutputStream();
 
   private final PrintStream out = System.out;
 
+
+  /**
+   * Redirects System to capture console output during testing.
+   */
   @Before
   public void setup() {
     System.setOut(new PrintStream(outResult));
   }
 
+  /**
+   * Restores the original System configuration after testing.
+   */
   @After
   public void reset() {
     System.setOut(out);
@@ -370,70 +384,6 @@ public class ImageControllerTest {
     assertTrue(model.getLog().contains("horizontalFlipCommand method is invoked!"));
   }
 
-  /**
-   * Test runCommand
-   */
-  @Test
-  public void testControllerRunCommand() {
-    String lineSeparator = System.lineSeparator();
-    String inputData = "run test\\res\\input.txt\nq";
-
-    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
-    System.setIn(inContent);
-
-    ImageViewInterface view = new ImageView();
-    MockModel model = new MockModel();
-    ImageControllerInterface controller = new ImageController(view, model);
-    String expectedResult = "load executed successfully" + lineSeparator +
-            "save executed successfully" + lineSeparator +
-            "blur executed successfully" + lineSeparator +
-            "sharpen executed successfully" + lineSeparator +
-            "sepia executed successfully" + lineSeparator +
-            "red-component executed successfully" + lineSeparator +
-            "green-component executed successfully" + lineSeparator +
-            "blue-component executed successfully" + lineSeparator +
-            "value-component executed successfully" + lineSeparator +
-            "intensity-component executed successfully" + lineSeparator +
-            "luma-component executed successfully" + lineSeparator +
-            "brighten executed successfully" + lineSeparator +
-            "brighten executed successfully" + lineSeparator +
-            "brighten executed successfully" + lineSeparator +
-            "brighten executed successfully" + lineSeparator +
-            "rgb-split executed successfully" + lineSeparator +
-            "rgb-combine executed successfully" + lineSeparator +
-            "vertical-flip executed successfully" + lineSeparator +
-            "horizontal-flip executed successfully" + lineSeparator +
-            "run executed successfully";
-
-    String mockModelLog =
-            "blurCommand method is invoked!" +
-            "sharpenCommand method is invoked!" +
-            "sepiaCommand method is invoked!" +
-            "redComponentCommand method is invoked!" +
-            "greenComponentCommand method is invoked!" +
-            "blueComponentCommand method is invoked!" +
-            "valueComponentCommand method is invoked!" +
-            "intensityComponentCommand method is invoked!" +
-            "lumaComponentCommand method is invoked!" +
-            "brightenCommand method is invoked!" +
-            "brightenCommand method is invoked!" +
-            "brightenCommand method is invoked!" +
-            "brightenCommand method is invoked!" +
-            "rgbSplitCommand method is invoked!" +
-            "combineCommand method is invoked!" +
-            "verticalFlipCommand method is invoked!" +
-            "horizontalFlipCommand method is invoked!";
-    try {
-      controller.process();
-    }
-    catch (Exception e) {
-      fail("This test should have passed!");
-    }
-
-    assertEquals(expectedResult.trim(), outResult.toString().trim());
-    assertTrue(model.getLog().contains(mockModelLog));
-  }
-
 
   /**
    * Test invalid command enter.
@@ -450,7 +400,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-      expectedResult = "Please enter correct command format" + System.lineSeparator() +
+      expectedResult = "Invalid Input: orange-component" + System.lineSeparator() +
               "error executing orange-component";
     }
     catch (Exception e) {
@@ -504,7 +454,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
 
     controller.process();
-    String expectedResult = "Please enter correct command format" + System.lineSeparator() +
+    String expectedResult = "File not Found!" + System.lineSeparator() +
             "error executing run";
 
     assertEquals(expectedResult + System.lineSeparator(), outResult.toString());

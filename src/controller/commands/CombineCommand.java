@@ -11,10 +11,6 @@ import model.ImageModelInterface;
  */
 public class CombineCommand extends AbstractBaseCommand {
 
-  private String destinationImageRedName;
-  private String destinationImageGreenName;
-  private String destinationImageBlueName;
-
   /**
    * Constructs a new CombineCommand with the given ImageModel, destination image names
    * for the red, green, and blue color components, and the source image name.
@@ -34,10 +30,7 @@ public class CombineCommand extends AbstractBaseCommand {
                         String destinationImageGreenName,
                         String destinationImageBlueName) {
 
-    super(model, imageName);
-    this.destinationImageRedName = destinationImageRedName;
-    this.destinationImageGreenName = destinationImageGreenName;
-    this.destinationImageBlueName = destinationImageBlueName;
+    super(model, imageName, destinationImageRedName, destinationImageGreenName, destinationImageBlueName);
   }
 
   /**
@@ -49,7 +42,7 @@ public class CombineCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.combineCommand(this.destinationImageRedName, this.destinationImageGreenName,
-            this.destinationImageBlueName, this.imageName);
+    this.model.combineCommand(this.redImageName, this.greenImageName,
+            this.blueImageName, this.imageName);
   }
 }

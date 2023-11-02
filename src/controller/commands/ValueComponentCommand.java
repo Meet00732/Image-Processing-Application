@@ -12,7 +12,6 @@ import model.ImageModelInterface;
  * an image while ignoring the color information.
  */
 public class ValueComponentCommand extends AbstractBaseCommand {
-  private String destinationImageName;
 
   /**
    * Constructs a new ValueComponentCommand with the
@@ -25,8 +24,7 @@ public class ValueComponentCommand extends AbstractBaseCommand {
    *                             save the value component.
    */
   public ValueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

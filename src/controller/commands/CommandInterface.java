@@ -16,5 +16,5 @@ public interface CommandInterface {
    *
    * @return true if the command execution was successful, false otherwise.
    */
-  boolean execute();
+  boolean execute() throws Exception;
 }

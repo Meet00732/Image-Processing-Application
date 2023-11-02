@@ -11,7 +11,6 @@ import model.ImageModelInterface;
  */
 public class BrightenCommand extends AbstractBaseCommand {
   private int increment;
-  private String destinationImageName;
 
   /**
    * Constructs a new BrightenCommand with the given
@@ -26,9 +25,8 @@ public class BrightenCommand extends AbstractBaseCommand {
    */
   public BrightenCommand(ImageModelInterface model, int increment,
                          String imageName, String destinationImageName) {
-    super(model, imageName);
+    super(model, imageName, destinationImageName);
     this.increment = increment;
-    this.destinationImageName = destinationImageName;
   }
 
   /**

@@ -10,6 +10,9 @@ import model.Image;
 
 import static org.junit.Assert.*;
 
+/**
+ *
+ */
 public class ImageJPEGTest {
   private final String testImagePath = "res\\nyc.jpeg";
 

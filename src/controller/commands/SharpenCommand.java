@@ -11,8 +11,6 @@ import model.ImageModelInterface;
  */
 public class SharpenCommand extends AbstractBaseCommand {
 
-  private String destinationImageName;
-
   /**
    * Constructs a new SharpenCommand with the given ImageModel, source image name,
    * and destination image name.
@@ -24,8 +22,7 @@ public class SharpenCommand extends AbstractBaseCommand {
    *                             the sharpened image.
    */
   public SharpenCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

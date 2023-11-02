@@ -9,7 +9,6 @@ import model.ImageModelInterface;
  * and saving the result as a new image using an ImageModel.
  */
 public class BlurCommand extends AbstractBaseCommand {
-  private String destinationImageName;
 
   /**
    * Constructs a new BlurCommand with the given ImageModel, source image name, and
@@ -20,8 +19,7 @@ public class BlurCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save the blurred result.
    */
   public BlurCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

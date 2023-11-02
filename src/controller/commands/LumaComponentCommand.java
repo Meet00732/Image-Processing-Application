@@ -13,7 +13,6 @@ import model.ImageModelInterface;
  * @version 1.0
  */
 public class LumaComponentCommand extends AbstractBaseCommand {
-  private String destinationImageName;
 
   /**
    * Constructs a new LumaComponentCommand with the given
@@ -27,8 +26,7 @@ public class LumaComponentCommand extends AbstractBaseCommand {
    *                             to save the luma component.
    */
   public LumaComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

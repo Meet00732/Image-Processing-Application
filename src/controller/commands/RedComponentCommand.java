@@ -10,7 +10,6 @@ import model.ImageModelInterface;
  * The red component represents the red color channel of an image.
  */
 public class RedComponentCommand extends AbstractBaseCommand {
-  private String destinationImageName;
 
   /**
    * Constructs a new RedComponentCommand with the given ImageModel, source image name,
@@ -23,8 +22,7 @@ public class RedComponentCommand extends AbstractBaseCommand {
    *                             save the red component.
    */
   public RedComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

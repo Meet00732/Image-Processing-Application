@@ -1,5 +1,5 @@
 load test\res\nyc.png testNYC
-save test\res\images\imagesPNG\testNYC.png testNYC
+save test\res\testNYC.png testNYC
 blur testNYC testBlur
 sharpen testNYC testSharpen
 sepia testNYC testSepia

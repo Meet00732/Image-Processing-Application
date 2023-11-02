@@ -34,7 +34,7 @@ public class LoadCommand extends AbstractLoaderSaver {
    *                     loading process or if the file format is unsupported.
    */
   @Override
-  protected void processImage() throws IOException {
+  protected void processImage() throws Exception {
     ImageParserInterface parser = this.getFormattedImage(this.destinationImageName);
     Image image = parser.load();
     model.addImage(this.imageName, image);

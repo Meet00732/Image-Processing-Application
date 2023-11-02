@@ -35,7 +35,11 @@ public class SaveCommand extends AbstractLoaderSaver {
    */
   @Override
   protected void processImage() throws Exception {
-    if (this.model.imageExists(this.imageName)) {
+
+    if (!this.model.imageExists(this.imageName)) {
+      throw new Exception("Image does not exists!");
+    }
+    else {
       ImageParserInterface parser = this.getFormattedImage(this.destinationImageName);
       Image image = this.model.getImage(this.imageName);
       parser.save(this.destinationImageName, image);

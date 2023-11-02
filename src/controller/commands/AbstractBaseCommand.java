@@ -16,15 +16,30 @@ public abstract class AbstractBaseCommand implements CommandInterface {
   protected String imageName;
   protected ImageModelInterface model;
 
+  protected String redImageName;
+  protected String greenImageName;
+  protected String blueImageName;
+
   /**
    * Constructs a new AbstractBaseCommand with the given ImageModel and image name.
    *
    * @param model     The ImageModel to be used for image manipulation.
    * @param imageName The name of the source image to be processed.
+   * @param destinationImageName The name of the destination image to be processed.
    */
-  public AbstractBaseCommand(ImageModelInterface model, String imageName) {
+  public AbstractBaseCommand(ImageModelInterface model, String imageName, String destinationImageName) {
     this.imageName = imageName;
     this.model = model;
+    this.destinationImageName = destinationImageName;
+  }
+
+  public AbstractBaseCommand(ImageModelInterface model, String imageName, String redImageName,
+                             String greenImageName, String blueImageName) {
+    this.imageName = imageName;
+    this.model = model;
+    this.redImageName = redImageName;
+    this.greenImageName = greenImageName;
+    this.blueImageName = blueImageName;
   }
 
   /**

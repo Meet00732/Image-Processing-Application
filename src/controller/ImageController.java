@@ -191,7 +191,7 @@ public class ImageController implements ImageControllerInterface {
         view.display(tokens[0] + " executed successfully");
       }
     } catch (Exception e) {
-      view.display("Please enter correct command format");
+      view.display(e.getMessage());
     }
     return status;
   }

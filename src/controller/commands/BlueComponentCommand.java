@@ -10,8 +10,6 @@ import model.ImageModelInterface;
  */
 public class BlueComponentCommand extends AbstractBaseCommand {
 
-  private String destinationImageName;
-
   /**
    * Constructs a new BlueComponentCommand with the
    * given ImageModel, source image name, and destination image name.
@@ -21,8 +19,7 @@ public class BlueComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save the blue component.
    */
   public BlueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**

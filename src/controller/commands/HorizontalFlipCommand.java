@@ -10,7 +10,6 @@ import model.ImageModelInterface;
  */
 public class HorizontalFlipCommand extends AbstractBaseCommand {
 
-  private String destinationImageName;
 
   /**
    * Constructs a new HorizontalFlipCommand with the given
@@ -22,8 +21,7 @@ public class HorizontalFlipCommand extends AbstractBaseCommand {
    *                             the horizontally flipped result.
    */
   public HorizontalFlipCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName);
-    this.destinationImageName = destinationImageName;
+    super(model, imageName, destinationImageName);
   }
 
   /**
