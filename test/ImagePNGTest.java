@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -12,6 +13,17 @@ import static org.junit.Assert.*;
 public class ImagePNGTest {
 
   private final String testImagePath = "res\\nyc.png";
+  File savedFile;
+
+  /**
+   * Cleans up by deleting the tempFile after each test execution.
+   */
+  @After
+  public void delete() {
+    if (savedFile != null && savedFile.exists()) {
+      savedFile.delete();
+    }
+  }
 
   /**
    * test load method.

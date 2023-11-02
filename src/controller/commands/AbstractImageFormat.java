@@ -28,7 +28,7 @@ public abstract class AbstractImageFormat implements ImageParserInterface {
    * @param path The path to the image file.
    */
   public AbstractImageFormat(String path) throws IllegalArgumentException {
-    if (path == null || path == "") {
+    if (path == null || path.isEmpty()) {
       throw new IllegalArgumentException("Path cannot be empty or null");
     }
     this.path = path;

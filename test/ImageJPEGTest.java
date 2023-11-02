@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,11 +11,19 @@ import model.Image;
 
 import static org.junit.Assert.*;
 
-/**
- *
- */
 public class ImageJPEGTest {
   private final String testImagePath = "res\\nyc.jpeg";
+  File savedFile;
+
+  /**
+   * Cleans up by deleting the tempFile after each test execution.
+   */
+  @After
+  public void delete() {
+    if (savedFile != null && savedFile.exists()) {
+      savedFile.delete();
+    }
+  }
 
   /**
    * test load method.
@@ -42,7 +51,7 @@ public class ImageJPEGTest {
       String path = "test\\res\\testSaveJPEG.jpeg";
       imageJPEG.save(path, loadedImage);
 
-      File savedFile = new File(path);
+      savedFile = new File(path);
       assertTrue(savedFile.exists());
 
     } catch (Exception e) {
@@ -62,7 +71,7 @@ public class ImageJPEGTest {
       String path = "test\\res\\testSaveJPG.jpg";
       imageJPEG.save(path, loadedImage);
 
-      File savedFile = new File(path);
+      savedFile = new File(path);
       assertTrue(savedFile.exists());
 
     } catch (Exception e) {

@@ -1,6 +1,4 @@
 package controller.commands;
-
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**

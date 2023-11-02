@@ -25,7 +25,7 @@ public class ImagePPM implements ImageParserInterface {
    * @param path The path to the PPM image file.
    */
   public ImagePPM(String path) throws IllegalArgumentException {
-    if (path == null || path == "") {
+    if (path == null || path.isEmpty()) {
       throw new IllegalArgumentException("path cannot be empty or null");
     }
     this.path = path;

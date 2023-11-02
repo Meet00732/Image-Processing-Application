@@ -1,6 +1,5 @@
 package controller.commands;
 
-
 /**
  * The CommandInterface is an interface that defines a contract for implementing
  * commands in the context of a command pattern. Classes that implement this
@@ -10,11 +9,11 @@ package controller.commands;
  * or failure of the command execution.
  */
 public interface CommandInterface {
-
   /**
    * Executes the command and performs a specific action.
-   *
    * @return true if the command execution was successful, false otherwise.
+   *
+   * @throws Exception if model throws error while image processing.
    */
   boolean execute() throws Exception;
 }

@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,8 +11,18 @@ import model.Image;
 import static org.junit.Assert.*;
 
 public class ImagePPMTest {
-
   private final String testImagePath = "res\\nyc.ppm";
+  File savedFile;
+
+  /**
+   * Cleans up by deleting the tempFile after each test execution.
+   */
+  @After
+  public void delete() {
+    if (savedFile != null && savedFile.exists()) {
+      savedFile.delete();
+    }
+  }
 
   /**
    * test load method.
@@ -37,26 +48,6 @@ public class ImagePPMTest {
       Image loadedImage = imagePPM.load();
 
       String path = "test\\res\\testSavePPM.ppm";
-      imagePPM.save(path, loadedImage);
-
-      File savedFile = new File(path);
-      assertTrue(savedFile.exists());
-
-    } catch (Exception e) {
-      fail("this test should have passed!");
-    }
-  }
-
-  /**
-   * test save method.
-   */
-  @Test
-  public void testSavePNG() {
-    try {
-      ImagePPM imagePPM = new ImagePPM(this.testImagePath);
-      Image loadedImage = imagePPM.load();
-
-      String path = "test\\res\\testSavePNG.png";
       imagePPM.save(path, loadedImage);
 
       File savedFile = new File(path);

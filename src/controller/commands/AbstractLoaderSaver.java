@@ -1,6 +1,4 @@
 package controller.commands;
-
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -28,7 +26,10 @@ public abstract class AbstractLoaderSaver extends AbstractBaseCommand {
    * @param path The path to the image file.
    * @return The image format as a string (e.g., "png", "jpg").
    */
-  protected String getImageFormat(String path) {
+  protected String getImageFormat(String path) throws IllegalArgumentException {
+    if (path == null || path.isEmpty()) {
+      throw new IllegalArgumentException("Invalid path!");
+    }
     String[] tokens = path.split("\\.");
     return tokens[tokens.length - 1];
   }
