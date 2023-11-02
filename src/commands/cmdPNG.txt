@@ -1,57 +1,61 @@
-load src\commands\nyc.png testNYC
-save src\images\imagesPNG\testNYC.png testNYC
+load res\nyc.png testNYC
+save res\imagesPNG\testNYC.png testNYC
 
 blur testNYC testBlur
-save src\images\imagesPNG\blurNYC.png testBlur
+save res\imagesPNG\blurNYC.png testBlur
 
 sharpen testNYC testSharpen
-save src\images\imagesPNG\sharpenNYC.png testSharpen
+save res\imagesPNG\sharpenNYC.png testSharpen
 
 sepia testNYC testSepia
-save src\images\imagesPNG\sepiaNYC.png testSepia
+save res\imagesPNG\sepiaNYC.png testSepia
 
 red-component testNYC testRed
-save src\images\imagesPNG\redNYC.png testRed
+save res\imagesPNG\redNYC.png testRed
 
 green-component testNYC testGreen
-save src\images\imagesPNG\greenNYC.png testGreen
+save res\imagesPNG\greenNYC.png testGreen
 
 blue-component testNYC testBlue
-save src\images\imagesPNG\blueNYC.png testBlue
+save res\imagesPNG\blueNYC.png testBlue
 
 value-component testNYC testValue
-save src\images\imagesPNG\valueNYC.png testValue
+save res\imagesPNG\valueNYC.png testValue
 
 intensity-component testNYC testIntensity
-save src\images\imagesPNG\intensityNYC.png testIntensity
+save res\imagesPNG\intensityNYC.png testIntensity
 
 luma-component testNYC testLuma
-save src\images\imagesPNG\lumaNYC.png testLuma
+save res\imagesPNG\lumaNYC.png testLuma
 
 
 brighten 50 testNYC Brighten50Man
-save src\images\imagesPNG\NYCBrighten50Man.png Brighten50Man
+save res\imagesPNG\NYCBrighten50Man.png Brighten50Man
 
 brighten -50 testNYC Brighten-50Man
-save src\images\imagesPNG\NYCBrighten-50Man.png Brighten-50Man
+save res\imagesPNG\NYCBrighten-50Man.png Brighten-50Man
 
 brighten 500 testNYC Brighten500Man
-save src\images\imagesPNG\NYCBrighten500Man.png Brighten500Man
+save res\imagesPNG\NYCBrighten500Man.png Brighten500Man
 
 brighten -500 testNYC Brighten-500Man
-save src\images\imagesPNG\NYCBrighten-500Man.png Brighten-500Man
+save res\imagesPNG\NYCBrighten-500Man.png Brighten-500Man
 
 
 rgb-split testNYC splitRed splitGreen splitBlue
-save src\images\imagesPNG\NYCSplitRed.png splitRed
-save src\images\imagesPNG\NYCSplitGreen.png splitGreen
-save src\images\imagesPNG\NYCSplitBlue.png splitBlue
+save res\imagesPNG\NYCSplitRed.png splitRed
+save res\imagesPNG\NYCSplitGreen.png splitGreen
+save res\imagesPNG\NYCSplitBlue.png splitBlue
 
 rgb-combine testCombineNYC testRed testGreen testBlue
-save src\images\imagesPNG\testCombineNYC.png testCombineNYC
+save res\imagesPNG\testCombineNYC.png testCombineNYC
 
 vertical-flip testNYC testVerticalNYC
-save src\images\imagesPNG\testVerticalNYC.png testVerticalNYC
+save res\imagesPNG\testVerticalNYC.png testVerticalNYC
 
 horizontal-flip testNYC testHorizontalNYC
-save src\images\imagesPNG\testHorizontalNYC.png testHorizontalNYC
+save res\imagesPNG\testHorizontalNYC.png testHorizontalNYC
+
+save res\imagesPNG\testNYCJPG.jpg testNYC
+save res\imagesPNG\testNYCJPEG.jpeg testNYC
+save res\imagesPNG\testNYCPPM.ppm testNYC

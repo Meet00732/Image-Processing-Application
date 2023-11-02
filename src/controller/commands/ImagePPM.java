@@ -9,14 +9,37 @@ import java.util.Scanner;
 import model.Image;
 import model.Pixel;
 
-public class ImagePPM implements ImageParserInterface{
+/**
+ * The ImagePPM class is a concrete implementation of the ImageParserInterface
+ * specifically designed for loading and saving PPM (Portable Pixmap) image files.
+ * It provides the functionality to load and save PPM image data.
+ */
+public class ImagePPM implements ImageParserInterface {
 
   private String path;
 
-  public ImagePPM(String path) {
+  /**
+   * Constructs a new ImagePPM object with the
+   * specified path to the PPM image file.
+   *
+   * @param path The path to the PPM image file.
+   */
+  public ImagePPM(String path) throws IllegalArgumentException {
+    if (path == null || path == "") {
+      throw new IllegalArgumentException("path cannot be empty or null");
+    }
     this.path = path;
   }
 
+
+  /**
+   * Loads image data from the specified PPM file and returns it as an Image object.
+   *
+   * @return The loaded Image object.
+   * @throws IOException if there are issues reading the image,
+   *                     parsing the PPM format,
+   *                     or the file format is unsupported.
+   */
   @Override
   public Image load() throws IOException {
     Scanner sc;
@@ -31,8 +54,8 @@ public class ImagePPM implements ImageParserInterface{
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
-        builder.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder.append(s + System.lineSeparator());
       }
     }
 
@@ -68,6 +91,14 @@ public class ImagePPM implements ImageParserInterface{
     return new Image(pixels);
   }
 
+  /**
+   * Saves the provided Image object to the specified path in PPM format.
+   *
+   * @param path  The path where the image should be saved in PPM format.
+   * @param image The Image object to be saved.
+   * @throws IOException if there are issues during the saving
+   *                     process or if the image data is null.
+   */
   @Override
   public void save(String path, Image image) throws IOException {
     if (image.getPixels() == null) {

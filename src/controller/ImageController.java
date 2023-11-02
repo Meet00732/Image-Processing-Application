@@ -23,18 +23,35 @@ import controller.commands.SharpenCommand;
 import controller.commands.ValueComponentCommand;
 import controller.commands.VerticalFlipCommand;
 import model.ImageModel;
+import model.ImageModelInterface;
 import view.ImageView;
+import view.ImageViewInterface;
 
+/**
+ * The ImageController class is responsible for controlling image processing commands
+ * and interactions between the user interface (ImageView) and the image processing model
+ * (ImageModel). It processes user commands, executes image processing operations, and
+ * handles the execution of script files.
+ * The controller supports a variety of image processing commands, such as loading, saving,
+ * blurring, sharpening, applying filters, and more. It parses user commands and delegates
+ * the execution to the appropriate command classes.
+ */
 public class ImageController implements ImageControllerInterface {
 
-  private final ImageView view;
-  private final ImageModel model;
+  private final ImageViewInterface view;
+  private final ImageModelInterface model;
 
-  public ImageController(ImageView view, ImageModel model) throws IllegalArgumentException {
-    if (view == null) {
-      throw new IllegalArgumentException("View Object is missing!");
-    }
-
+  /**
+   * Constructs a new ImageController with the specified ImageView and ImageModel.
+   *
+   * @param view  The ImageView for displaying user interactions and results.
+   * @param model The ImageModel for image processing operations.
+   * @throws IllegalArgumentException when model or view is null.
+   */
+  public ImageController(ImageViewInterface view, ImageModelInterface model) throws IllegalArgumentException {
+      if (view == null) {
+        throw new IllegalArgumentException("View Object is missing!");
+      }
     if (model == null) {
       throw new IllegalArgumentException("Model Object is missing!");
     }
@@ -42,6 +59,11 @@ public class ImageController implements ImageControllerInterface {
     this.model = model;
   }
 
+  /**
+   * Starts processing user commands by continuously
+   * reading and executing commands from the view.
+   * It also handles and displays error messages for commands that fail.
+   */
   @Override
   public void process() {
     boolean status;
@@ -60,6 +82,14 @@ public class ImageController implements ImageControllerInterface {
     }
   }
 
+  /**
+   * Processes the given command by delegating the execution
+   * to the appropriate command classes.
+   *
+   * @param command The user command to process.
+   * @return True if the command was executed
+   *         successfully, false otherwise.
+   */
   @Override
   public boolean processor(String command) {
     boolean status = false;
@@ -155,19 +185,27 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         default:
-          throw new IllegalStateException("Invalid Input: " + tokens[0]);
+          throw new IllegalArgumentException("Invalid Input: " + tokens[0]);
       }
       if (status) {
         view.display(tokens[0] + " executed successfully");
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       view.display("Please enter correct command format");
     }
     return status;
   }
 
-  private boolean runScript(String path) {
+  /**
+   * Executes a script file containing a sequence of
+   * image processing commands.
+   *
+   * @param path The path to the script file.
+   * @return True if all commands in the script were executed
+   *         successfully, false otherwise.
+   * @throws FileNotFoundException when an invalid path is given.
+   */
+  private boolean runScript(String path) throws FileNotFoundException {
     boolean status = false;
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
       String line;
@@ -177,10 +215,8 @@ public class ImageController implements ImageControllerInterface {
         }
         status = this.processor(line);
       }
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new FileNotFoundException("File not Found!");
     }
     return status;
   }

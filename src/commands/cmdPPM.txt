@@ -1,57 +1,57 @@
-load src\commands\nyc.ppm testNYC
-save src\images\imagePPM\testNYC.ppm testNYC
+load res\nyc.ppm testNYC
+save res\imagesPPM\testNYC.ppm testNYC
 
 blur testNYC testBlur
-save src\images\imagePPM\blurNYC.ppm testBlur
+save res\imagesPPM\blurNYC.ppm testBlur
 
 sharpen testNYC testSharpen
-save src\images\imagePPM\sharpenNYC.ppm testSharpen
+save res\imagesPPM\sharpenNYC.ppm testSharpen
 
 sepia testNYC testSepia
-save src\images\imagePPM\sepiaNYC.ppm testSepia
+save res\imagesPPM\sepiaNYC.ppm testSepia
 
 red-component testNYC testRed
-save src\images\imagePPM\redNYC.ppm testRed
+save res\imagesPPM\redNYC.ppm testRed
 
 green-component testNYC testGreen
-save src\images\imagePPM\greenNYC.ppm testGreen
+save res\imagesPPM\greenNYC.ppm testGreen
 
 blue-component testNYC testBlue
-save src\images\imagePPM\blueNYC.ppm testBlue
+save res\imagesPPM\blueNYC.ppm testBlue
 
 value-component testNYC testValue
-save src\images\imagePPM\valueNYC.ppm testValue
+save res\imagesPPM\valueNYC.ppm testValue
 
 intensity-component testNYC testIntensity
-save src\images\imagePPM\intensityNYC.ppm testIntensity
+save res\imagesPPM\intensityNYC.ppm testIntensity
 
 luma-component testNYC testLuma
-save src\images\imagePPM\lumaNYC.ppm testLuma
+save res\imagesPPM\lumaNYC.ppm testLuma
 
 
 brighten 50 testNYC Brighten50Man
-save src\images\imagePPM\NYCBrighten50Man.ppm Brighten50Man
+save res\imagesPPM\NYCBrighten50Man.ppm Brighten50Man
 
 brighten -50 testNYC Brighten-50Man
-save src\images\imagePPM\NYCBrighten-50Man.ppm Brighten-50Man
+save res\imagesPPM\NYCBrighten-50Man.ppm Brighten-50Man
 
 brighten 500 testNYC Brighten500Man
-save src\images\imagePPM\NYCBrighten500Man.ppm Brighten500Man
+save res\imagesPPM\NYCBrighten500Man.ppm Brighten500Man
 
 brighten -500 testNYC Brighten-500Man
-save src\images\imagePPM\NYCBrighten-500Man.ppm Brighten-500Man
+save res\imagesPPM\NYCBrighten-500Man.ppm Brighten-500Man
 
 
 rgb-split testNYC splitRed splitGreen splitBlue
-save src\images\imagePPM\NYCSplitRed.ppm splitRed
-save src\images\imagePPM\NYCSplitGreen.ppm splitGreen
-save src\images\imagePPM\NYCSplitBlue.ppm splitBlue
+save res\imagesPPM\NYCSplitRed.ppm splitRed
+save res\imagesPPM\NYCSplitGreen.ppm splitGreen
+save res\imagesPPM\NYCSplitBlue.ppm splitBlue
 
 rgb-combine testCombineNYC testRed testGreen testBlue
-save src\images\imagePPM\testCombineNYC.ppm testCombineNYC
+save res\imagesPPM\testCombineNYC.ppm testCombineNYC
 
 vertical-flip testNYC testVerticalNYC
-save src\images\imagePPM\testVerticalNYC.ppm testVerticalNYC
+save res\imagesPPM\testVerticalNYC.ppm testVerticalNYC
 
 horizontal-flip testNYC testHorizontalNYC
-save src\images\imagePPM\testHorizontalNYC.ppm testHorizontalNYC
+save res\imagesPPM\testHorizontalNYC.ppm testHorizontalNYC

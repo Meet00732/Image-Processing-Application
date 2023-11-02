@@ -79,7 +79,6 @@ public class MockModel implements ImageModelInterface {
   }
 
 
-
   @Override
   public boolean imageExists(String imageName) {
     log.append("imageExists method is invoked!");
@@ -101,7 +100,4 @@ public class MockModel implements ImageModelInterface {
     return log.toString();
   }
 
-  public void clearLog() {
-    log.setLength(0);
-  }
 }

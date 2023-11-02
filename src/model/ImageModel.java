@@ -3,21 +3,42 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageModel implements ImageModelInterface{
+/**
+ * This class represents the model for managing and manipulating images.
+ * It stores images in a map and provides various image processing methods.
+ */
+public class ImageModel implements ImageModelInterface {
 
   private final Map<String, Image> imageMap;
 
+  /**
+   * Constructs an ImageModel object, initializing an empty map to store images.
+   */
   public ImageModel() {
     this.imageMap = new HashMap<>();
   }
 
 
+  /**
+   * Adds an image to the model with the given name.
+   *
+   * @param name  The name or identifier for the image.
+   * @param image The Image object to be added to the model.
+   */
   @Override
   public void addImage(String name, Image image) {
     this.imageMap.put(name, image);
   }
 
 
+  /**
+   * Extracts the red component of the specified image and
+   * creates a new image with only the red component.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the red component will be stored.
+   */
   @Override
   public void redComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -39,6 +60,14 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Extracts the green component of the specified image and
+   * creates a new image with only the green component.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the green component will be stored.
+   */
   @Override
   public void greenComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -60,6 +89,14 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Extracts the blue component of the specified image and
+   * creates a new image with only the blue component.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the blue component will be stored.
+   */
   @Override
   public void blueComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -83,6 +120,13 @@ public class ImageModel implements ImageModelInterface{
   }
 
 
+  /**
+   * Creates a new image where all color components (red, green, and blue)
+   * have the same value which is the maximum pixel of all (rgb).
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image.
+   */
   @Override
   public void valueComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -111,6 +155,14 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Creates a new image where each pixel's color components have the
+   * same average value, representing the grayscale intensity.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where the
+   *                             grayscale intensity image will be stored.
+   */
   @Override
   public void intensityComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -139,6 +191,14 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Creates a new image where each pixel's color components are
+   * transformed to represent the luma (brightness) of the image.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the luma image will be stored.
+   */
   @Override
   public void lumaComponentCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -171,6 +231,16 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Brightens the image by adding a specified increment to the
+   * red, green, and blue components of each pixel.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image
+   *                             where the brightened image will be stored.
+   * @param increment            The increment to be added to the red, green,
+   *                             and blue components.
+   */
   @Override
   public void brightenCommand(String imageName, String destinationImageName, int increment) {
     if (!imageExists(imageName)) {
@@ -201,6 +271,15 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Combines three images (red, green, and blue channels) into a single color image.
+   *
+   * @param imageRedName    The name of the source image for the red channel.
+   * @param imageGreenName  The name of the source image for the green channel.
+   * @param imageBlueName   The name of the source image for the blue channel.
+   * @param destinationImageName   The name of the destination image where the combined
+   *                               image will be stored.
+   */
   @Override
   public void combineCommand(String imageRedName,
                              String imageGreenName,
@@ -208,7 +287,7 @@ public class ImageModel implements ImageModelInterface{
                              String destinationImageName) {
 
     if (!imageExists(imageRedName) || !imageExists(imageGreenName)
-      || !imageExists(imageBlueName)) {
+            || !imageExists(imageBlueName)) {
       throw new IllegalArgumentException("One or More Images does not exist!");
     }
 
@@ -226,7 +305,7 @@ public class ImageModel implements ImageModelInterface{
     int heightBlue = imageBlue.getPixels()[0].length;
 
     if ((widthRed != widthGreen) || (widthGreen != widthBlue)
-      || (heightRed != heightGreen) || (heightGreen != heightBlue)) {
+            || (heightRed != heightGreen) || (heightGreen != heightBlue)) {
       throw new IllegalArgumentException("All images must have same dimensions!");
     }
     Pixel[][] pixels = new Pixel[widthRed][heightRed];
@@ -237,7 +316,6 @@ public class ImageModel implements ImageModelInterface{
         Pixel imageRedPixel = imageRed.getPixels()[x][y];
         Pixel imageGreenPixel = imageGreen.getPixels()[x][y];
         Pixel imageBluePixel = imageBlue.getPixels()[x][y];
-
 
 
         int red = imageRedPixel.getRed();
@@ -251,6 +329,13 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Applies a blur filter to the image, creating a new image with a blurred appearance.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the blurred image will be stored.
+   */
   @Override
   public void blurCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -262,25 +347,25 @@ public class ImageModel implements ImageModelInterface{
     Pixel[][] pixels = new Pixel[width][height];
 
     double[][] kernel = {
-            {1.0/16, 1.0/8, 1.0/16},
-            {1.0/8, 1.0/4, 1.0/8},
-            {1.0/16, 1.0/8, 1.0/16}
+            {1.0 / 16, 1.0 / 8, 1.0 / 16},
+            {1.0 / 8, 1.0 / 4, 1.0 / 8},
+            {1.0 / 16, 1.0 / 8, 1.0 / 16}
     };
 
     for (int x = 0; x < width; x++) {
-      for(int y = 0; y < height; y++) {
+      for (int y = 0; y < height; y++) {
         double red = 0;
         double green = 0;
         double blue = 0;
 
-        for(int i=-1; i<=1; i++) {
-          for(int j=-1; j<=1; j++) {
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
             if (x + i < 0 || x + i >= width
-              || y + j < 0 || y + j >= height) {
+                    || y + j < 0 || y + j >= height) {
               continue;
             }
 
-            Pixel tempPixel = image.getPixels()[x+i][y+j];
+            Pixel tempPixel = image.getPixels()[x + i][y + j];
             red += tempPixel.getRed() * kernel[i + 1][j + 1];
             green += tempPixel.getGreen() * kernel[i + 1][j + 1];
             blue += tempPixel.getBlue() * kernel[i + 1][j + 1];
@@ -300,6 +385,13 @@ public class ImageModel implements ImageModelInterface{
   }
 
 
+  /**
+   * Applies a sharpening filter to the image, creating a new image with enhanced sharpness.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the sharpened image will be stored.
+   */
   @Override
   public void sharpenCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -311,27 +403,27 @@ public class ImageModel implements ImageModelInterface{
     Pixel[][] pixels = new Pixel[width][height];
 
     double[][] kernel = {
-            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
-            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8},
-            {-1.0/8, 1.0/4, 1, 1.0/4, -1.0/8},
-            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
-            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8}
+            {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
+            {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
+            {-1.0 / 8, 1.0 / 4, 1, 1.0 / 4, -1.0 / 8},
+            {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
+            {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8}
     };
 
     for (int x = 0; x < width; x++) {
-      for(int y = 0; y < height; y++) {
+      for (int y = 0; y < height; y++) {
         double red = 0;
         double green = 0;
         double blue = 0;
 
-        for(int i=-2; i<=2; i++) {
-          for(int j=-2; j<=2; j++) {
+        for (int i = -2; i <= 2; i++) {
+          for (int j = -2; j <= 2; j++) {
             if (x + i < 0 || x + i >= width
                     || y + j < 0 || y + j >= height) {
               continue;
             }
 
-            Pixel tempPixel = image.getPixels()[x+i][y+j];
+            Pixel tempPixel = image.getPixels()[x + i][y + j];
             red += tempPixel.getRed() * kernel[i + 2][j + 2];
             green += tempPixel.getGreen() * kernel[i + 2][j + 2];
             blue += tempPixel.getBlue() * kernel[i + 2][j + 2];
@@ -349,6 +441,13 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(pixels));
   }
 
+  /**
+   * Applies a sepia tone filter to the image, giving it a warm, brownish tint.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where the
+   *                             sepia-toned image will be stored.
+   */
   @Override
   public void sepiaCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -383,6 +482,13 @@ public class ImageModel implements ImageModelInterface{
   }
 
 
+  /**
+   * Flips the specified image vertically and stores the result in the destination image.
+   *
+   * @param imageName            The name of the source image to be vertically flipped.
+   * @param destinationImageName The name of the destination image where the flipped
+   *                             image will be stored.
+   */
   @Override
   public void verticalFlipCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -401,6 +507,13 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(flippedPixels));
   }
 
+  /**
+   * Flips the specified image horizontally and stores the result in the destination image.
+   *
+   * @param imageName            The name of the source image to be horizontally flipped.
+   * @param destinationImageName The name of the destination image where the flipped
+   *                             image will be stored.
+   */
   @Override
   public void horizontalFlipCommand(String imageName, String destinationImageName) {
     if (!imageExists(imageName)) {
@@ -419,6 +532,14 @@ public class ImageModel implements ImageModelInterface{
     this.addImage(destinationImageName, new Image(flippedPixels));
   }
 
+  /**
+   * Splits an image into its RGB components and stores them as separate images in the model.
+   *
+   * @param redImageName   The name for the red component image.
+   * @param greenImageName The name for the green component image.
+   * @param blueImageName  The name for the blue component image.
+   * @param imageName      The name of the source image to be split.
+   */
   @Override
   public void rgbSplitCommand(String redImageName, String greenImageName,
                        String blueImageName, String imageName) {
@@ -428,11 +549,23 @@ public class ImageModel implements ImageModelInterface{
   }
 
 
+  /**
+   * Checks whether an image with the specified name exists in the image map.
+   *
+   * @param imageName The name of the image to check for existence.
+   * @return true if an image with the given name exists in the image map, false otherwise.
+   */
   @Override
   public boolean imageExists(String imageName) {
     return this.imageMap.containsKey(imageName);
   }
 
+  /**
+   * Retrieves the image with the specified image name from the image map.
+   *
+   * @param imageName The name of the image to retrieve.
+   * @return The Image object associated with the given image name.
+   */
   @Override
   public Image getImage(String imageName) {
     return this.imageMap.get(imageName);

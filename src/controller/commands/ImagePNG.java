@@ -1,17 +1,20 @@
 package controller.commands;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
+/**
+ * The ImagePNG class is a concrete implementation of the ImageFormat class specifically
+ * designed for loading and saving PNG image files. It extends the functionality of
+ * the abstract ImageFormat class, enabling the handling of PNG image formats.
+ *
+ */
+public class ImagePNG extends AbstractImageFormat {
 
-import model.Image;
-import model.Pixel;
-
-public class ImagePNG extends ImageFormat{
-
+  /**
+   * Constructs a new ImagePNG object with the
+   * specified path to the PNG image file.
+   *
+   * @param path The path to the PNG image file.
+   */
   public ImagePNG(String path) {
     super(path);
   }

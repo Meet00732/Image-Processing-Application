@@ -609,7 +609,6 @@ public class ImageModelTest {
   public void testDifferentImageDimensionsCombineCommand() {
     Pixel[][] pixelArray = new Pixel[1][3];
 
-    // Define specific constant values for each pixel
     pixelArray[0][0] = new Pixel(150, 100, 0);
     pixelArray[0][1] = new Pixel(0, 120, 180);
     pixelArray[0][2] = new Pixel(250, 0, 255);
@@ -651,12 +650,6 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-
-    double[][] kernel = {
-            {1.0/16, 1.0/8, 1.0/16},
-            {1.0/8, 1.0/4, 1.0/8},
-            {1.0/16, 1.0/8, 1.0/16}
-    };
 
     for (int x = 0; x < width; x++) {
       for(int y = 0; y < height; y++) {
@@ -710,14 +703,6 @@ public class ImageModelTest {
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
-
-    double[][] kernel = {
-            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
-            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8},
-            {-1.0/8, 1.0/4, 1, 1.0/4, -1.0/8},
-            {-1.0/8, -1.0/8, -1.0/8, -1.0/8, -1.0/8},
-            {-1.0/8, 1.0/4, 1.0/4, 1.0/4, -1.0/8}
-    };
 
     for (int x = 0; x < width; x++) {
       for(int y = 0; y < height; y++) {
@@ -961,8 +946,6 @@ public class ImageModelTest {
     }
   }
 
-// Write Combine Command Tests.
-
   /**
    * Test for multiple commands. (redComponent + valueComponent).
    */
@@ -1139,21 +1122,14 @@ public class ImageModelTest {
     String lumaImageName = "lumaImage";
     String sepiaImageName = "sepiaFromLumaImage";
 
-    // Add the test image to the model
     this.model.addImage(imageName, this.image);
-
-    // Apply luma component command
     this.model.lumaComponentCommand(imageName, lumaImageName);
-
-    // Apply sepia command to the luma image
     this.model.sepiaCommand(lumaImageName, sepiaImageName);
 
-    // Retrieve the resultant sepia image
     Image testImage = this.model.getImage(sepiaImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    // Define the expected values after applying luma then sepia
     Pixel[][] expectedArray = new Pixel[3][3];
     expectedArray[0][0] = new Pixel(140, 125, 97);
     expectedArray[0][1] = new Pixel(133, 119, 92);
