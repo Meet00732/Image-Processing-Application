@@ -1,21 +1,43 @@
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import javax.imageio.ImageIO;
 
+import controller.ImageController;
+import controller.ImageControllerInterface;
+import model.ImageModel;
+import model.ImageModelInterface;
+import model.MockModel;
 import model.Pixel;
+import view.ImageView;
+import view.ImageViewInterface;
 
 import static org.junit.Assert.*;
 
 public class ImageControllerCompleteTest {
 
+  private final ByteArrayOutputStream outResult = new ByteArrayOutputStream();
+
+  private final PrintStream out = System.out;
+  private ByteArrayInputStream inResult;
+  private final String imagePath = "test\\res\\controllerTest.png";
+
+  @After
+  public void reset() {
+    System.setOut(out);
+  }
   @Before
   public void setup() throws IOException {
     createImagePNG();
+    System.setOut(new PrintStream(outResult));
   }
 
   private void createImagePNG() throws IOException {
@@ -41,10 +63,34 @@ public class ImageControllerCompleteTest {
       }
     }
 
-    File outputFile = new File("res\\controllerTest.png");
+    File outputFile = new File("test\\res\\controllerTest.png");
     ImageIO.write(image, "png", outputFile);
   }
 
+  /**
+   * test load and save.
+   */
+  @Test
+  public void testLoadSaveCommand() {
+    String inputData = "load " + this.imagePath + " testImage\nq";
+    inResult = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inResult);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+
+
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+    expectedResult = "load executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+  }
 
 
 }
