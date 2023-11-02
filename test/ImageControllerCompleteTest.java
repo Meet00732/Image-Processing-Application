@@ -3,19 +3,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 
 import controller.ImageController;
 import controller.ImageControllerInterface;
+import model.Image;
 import model.ImageModel;
 import model.ImageModelInterface;
-import model.MockModel;
 import model.Pixel;
 import view.ImageView;
 import view.ImageViewInterface;
@@ -25,22 +21,28 @@ import static org.junit.Assert.*;
 public class ImageControllerCompleteTest {
 
   private final ByteArrayOutputStream outResult = new ByteArrayOutputStream();
-
-  private final PrintStream out = System.out;
+  private final PrintStream originalOut = System.out;
   private ByteArrayInputStream inResult;
   private final String imagePath = "test\\res\\controllerTest.png";
+  private final String savePath = "test\\res\\saveTestImage.png";
+  private final String lineSeparator = System.lineSeparator();
+
+  @Before
+  public void setup() throws IOException {
+    outResult.reset();
+    System.setOut(new PrintStream(outResult));
+    createImage();
+  }
 
   @After
   public void reset() {
-    System.setOut(out);
-  }
-  @Before
-  public void setup() throws IOException {
-    createImagePNG();
-    System.setOut(new PrintStream(outResult));
+    System.setOut(originalOut);
+    System.setIn(inResult);
+    new File(imagePath).delete();
+    new File(savePath).delete();
   }
 
-  private void createImagePNG() throws IOException {
+  private void createImage() throws IOException {
     BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
     Pixel[][] pixelArray = new Pixel[3][3];
 
@@ -67,30 +69,1139 @@ public class ImageControllerCompleteTest {
     ImageIO.write(image, "png", outputFile);
   }
 
+  private void simulateUserInput(String input) {
+    inResult = new ByteArrayInputStream(input.getBytes());
+    System.setIn(inResult);
+  }
+
   /**
-   * test load and save.
+   * test loadCommand and saveCommand works correctly.
    */
   @Test
   public void testLoadSaveCommand() {
-    String inputData = "load " + this.imagePath + " testImage\nq";
-    inResult = new ByteArrayInputStream(inputData.getBytes());
-    System.setIn(inResult);
+    String destinationImage = "testImage";
+    String inputData = "load " + this.imagePath + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
 
     ImageViewInterface view = new ImageView();
     ImageModelInterface model = new ImageModel();
-    String expectedResult;
     ImageControllerInterface controller = new ImageController(view, model);
+
     try {
       controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
 
 
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 100, 0);
+      expectedArray[0][1] = new Pixel(0, 120, 180);
+      expectedArray[0][2] = new Pixel(250, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
     }
-    catch (Exception e) {
-      fail("This test should have passed!");
-    }
-    expectedResult = "load executed successfully";
-    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
   }
 
+  /**
+   * test loadCommand and saveCommand works correctly.
+   */
+  @Test
+  public void testEmptyPathSaveCommand() {
+    String path = null;
+    String destinationImage = "testImage";
+    String inputData = "load " + this.imagePath + " " + destinationImage + "\n"
+            + "save " + path + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "error executing save";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test redComponent.
+   */
+  @Test
+  public void testRedComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testRedImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "red-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 0,0);
+      expectedArray[0][1] = new Pixel(0, 0,0);
+      expectedArray[0][2] = new Pixel(250, 0,0);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 0,0);
+      expectedArray[1][2] = new Pixel(10, 0,0);
+
+      expectedArray[2][0] = new Pixel(230, 0,0);
+      expectedArray[2][1] = new Pixel(125, 0,0);
+      expectedArray[2][2] = new Pixel(75, 0,0);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "red-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test greenComponent.
+   */
+  @Test
+  public void testGreenComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testGreenImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "green-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(0, 100,0);
+      expectedArray[0][1] = new Pixel(0, 120,0);
+      expectedArray[0][2] = new Pixel(0, 0,0);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(0, 255,0);
+      expectedArray[1][2] = new Pixel(0, 100,0);
+
+      expectedArray[2][0] = new Pixel(0, 130,0);
+      expectedArray[2][1] = new Pixel(0, 190,0);
+      expectedArray[2][2] = new Pixel(0, 20,0);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "green-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test blueComponent.
+   */
+  @Test
+  public void testBlueComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testBlueImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "blue-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(0, 0,0);
+      expectedArray[0][1] = new Pixel(0, 0,180);
+      expectedArray[0][2] = new Pixel(0, 0,255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(0, 0,255);
+      expectedArray[1][2] = new Pixel(0, 0,200);
+
+      expectedArray[2][0] = new Pixel(0, 0,100);
+      expectedArray[2][1] = new Pixel(0, 0,0);
+      expectedArray[2][2] = new Pixel(0, 0,210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "blue-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test valueComponent.
+   */
+  @Test
+  public void testValueComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testValueImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "value-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 150, 150);
+      expectedArray[0][1] = new Pixel(180, 180, 180);
+      expectedArray[0][2] = new Pixel(255, 255, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(200, 200, 200);
+
+      expectedArray[2][0] = new Pixel(230, 230, 230);
+      expectedArray[2][1] = new Pixel(190, 190, 190);
+      expectedArray[2][2] = new Pixel(210, 210, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "value-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test intensityComponent.
+   */
+  @Test
+  public void testIntensityComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testValueImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "intensity-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(83, 83, 83);
+      expectedArray[0][1] = new Pixel(100, 100, 100);
+      expectedArray[0][2] = new Pixel(168, 168, 168);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(103, 103, 103);
+
+      expectedArray[2][0] = new Pixel(153, 153, 153);
+      expectedArray[2][1] = new Pixel(105, 105, 105);
+      expectedArray[2][2] = new Pixel(101, 101, 101);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "intensity-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test lumaComponent.
+   */
+  @Test
+  public void testLumaComponentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "luma-component" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(104, 104, 104);
+      expectedArray[0][1] = new Pixel(99, 99, 99);
+      expectedArray[0][2] = new Pixel(71, 71, 71);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(254, 254, 254);
+      expectedArray[1][2] = new Pixel(88, 88, 88);
+
+      expectedArray[2][0] = new Pixel(149, 149, 149);
+      expectedArray[2][1] = new Pixel(163, 163, 163);
+      expectedArray[2][2] = new Pixel(45, 45, 45);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "luma-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test brightenCommand.
+   */
+  @Test
+  public void testBrighten50Command() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "brighten 50" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(200, 150, 50);
+      expectedArray[0][1] = new Pixel(50, 170, 230);
+      expectedArray[0][2] = new Pixel(255, 50, 255);
+
+      expectedArray[1][0] = new Pixel(50, 50, 50);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(60, 150, 250);
+
+      expectedArray[2][0] = new Pixel(255, 180, 150);
+      expectedArray[2][1] = new Pixel(175, 240, 50);
+      expectedArray[2][2] = new Pixel(125, 70, 260);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "brighten executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test brightenCommand.
+   */
+  @Test
+  public void testBrightenNeg50Command() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "brighten -50" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(100, 50, 0);
+      expectedArray[0][1] = new Pixel(0, 70, 130);
+      expectedArray[0][2] = new Pixel(200, 0, 205);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(205, 205, 205);
+      expectedArray[1][2] = new Pixel(0, 50, 150);
+
+      expectedArray[2][0] = new Pixel(180, 80, 50);
+      expectedArray[2][1] = new Pixel(75, 140, 0);
+      expectedArray[2][2] = new Pixel(25, 0, 160);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "brighten executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test combineCommand.
+   */
+  @Test
+  public void testCombineCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "red-component" + " " + interMediateImage + " " + "redImage" + "\n"
+            + "green-component" + " " + interMediateImage + " " + "greenImage" + "\n"
+            + "blue-component" + " " + interMediateImage + " " + "blueImage" + "\n"
+            + "rgb-combine" + " " + destinationImage + " " + "redImage greenImage blueImage\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 100, 0);
+      expectedArray[0][1] = new Pixel(0, 120, 180);
+      expectedArray[0][2] = new Pixel(250, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "red-component executed successfully" + lineSeparator +
+              "green-component executed successfully" + lineSeparator +
+              "blue-component executed successfully" + lineSeparator +
+              "rgb-combine executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test blurCommand.
+   */
+  @Test
+  public void testBlurCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testBlurImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "blur" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(53, 56, 38);
+      expectedArray[0][1] = new Pixel(83, 81, 121);
+      expectedArray[0][2] = new Pixel(80, 43, 127);
+
+      expectedArray[1][0] = new Pixel(87, 80, 56);
+      expectedArray[1][1] = new Pixel(125, 131, 147);
+      expectedArray[1][2] = new Pixel(83, 79, 151);
+
+      expectedArray[2][0] = new Pixel(89, 72, 41);
+      expectedArray[2][1] = new Pixel(102, 104, 83);
+      expectedArray[2][2] = new Pixel(52, 57, 93);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "blur executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test sharpenCommand.
+   */
+  @Test
+  public void testSharpenCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testSharpenImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "sharpen" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(165, 163, 0);
+      expectedArray[0][1] = new Pixel(174, 186, 255);
+      expectedArray[0][2] = new Pixel(219, 9, 255);
+
+      expectedArray[1][0] = new Pixel(15, 64, 13);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(64, 139, 255);
+
+      expectedArray[2][0] = new Pixel(255, 199, 58);
+      expectedArray[2][1] = new Pixel(218, 255, 137);
+      expectedArray[2][2] = new Pixel(94, 113, 255);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "sharpen executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test sepiaCommand.
+   */
+  @Test
+  public void testSepiaCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testSepiaImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "sepia" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(135, 120, 94);
+      expectedArray[0][1] = new Pixel(126, 112, 87);
+      expectedArray[0][2] = new Pixel(146, 130, 101);
+
+      expectedArray[1][0] = new Pixel(0,0,0);
+      expectedArray[1][1] = new Pixel(255, 255, 238);
+      expectedArray[1][2] = new Pixel(118, 105, 82);
+
+      expectedArray[2][0] = new Pixel(209, 186, 145);
+      expectedArray[2][1] = new Pixel(195, 173, 135);
+      expectedArray[2][2] = new Pixel(84, 75, 58);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "sepia executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test verticalFlipCommand.
+   */
+  @Test
+  public void testVerticalFlipCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testVerticalFlipImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "vertical-flip" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(250, 0, 255);
+      expectedArray[0][1] = new Pixel(0, 120, 180);
+      expectedArray[0][2] = new Pixel(150, 100, 0);
+
+      expectedArray[1][0] = new Pixel(10, 100, 200);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(0,0,0);
+
+      expectedArray[2][0] = new Pixel(75, 20, 210);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(230, 130, 100);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "vertical-flip executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test horizontalFlipCommand.
+   */
+  @Test
+  public void testHorizontalFlipCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testHorizontalFlipImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "horizontal-flip" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(230, 130, 100);
+      expectedArray[0][1] = new Pixel(125, 190, 0);
+      expectedArray[0][2] = new Pixel(75, 20, 210);
+
+      expectedArray[1][0] = new Pixel(0,0,0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(150, 100, 0);
+      expectedArray[2][1] = new Pixel(0, 120, 180);
+      expectedArray[2][2] = new Pixel(250, 0, 255);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "horizontal-flip executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * test rgbSplitCommand.
+   */
+  @Test
+  public void testRGBSpiltCommand() {
+    String redImagePath = "test\\res\\redImage.png";
+    String greenImagePath = "test\\res\\greenImage.png";
+    String blueImagePath = "test\\res\\BlueImage.png";
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "rgb-split" + " " + interMediateImage + " " + "redImage greenImage blueImage" + "\n"
+            + "save " + redImagePath + " " + destinationImage + "\n"
+            + "save " + greenImagePath + " " + destinationImage + "\n"
+            + "save " + blueImagePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testRedImage = model.getImage("redImage");
+      Image testGreenImage = model.getImage("greenImage");
+      Image testBlueImage = model.getImage("blueImage");
+
+      int width = testRedImage.getPixels().length;
+      int height = testRedImage.getPixels()[0].length;
+
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 100, 0);
+      expectedArray[0][1] = new Pixel(0, 120, 180);
+      expectedArray[0][2] = new Pixel(250, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testRedImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testGreenImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testBlueImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "rgb-split executed successfully" + lineSeparator +
+              "save executed successfully" + lineSeparator +
+              "save executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * Test for multiple commands. (redComponent + valueComponent).
+   */
+  @Test
+  public void testRedComponentThenValueComponent() {
+    String originalImageName = "testImage";
+    String redImageName = "redComponentImage";
+    String destinationImage = "testNewImage";
+
+    String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
+            + "red-component" + " " + originalImageName + " " + redImageName + "\n"
+            + "value-component" + " " + redImageName + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+
+      expectedArray[0][0] = new Pixel(150, 150, 150);
+      expectedArray[0][1] = new Pixel(0, 0, 0);
+      expectedArray[0][2] = new Pixel(250, 250, 250);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 10, 10);
+
+      expectedArray[2][0] = new Pixel(230, 230, 230);
+      expectedArray[2][1] = new Pixel(125, 125, 125);
+      expectedArray[2][2] = new Pixel(75, 75, 75);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "red-component executed successfully" + lineSeparator +
+              "value-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * Test for multiple commands. (redComponent + valueComponent).
+   */
+  @Test
+  public void testBlueComponentThenBrighten() {
+    String originalImageName = "testImage";
+    String BlueImageName = "BlueComponentImage";
+    String destinationImage = "testNewImage";
+
+    String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
+            + "blue-component" + " " + originalImageName + " " + BlueImageName + "\n"
+            + "brighten 35" + " " + BlueImageName + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+
+      expectedArray[0][0] = new Pixel(35, 35, 35);
+      expectedArray[0][1] = new Pixel(35, 35, 215);
+      expectedArray[0][2] = new Pixel(35, 35, 255);
+
+      expectedArray[1][0] = new Pixel(35, 35, 35);
+      expectedArray[1][1] = new Pixel(35, 35, 255);
+      expectedArray[1][2] = new Pixel(35, 35, 235);
+
+      expectedArray[2][0] = new Pixel(35, 35, 135);
+      expectedArray[2][1] = new Pixel(35, 35, 35);
+      expectedArray[2][2] = new Pixel(35, 35, 245);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "blue-component executed successfully" + lineSeparator +
+              "brighten executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * Test for multiple commands. (horizontalFlip + verticalFlip).
+   */
+  @Test
+  public void testHorizontalThenVerticalFlip() {
+    String originalImageName = "testImage";
+    String FlipImageName = "FlipComponentImage";
+    String destinationImage = "testNewImage";
+
+    String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
+            + "horizontal-flip" + " " + originalImageName + " " + FlipImageName + "\n"
+            + "vertical-flip" + " " + FlipImageName + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(75, 20, 210);
+      expectedArray[0][1] = new Pixel(125, 190, 0);
+      expectedArray[0][2] = new Pixel(230, 130, 100);
+
+      expectedArray[1][0] = new Pixel(10, 100, 200);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(0,0,0);
+
+      expectedArray[2][0] = new Pixel(250, 0, 255);
+      expectedArray[2][1] = new Pixel(0, 120, 180);
+      expectedArray[2][2] = new Pixel(150, 100, 0);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "horizontal-flip executed successfully" + lineSeparator +
+              "vertical-flip executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
+   * Test for multiple commands. (luma + sepia)
+   */
+  @Test
+  public void testLumaThenSepia() {
+    String originalImageName = "testImage";
+    String LumaImageName = "LumaComponentImage";
+    String destinationImage = "testNewImage";
+
+    String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
+            + "luma-component" + " " + originalImageName + " " + LumaImageName + "\n"
+            + "sepia" + " " + LumaImageName + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(140, 125, 97);
+      expectedArray[0][1] = new Pixel(133, 119, 92);
+      expectedArray[0][2] = new Pixel(95, 85, 66);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 237);
+      expectedArray[1][2] = new Pixel(118, 105, 82);
+
+      expectedArray[2][0] = new Pixel(201, 179, 139);
+      expectedArray[2][1] = new Pixel(220, 196, 152);
+      expectedArray[2][2] = new Pixel(60, 54, 42);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "luma-component executed successfully" + lineSeparator +
+              "sepia executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
 
 }

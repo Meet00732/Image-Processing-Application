@@ -922,22 +922,23 @@ public class ImageModelTest {
 
     int widthRed = testRedImage.getPixels().length;
     int heightRed = testRedImage.getPixels()[0].length;
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 100, 0);
+    expectedArray[0][1] = new Pixel(0, 120, 180);
+    expectedArray[0][2] = new Pixel(250, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
 
     for(int i=0; i<widthRed; i++) {
       for(int j=0; j<heightRed; j++) {
 
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(150, 100, 0);
-        expectedArray[0][1] = new Pixel(0, 120, 180);
-        expectedArray[0][2] = new Pixel(250, 0, 255);
 
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(10, 100, 200);
-
-        expectedArray[2][0] = new Pixel(230, 130, 100);
-        expectedArray[2][1] = new Pixel(125, 190, 0);
-        expectedArray[2][2] = new Pixel(75, 20, 210);
 
         assertEquals(expectedArray[i][j].getRed(), testRedImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testGreenImage.getPixels()[i][j].getGreen());

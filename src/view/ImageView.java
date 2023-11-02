@@ -11,7 +11,6 @@ public class ImageView implements ImageViewInterface {
   }
 
   public String getCommand() {
-    System.out.print("");
     return scanner.nextLine();
   }
 

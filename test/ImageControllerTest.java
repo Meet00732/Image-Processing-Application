@@ -376,7 +376,7 @@ public class ImageControllerTest {
   @Test
   public void testControllerRunCommand() {
     String lineSeparator = System.lineSeparator();
-    String inputData = "run F:\\PDP_Assignments\\Assignment4_MVC\\test\\input.txt\nq";
+    String inputData = "run test\\res\\input.txt\nq";
 
     ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
     System.setIn(inContent);
@@ -494,7 +494,7 @@ public class ImageControllerTest {
    */
   @Test
   public void testControllerIncorrectFilePathRunCommand() {
-    String inputData = "run F:\\PDP_Assignments\\Assignment4_MVC\\test\\put.txt\nq";
+    String inputData = "run test\\put.txt\nq";
 
     ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
     System.setIn(inContent);
@@ -517,7 +517,7 @@ public class ImageControllerTest {
    */
   @Test
   public void testControllerLoadMethodMock() {
-    String inputData = "load test\\nyc.png testNYC\nq";
+    String inputData = "load test\\res\\nyc.png testNYC\nq";
     ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
     System.setIn(inContent);
 

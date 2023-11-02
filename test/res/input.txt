@@ -1,13 +1,5 @@
-load src\commands\nyc.png testNYC
-save src\images\imagesPNG\testNYC.png testNYC
-
-
-
-
-
-
-
-
+load test\res\nyc.png testNYC
+save test\res\images\imagesPNG\testNYC.png testNYC
 blur testNYC testBlur
 sharpen testNYC testSharpen
 sepia testNYC testSepia
