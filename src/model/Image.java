@@ -7,7 +7,7 @@ package model;
  */
 public class Image {
 
-  private Pixel[][] pixels;
+  private final Pixel[][] pixels;
 
   /**
    * Constructs an `Image` object with the specified array of pixels.

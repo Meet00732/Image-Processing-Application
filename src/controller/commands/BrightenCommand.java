@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -10,7 +9,7 @@ import model.ImageModelInterface;
  * the pixel values in the image.
  */
 public class BrightenCommand extends AbstractBaseCommand {
-  private int increment;
+  private final int increment;
 
   /**
    * Constructs a new BrightenCommand with the given

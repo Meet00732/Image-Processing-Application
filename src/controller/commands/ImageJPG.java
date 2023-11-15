@@ -1,6 +1,5 @@
 package controller.commands;
 
-
 /**
  * The ImageJPG class is a concrete implementation of the ImageFormat class specifically
  * designed for loading and saving JPG (JPEG) image files. It extends the functionality of

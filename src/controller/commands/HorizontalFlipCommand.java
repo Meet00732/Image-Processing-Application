@@ -1,4 +1,5 @@
 package controller.commands;
+
 import model.ImageModelInterface;
 
 /**
@@ -18,7 +19,8 @@ public class HorizontalFlipCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save
    *                             the horizontally flipped result.
    */
-  public HorizontalFlipCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public HorizontalFlipCommand(ImageModelInterface model,
+                               String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

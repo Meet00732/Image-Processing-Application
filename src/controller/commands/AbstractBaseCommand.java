@@ -1,4 +1,5 @@
 package controller.commands;
+
 import model.ImageModelInterface;
 
 /**
@@ -20,16 +21,30 @@ public abstract class AbstractBaseCommand implements CommandInterface {
   /**
    * Constructs a new AbstractBaseCommand with the given ImageModel and image name.
    *
-   * @param model     The ImageModel to be used for image manipulation.
-   * @param imageName The name of the source image to be processed.
+   * @param model                The ImageModel to be used for image manipulation.
+   * @param imageName            The name of the source image to be processed.
    * @param destinationImageName The name of the destination image to be processed.
    */
-  public AbstractBaseCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public AbstractBaseCommand(ImageModelInterface model,
+                             String imageName, String destinationImageName) {
     this.imageName = imageName;
     this.model = model;
     this.destinationImageName = destinationImageName;
   }
 
+  /**
+   * Constructs a new CombineCommand with the given ImageModel, destination image names
+   * for the red, green, and blue color components, and the source image name.
+   *
+   * @param model          The ImageModel to be used for image manipulation.
+   * @param imageName      The name of the source image to be combined.
+   * @param redImageName   The name of the image for
+   *                       the red color component.
+   * @param greenImageName The name of the image for the
+   *                       green color component.
+   * @param blueImageName  The name of the image for the
+   *                       blue color component.
+   */
   public AbstractBaseCommand(ImageModelInterface model, String imageName, String redImageName,
                              String greenImageName, String blueImageName) {
     this.imageName = imageName;

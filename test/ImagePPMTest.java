@@ -4,12 +4,18 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import controller.commands.ImagePNG;
 import controller.commands.ImagePPM;
 import model.Image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+
+/**
+ * The ImagePPMTest class contains JUnit tests for the ImagePPM class, which is used to load
+ * and save PPM (Portable Pixmap) image files.
+ */
 public class ImagePPMTest {
   private final String testImagePath = "res\\nyc.ppm";
   File savedFile;
@@ -25,7 +31,7 @@ public class ImagePPMTest {
   }
 
   /**
-   * test load method.
+   * Test load method.
    */
   @Test
   public void testLoad() {
@@ -39,7 +45,7 @@ public class ImagePPMTest {
   }
 
   /**
-   * test save method.
+   * Test save method.
    */
   @Test
   public void testSave() {
@@ -58,10 +64,11 @@ public class ImagePPMTest {
     }
   }
 
+
   /**
-   * test path empty.
+   * Test path empty.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNullPath() {
     String path = "";
     new ImagePPM(path);

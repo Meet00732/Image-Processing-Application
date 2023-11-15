@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -19,7 +18,8 @@ public class IntensityComponentCommand extends AbstractBaseCommand {
    * the result as a new image using an ImageModel. The intensity component
    * represents the luminance or brightness information of an image.
    */
-  public IntensityComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public IntensityComponentCommand(ImageModelInterface model,
+                                   String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

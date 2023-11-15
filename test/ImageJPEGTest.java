@@ -9,8 +9,15 @@ import controller.commands.ImageJPEG;
 import controller.commands.ImagePNG;
 import model.Image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+
+/**
+ * The ImageJPEGTest class contains JUnit tests for the ImageJPEG class, which is used to load
+ * and save JPEG image files.
+ */
 public class ImageJPEGTest {
   private final String testImagePath = "res\\nyc.jpeg";
   File savedFile;
@@ -26,7 +33,7 @@ public class ImageJPEGTest {
   }
 
   /**
-   * test load method.
+   * Test load method.
    */
   @Test
   public void testLoad() {
@@ -40,7 +47,7 @@ public class ImageJPEGTest {
   }
 
   /**
-   * test save method.
+   * Test save method.
    */
   @Test
   public void testSave() {
@@ -60,7 +67,7 @@ public class ImageJPEGTest {
   }
 
   /**
-   * test save method.
+   * Test save method.
    */
   @Test
   public void testSaveJPG() {
@@ -80,9 +87,9 @@ public class ImageJPEGTest {
   }
 
   /**
-   * test path empty.
+   * Test path empty.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNullPath() {
     String path = "";
     new ImagePNG(path);

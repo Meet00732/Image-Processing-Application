@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -8,9 +7,6 @@ import model.ImageModelInterface;
  * It represents a command that processes an image by extracting the luma component
  * and saving the result as a new image using an ImageModel.
  * The luma component represents the grayscale or brightness information of an image.
- *
- * @author Your Name
- * @version 1.0
  */
 public class LumaComponentCommand extends AbstractBaseCommand {
 
@@ -25,7 +21,8 @@ public class LumaComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image
    *                             to save the luma component.
    */
-  public LumaComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public LumaComponentCommand(ImageModelInterface model,
+                              String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

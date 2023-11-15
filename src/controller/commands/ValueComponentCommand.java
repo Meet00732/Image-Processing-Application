@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -23,7 +22,8 @@ public class ValueComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to
    *                             save the value component.
    */
-  public ValueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public ValueComponentCommand(ImageModelInterface model,
+                               String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

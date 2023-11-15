@@ -11,8 +11,8 @@ package controller.commands;
 public interface CommandInterface {
   /**
    * Executes the command and performs a specific action.
-   * @return true if the command execution was successful, false otherwise.
    *
+   * @return true if the command execution was successful, false otherwise.
    * @throws Exception if model throws error while image processing.
    */
   boolean execute() throws Exception;

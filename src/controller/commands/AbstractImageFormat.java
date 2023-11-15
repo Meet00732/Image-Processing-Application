@@ -38,8 +38,8 @@ public abstract class AbstractImageFormat implements ImageParserInterface {
    * Loads an image from the specified file path and returns it as an Image object.
    *
    * @return The loaded Image object.
-   * @throws IOException              if there are issues reading the image or
-   *                                  the file format is unsupported.
+   * @throws IOException if there are issues reading the image or
+   *                     the file format is unsupported.
    */
   @Override
   public Image load() throws IOException {

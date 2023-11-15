@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import javax.imageio.ImageIO;
+
 import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.Image;
@@ -78,7 +79,8 @@ public class ImageControllerCompleteTest {
 
     for (int x = 0; x < pixelArray.length; x++) {
       for (int y = 0; y < pixelArray[x].length; y++) {
-        int rgb = (pixelArray[x][y].getRed() << 16) | (pixelArray[x][y].getGreen() << 8) | pixelArray[x][y].getBlue();
+        int rgb = (pixelArray[x][y].getRed() << 16) |
+                (pixelArray[x][y].getGreen() << 8) | pixelArray[x][y].getBlue();
         image.setRGB(x, y, rgb);
       }
     }
@@ -127,16 +129,16 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(75, 20, 210);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
         }
       }
 
-      String expectedResult = "load executed successfully" + lineSeparator +
-              "save executed successfully";
+      String expectedResult = "load executed successfully" + lineSeparator
+              + "save executed successfully";
       assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
     } catch (Exception e) {
       fail("This test should have failed!");
@@ -193,21 +195,21 @@ public class ImageControllerCompleteTest {
 
 
       Pixel[][] expectedArray = new Pixel[3][3];
-      expectedArray[0][0] = new Pixel(150, 0,0);
-      expectedArray[0][1] = new Pixel(0, 0,0);
-      expectedArray[0][2] = new Pixel(250, 0,0);
+      expectedArray[0][0] = new Pixel(150, 0, 0);
+      expectedArray[0][1] = new Pixel(0, 0, 0);
+      expectedArray[0][2] = new Pixel(250, 0, 0);
 
       expectedArray[1][0] = new Pixel(0, 0, 0);
-      expectedArray[1][1] = new Pixel(255, 0,0);
-      expectedArray[1][2] = new Pixel(10, 0,0);
+      expectedArray[1][1] = new Pixel(255, 0, 0);
+      expectedArray[1][2] = new Pixel(10, 0, 0);
 
-      expectedArray[2][0] = new Pixel(230, 0,0);
-      expectedArray[2][1] = new Pixel(125, 0,0);
-      expectedArray[2][2] = new Pixel(75, 0,0);
+      expectedArray[2][0] = new Pixel(230, 0, 0);
+      expectedArray[2][1] = new Pixel(125, 0, 0);
+      expectedArray[2][2] = new Pixel(75, 0, 0);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -247,21 +249,21 @@ public class ImageControllerCompleteTest {
       int height = testImage.getPixels()[0].length;
 
       Pixel[][] expectedArray = new Pixel[3][3];
-      expectedArray[0][0] = new Pixel(0, 100,0);
-      expectedArray[0][1] = new Pixel(0, 120,0);
-      expectedArray[0][2] = new Pixel(0, 0,0);
+      expectedArray[0][0] = new Pixel(0, 100, 0);
+      expectedArray[0][1] = new Pixel(0, 120, 0);
+      expectedArray[0][2] = new Pixel(0, 0, 0);
 
       expectedArray[1][0] = new Pixel(0, 0, 0);
-      expectedArray[1][1] = new Pixel(0, 255,0);
-      expectedArray[1][2] = new Pixel(0, 100,0);
+      expectedArray[1][1] = new Pixel(0, 255, 0);
+      expectedArray[1][2] = new Pixel(0, 100, 0);
 
-      expectedArray[2][0] = new Pixel(0, 130,0);
-      expectedArray[2][1] = new Pixel(0, 190,0);
-      expectedArray[2][2] = new Pixel(0, 20,0);
+      expectedArray[2][0] = new Pixel(0, 130, 0);
+      expectedArray[2][1] = new Pixel(0, 190, 0);
+      expectedArray[2][2] = new Pixel(0, 20, 0);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -301,21 +303,21 @@ public class ImageControllerCompleteTest {
       int height = testImage.getPixels()[0].length;
 
       Pixel[][] expectedArray = new Pixel[3][3];
-      expectedArray[0][0] = new Pixel(0, 0,0);
-      expectedArray[0][1] = new Pixel(0, 0,180);
-      expectedArray[0][2] = new Pixel(0, 0,255);
+      expectedArray[0][0] = new Pixel(0, 0, 0);
+      expectedArray[0][1] = new Pixel(0, 0, 180);
+      expectedArray[0][2] = new Pixel(0, 0, 255);
 
       expectedArray[1][0] = new Pixel(0, 0, 0);
-      expectedArray[1][1] = new Pixel(0, 0,255);
-      expectedArray[1][2] = new Pixel(0, 0,200);
+      expectedArray[1][1] = new Pixel(0, 0, 255);
+      expectedArray[1][2] = new Pixel(0, 0, 200);
 
-      expectedArray[2][0] = new Pixel(0, 0,100);
-      expectedArray[2][1] = new Pixel(0, 0,0);
-      expectedArray[2][2] = new Pixel(0, 0,210);
+      expectedArray[2][0] = new Pixel(0, 0, 100);
+      expectedArray[2][1] = new Pixel(0, 0, 0);
+      expectedArray[2][2] = new Pixel(0, 0, 210);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -368,8 +370,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(210, 210, 210);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -422,8 +424,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(101, 101, 101);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -475,8 +477,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(45, 45, 45);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -529,8 +531,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(125, 70, 260);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -583,8 +585,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(25, 0, 160);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -639,8 +641,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(75, 20, 210);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -696,8 +698,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(52, 57, 93);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -750,8 +752,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(94, 113, 255);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -794,7 +796,7 @@ public class ImageControllerCompleteTest {
       expectedArray[0][1] = new Pixel(126, 112, 87);
       expectedArray[0][2] = new Pixel(146, 130, 101);
 
-      expectedArray[1][0] = new Pixel(0,0,0);
+      expectedArray[1][0] = new Pixel(0, 0, 0);
       expectedArray[1][1] = new Pixel(255, 255, 238);
       expectedArray[1][2] = new Pixel(118, 105, 82);
 
@@ -803,8 +805,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(84, 75, 58);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -849,15 +851,15 @@ public class ImageControllerCompleteTest {
 
       expectedArray[1][0] = new Pixel(10, 100, 200);
       expectedArray[1][1] = new Pixel(255, 255, 255);
-      expectedArray[1][2] = new Pixel(0,0,0);
+      expectedArray[1][2] = new Pixel(0, 0, 0);
 
       expectedArray[2][0] = new Pixel(75, 20, 210);
       expectedArray[2][1] = new Pixel(125, 190, 0);
       expectedArray[2][2] = new Pixel(230, 130, 100);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -900,7 +902,7 @@ public class ImageControllerCompleteTest {
       expectedArray[0][1] = new Pixel(125, 190, 0);
       expectedArray[0][2] = new Pixel(75, 20, 210);
 
-      expectedArray[1][0] = new Pixel(0,0,0);
+      expectedArray[1][0] = new Pixel(0, 0, 0);
       expectedArray[1][1] = new Pixel(255, 255, 255);
       expectedArray[1][2] = new Pixel(10, 100, 200);
 
@@ -909,8 +911,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(250, 0, 255);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -971,8 +973,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(125, 190, 0);
       expectedArray[2][2] = new Pixel(75, 20, 210);
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testRedImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testGreenImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testBlueImage.getPixels()[i][j].getBlue());
@@ -1031,8 +1033,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][2] = new Pixel(75, 75, 75);
 
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -1056,12 +1058,12 @@ public class ImageControllerCompleteTest {
   @Test
   public void testBlueComponentThenBrighten() {
     String originalImageName = "testImage";
-    String BlueImageName = "BlueComponentImage";
+    String blueImageName = "BlueComponentImage";
     String destinationImage = "testNewImage";
 
     String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
-            + "blue-component" + " " + originalImageName + " " + BlueImageName + "\n"
-            + "brighten 35" + " " + BlueImageName + " " + destinationImage + "\n"
+            + "blue-component" + " " + originalImageName + " " + blueImageName + "\n"
+            + "brighten 35" + " " + blueImageName + " " + destinationImage + "\n"
             + "save " + this.savePath + " " + destinationImage + "\nq";
     simulateUserInput(inputData);
 
@@ -1089,8 +1091,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(35, 35, 35);
       expectedArray[2][2] = new Pixel(35, 35, 245);
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -1114,12 +1116,12 @@ public class ImageControllerCompleteTest {
   @Test
   public void testHorizontalThenVerticalFlip() {
     String originalImageName = "testImage";
-    String FlipImageName = "FlipComponentImage";
+    String flipImageName = "FlipComponentImage";
     String destinationImage = "testNewImage";
 
     String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
-            + "horizontal-flip" + " " + originalImageName + " " + FlipImageName + "\n"
-            + "vertical-flip" + " " + FlipImageName + " " + destinationImage + "\n"
+            + "horizontal-flip" + " " + originalImageName + " " + flipImageName + "\n"
+            + "vertical-flip" + " " + flipImageName + " " + destinationImage + "\n"
             + "save " + this.savePath + " " + destinationImage + "\nq";
     simulateUserInput(inputData);
 
@@ -1140,14 +1142,14 @@ public class ImageControllerCompleteTest {
 
       expectedArray[1][0] = new Pixel(10, 100, 200);
       expectedArray[1][1] = new Pixel(255, 255, 255);
-      expectedArray[1][2] = new Pixel(0,0,0);
+      expectedArray[1][2] = new Pixel(0, 0, 0);
 
       expectedArray[2][0] = new Pixel(250, 0, 255);
       expectedArray[2][1] = new Pixel(0, 120, 180);
       expectedArray[2][2] = new Pixel(150, 100, 0);
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -1171,12 +1173,12 @@ public class ImageControllerCompleteTest {
   @Test
   public void testLumaThenSepia() {
     String originalImageName = "testImage";
-    String LumaImageName = "LumaComponentImage";
+    String lumaImageName = "LumaComponentImage";
     String destinationImage = "testNewImage";
 
     String inputData = "load " + this.imagePath + " " + originalImageName + "\n"
-            + "luma-component" + " " + originalImageName + " " + LumaImageName + "\n"
-            + "sepia" + " " + LumaImageName + " " + destinationImage + "\n"
+            + "luma-component" + " " + originalImageName + " " + lumaImageName + "\n"
+            + "sepia" + " " + lumaImageName + " " + destinationImage + "\n"
             + "save " + this.savePath + " " + destinationImage + "\nq";
     simulateUserInput(inputData);
 
@@ -1203,8 +1205,8 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(220, 196, 152);
       expectedArray[2][2] = new Pixel(60, 54, 42);
 
-      for(int i=0; i<width; i++) {
-        for(int j=0; j<height; j++) {
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
           assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());

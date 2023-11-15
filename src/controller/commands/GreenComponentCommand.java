@@ -1,4 +1,5 @@
 package controller.commands;
+
 import model.ImageModelInterface;
 
 /**
@@ -20,7 +21,8 @@ public class GreenComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save
    *                             the green component.
    */
-  public GreenComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public GreenComponentCommand(ImageModelInterface model,
+                               String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

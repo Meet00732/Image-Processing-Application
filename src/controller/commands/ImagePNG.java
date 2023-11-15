@@ -1,11 +1,9 @@
 package controller.commands;
 
-
 /**
  * The ImagePNG class is a concrete implementation of the ImageFormat class specifically
  * designed for loading and saving PNG image files. It extends the functionality of
  * the abstract ImageFormat class, enabling the handling of PNG image formats.
- *
  */
 public class ImagePNG extends AbstractImageFormat {
 

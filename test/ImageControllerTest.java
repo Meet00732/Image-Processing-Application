@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.MockModel;
@@ -59,8 +60,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "red-component executed successfully";
@@ -83,8 +83,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "green-component executed successfully";
@@ -107,8 +106,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "blue-component executed successfully";
@@ -131,8 +129,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "value-component executed successfully";
@@ -155,8 +152,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "intensity-component executed successfully";
@@ -179,8 +175,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "luma-component executed successfully";
@@ -204,8 +199,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "brighten executed successfully";
@@ -228,8 +222,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "brighten executed successfully";
@@ -252,8 +245,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "blur executed successfully";
@@ -263,7 +255,7 @@ public class ImageControllerTest {
 
 
   /**
-   * Test sepiaCommand
+   * Test sepiaCommand.
    */
   @Test
   public void testControllerSepiaMethodMock() {
@@ -277,8 +269,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "sepia executed successfully";
@@ -288,7 +279,7 @@ public class ImageControllerTest {
 
 
   /**
-   * Test combineCommand
+   * Test combineCommand.
    */
   @Test
   public void testControllerRGBCombineMethodMock() {
@@ -302,8 +293,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "rgb-combine executed successfully";
@@ -313,7 +303,7 @@ public class ImageControllerTest {
 
 
   /**
-   * Test sharpenCommand
+   * Test sharpenCommand.
    */
   @Test
   public void testControllerSharpenMethodMock() {
@@ -327,8 +317,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "sharpen executed successfully";
@@ -337,7 +326,7 @@ public class ImageControllerTest {
   }
 
   /**
-   * Test verticalFlipCommand
+   * Test verticalFlipCommand.
    */
   @Test
   public void testControllerVerticalFlipMethodMock() {
@@ -351,8 +340,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "vertical-flip executed successfully";
@@ -361,7 +349,7 @@ public class ImageControllerTest {
   }
 
   /**
-   * Test horizontalFlipCommand
+   * Test horizontalFlipCommand.
    */
   @Test
   public void testControllerHorizontalFlipMethodMock() {
@@ -375,8 +363,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "horizontal-flip executed successfully";
@@ -402,8 +389,7 @@ public class ImageControllerTest {
       controller.process();
       expectedResult = "Invalid Input: orange-component" + System.lineSeparator() +
               "error executing orange-component";
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
@@ -412,7 +398,7 @@ public class ImageControllerTest {
   /**
    * Test when view = null passed as parameter.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testViewNull() {
     String inputData = "red-component testNYC testRed\nq";
     ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
@@ -427,7 +413,7 @@ public class ImageControllerTest {
   /**
    * Test when model = null passed as parameter.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testModelNull() {
     String inputData = "red-component testNYC testRed\nq";
     ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
@@ -440,7 +426,7 @@ public class ImageControllerTest {
   }
 
   /**
-   * Test runCommand
+   * Test runCommand.
    */
   @Test
   public void testControllerIncorrectFilePathRunCommand() {
@@ -477,8 +463,7 @@ public class ImageControllerTest {
     ImageControllerInterface controller = new ImageController(view, model);
     try {
       controller.process();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
     expectedResult = "load executed successfully";

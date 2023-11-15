@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -21,7 +20,8 @@ public class RedComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to
    *                             save the red component.
    */
-  public RedComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public RedComponentCommand(ImageModelInterface model,
+                             String imageName, String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

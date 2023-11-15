@@ -1,6 +1,5 @@
 package controller.commands;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**
@@ -30,7 +29,8 @@ public class CombineCommand extends AbstractBaseCommand {
                         String destinationImageGreenName,
                         String destinationImageBlueName) {
 
-    super(model, imageName, destinationImageRedName, destinationImageGreenName, destinationImageBlueName);
+    super(model, imageName, destinationImageRedName,
+            destinationImageGreenName, destinationImageBlueName);
   }
 
   /**

@@ -37,6 +37,7 @@ public class RGBSplit extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.rgbSplitCommand(this.redImageName, this.greenImageName, this.blueImageName, this.imageName);
+    this.model.rgbSplitCommand(this.redImageName, this.greenImageName,
+            this.blueImageName, this.imageName);
   }
 }

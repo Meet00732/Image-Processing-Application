@@ -274,11 +274,11 @@ public class ImageModel implements ImageModelInterface {
   /**
    * Combines three images (red, green, and blue channels) into a single color image.
    *
-   * @param imageRedName    The name of the source image for the red channel.
-   * @param imageGreenName  The name of the source image for the green channel.
-   * @param imageBlueName   The name of the source image for the blue channel.
-   * @param destinationImageName   The name of the destination image where the combined
-   *                               image will be stored.
+   * @param imageRedName         The name of the source image for the red channel.
+   * @param imageGreenName       The name of the source image for the green channel.
+   * @param imageBlueName        The name of the source image for the blue channel.
+   * @param destinationImageName The name of the destination image where the combined
+   *                             image will be stored.
    */
   @Override
   public void combineCommand(String imageRedName,
@@ -542,7 +542,7 @@ public class ImageModel implements ImageModelInterface {
    */
   @Override
   public void rgbSplitCommand(String redImageName, String greenImageName,
-                       String blueImageName, String imageName) {
+                              String blueImageName, String imageName) {
     this.redComponentCommand(imageName, redImageName);
     this.greenComponentCommand(imageName, greenImageName);
     this.blueComponentCommand(imageName, blueImageName);

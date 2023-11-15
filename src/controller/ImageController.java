@@ -22,9 +22,7 @@ import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
 import controller.commands.ValueComponentCommand;
 import controller.commands.VerticalFlipCommand;
-import model.ImageModel;
 import model.ImageModelInterface;
-import view.ImageView;
 import view.ImageViewInterface;
 
 /**
@@ -48,10 +46,11 @@ public class ImageController implements ImageControllerInterface {
    * @param model The ImageModel for image processing operations.
    * @throws IllegalArgumentException when model or view is null.
    */
-  public ImageController(ImageViewInterface view, ImageModelInterface model) throws IllegalArgumentException {
-      if (view == null) {
-        throw new IllegalArgumentException("View Object is missing!");
-      }
+  public ImageController(ImageViewInterface view,
+                         ImageModelInterface model) throws IllegalArgumentException {
+    if (view == null) {
+      throw new IllegalArgumentException("View Object is missing!");
+    }
     if (model == null) {
       throw new IllegalArgumentException("Model Object is missing!");
     }

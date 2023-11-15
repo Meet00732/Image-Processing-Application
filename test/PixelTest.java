@@ -1,9 +1,16 @@
 import org.junit.Test;
+
 import java.util.Random;
+
 import model.Pixel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/**
+ * The PixelTest class contains JUnit tests for the Pixel
+ * class, which represents a single pixel in an image with
+ * red, green, and blue color components.
+ */
 public class PixelTest {
 
   /**
@@ -28,11 +35,19 @@ public class PixelTest {
     assertEquals(255, pixel.getBlue());
   }
 
+  /**
+   * Clamps an integer value to the range [0, 255].
+   * If the input value is less than 0, it is set to 0.
+   * If the input value is greater than 255, it is set to 255.
+   * Otherwise, the input value remains unchanged.
+   *
+   * @param value The integer value to clamp.
+   * @return The clamped value within the range [0, 255].
+   */
   private int clamp(int value) {
     if (value < 0) {
       value = 0;
-    }
-    else if (value > 255) {
+    } else if (value > 255) {
       value = 255;
     }
     return value;
@@ -45,7 +60,7 @@ public class PixelTest {
   public void testFuzzyTest() {
     Random r = new Random();
 
-    for (int i=0; i<10000; i++) {
+    for (int i = 0; i < 10000; i++) {
       int red = r.nextInt();
       int green = r.nextInt();
       int blue = r.nextInt();

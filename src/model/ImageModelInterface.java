@@ -90,11 +90,11 @@ public interface ImageModelInterface {
   /**
    * Combines three images (red, green, and blue channels) into a single color image.
    *
-   * @param imageRed    The name of the source image for the red channel.
-   * @param imageGreen  The name of the source image for the green channel.
-   * @param imageBlue   The name of the source image for the blue channel.
-   * @param imageName   The name of the destination image where the combined
-   *                    image will be stored.
+   * @param imageRed   The name of the source image for the red channel.
+   * @param imageGreen The name of the source image for the green channel.
+   * @param imageBlue  The name of the source image for the blue channel.
+   * @param imageName  The name of the destination image where the combined
+   *                   image will be stored.
    */
   void combineCommand(String imageRed, String imageGreen, String imageBlue, String imageName);
 
@@ -168,5 +168,6 @@ public interface ImageModelInterface {
    * @param blueImageName  The name for the blue component image.
    * @param imageName      The name of the source image to be split.
    */
-  void rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName);
+  void rgbSplitCommand(String redImageName, String greenImageName,
+                       String blueImageName, String imageName);
 }

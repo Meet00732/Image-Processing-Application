@@ -9,12 +9,21 @@ import model.Pixel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * The ImageModelTest class contains JUnit tests for
+ * the ImageModel class, which represents the model in the
+ * image processing application.
+ */
 public class ImageModelTest {
 
 
   private ImageModelInterface model;
   private Image image;
 
+  /**
+   * Sets up the initial state for testing by creating
+   * a sample image and an instance of the ImageModel.
+   */
   @Before
   public void setup() {
 
@@ -44,8 +53,7 @@ public class ImageModelTest {
   public void testConstructor() {
     try {
       new ImageModel();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
   }
@@ -62,8 +70,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(this.image.getPixels()[i][j], testImage.getPixels()[i][j]);
       }
     }
@@ -73,7 +81,7 @@ public class ImageModelTest {
   /**
    * Test redComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageRedComponent() {
     String imageName = "testImage";
     String destinationImageName = "redImage";
@@ -101,21 +109,21 @@ public class ImageModelTest {
 
 
     Pixel[][] expectedArray = new Pixel[3][3];
-    expectedArray[0][0] = new Pixel(150, 0,0);
-    expectedArray[0][1] = new Pixel(0, 0,0);
-    expectedArray[0][2] = new Pixel(250, 0,0);
+    expectedArray[0][0] = new Pixel(150, 0, 0);
+    expectedArray[0][1] = new Pixel(0, 0, 0);
+    expectedArray[0][2] = new Pixel(250, 0, 0);
 
     expectedArray[1][0] = new Pixel(0, 0, 0);
-    expectedArray[1][1] = new Pixel(255, 0,0);
-    expectedArray[1][2] = new Pixel(10, 0,0);
+    expectedArray[1][1] = new Pixel(255, 0, 0);
+    expectedArray[1][2] = new Pixel(10, 0, 0);
 
-    expectedArray[2][0] = new Pixel(230, 0,0);
-    expectedArray[2][1] = new Pixel(125, 0,0);
-    expectedArray[2][2] = new Pixel(75, 0,0);
+    expectedArray[2][0] = new Pixel(230, 0, 0);
+    expectedArray[2][1] = new Pixel(125, 0, 0);
+    expectedArray[2][2] = new Pixel(75, 0, 0);
 
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -140,21 +148,21 @@ public class ImageModelTest {
     int height = testImage.getPixels()[0].length;
 
     Pixel[][] expectedArray = new Pixel[3][3];
-    expectedArray[0][0] = new Pixel(0, 100,0);
-    expectedArray[0][1] = new Pixel(0, 120,0);
-    expectedArray[0][2] = new Pixel(0, 0,0);
+    expectedArray[0][0] = new Pixel(0, 100, 0);
+    expectedArray[0][1] = new Pixel(0, 120, 0);
+    expectedArray[0][2] = new Pixel(0, 0, 0);
 
     expectedArray[1][0] = new Pixel(0, 0, 0);
-    expectedArray[1][1] = new Pixel(0, 255,0);
-    expectedArray[1][2] = new Pixel(0, 100,0);
+    expectedArray[1][1] = new Pixel(0, 255, 0);
+    expectedArray[1][2] = new Pixel(0, 100, 0);
 
-    expectedArray[2][0] = new Pixel(0, 130,0);
-    expectedArray[2][1] = new Pixel(0, 190,0);
-    expectedArray[2][2] = new Pixel(0, 20,0);
+    expectedArray[2][0] = new Pixel(0, 130, 0);
+    expectedArray[2][1] = new Pixel(0, 190, 0);
+    expectedArray[2][2] = new Pixel(0, 20, 0);
 
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -165,7 +173,7 @@ public class ImageModelTest {
   /**
    * Test greenComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageGreenComponent() {
     String imageName = "testImage";
     String destinationImageName = "greenImage";
@@ -193,20 +201,20 @@ public class ImageModelTest {
     int height = testImage.getPixels()[0].length;
 
     Pixel[][] expectedArray = new Pixel[3][3];
-    expectedArray[0][0] = new Pixel(0, 0,0);
-    expectedArray[0][1] = new Pixel(0, 0,180);
-    expectedArray[0][2] = new Pixel(0, 0,255);
+    expectedArray[0][0] = new Pixel(0, 0, 0);
+    expectedArray[0][1] = new Pixel(0, 0, 180);
+    expectedArray[0][2] = new Pixel(0, 0, 255);
 
     expectedArray[1][0] = new Pixel(0, 0, 0);
-    expectedArray[1][1] = new Pixel(0, 0,255);
-    expectedArray[1][2] = new Pixel(0, 0,200);
+    expectedArray[1][1] = new Pixel(0, 0, 255);
+    expectedArray[1][2] = new Pixel(0, 0, 200);
 
-    expectedArray[2][0] = new Pixel(0, 0,100);
-    expectedArray[2][1] = new Pixel(0, 0,0);
-    expectedArray[2][2] = new Pixel(0, 0,210);
+    expectedArray[2][0] = new Pixel(0, 0, 100);
+    expectedArray[2][1] = new Pixel(0, 0, 0);
+    expectedArray[2][2] = new Pixel(0, 0, 210);
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -217,7 +225,7 @@ public class ImageModelTest {
   /**
    * Test blueComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageBlueComponent() {
     String imageName = "testImage";
     String destinationImageName = "blueImage";
@@ -243,8 +251,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(150, 150, 150);
@@ -269,7 +277,7 @@ public class ImageModelTest {
   /**
    * Test valueComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageValueComponent() {
     String imageName = "testImage";
     String destinationImageName = "valueImage";
@@ -296,8 +304,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(83, 83, 83);
@@ -322,7 +330,7 @@ public class ImageModelTest {
   /**
    * Test intensityComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageIntensityComponent() {
     String imageName = "testImage";
     String destinationImageName = "intensityImage";
@@ -349,8 +357,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(104, 104, 104);
         expectedArray[0][1] = new Pixel(99, 99, 99);
@@ -374,7 +382,7 @@ public class ImageModelTest {
   /**
    * Test lumaComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageLumaComponent() {
     String imageName = "testImage";
     String destinationImageName = "lumaImage";
@@ -402,8 +410,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(200, 150, 50);
@@ -428,7 +436,7 @@ public class ImageModelTest {
   /**
    * Test lumaComponent invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageBrightenComponent() {
     String imageName = "testImage";
     String destinationImageName = "brightenImage";
@@ -456,8 +464,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(100, 50, 0);
@@ -495,8 +503,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         assertEquals(255, testImage.getPixels()[i][j].getRed());
         assertEquals(255, testImage.getPixels()[i][j].getGreen());
@@ -522,8 +530,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(0, testImage.getPixels()[i][j].getRed());
         assertEquals(0, testImage.getPixels()[i][j].getGreen());
         assertEquals(0, testImage.getPixels()[i][j].getBlue());
@@ -533,7 +541,7 @@ public class ImageModelTest {
 
 
   /**
-   * Test combinedCommand
+   * Test combinedCommand.
    */
   @Test
   public void testCombineCommand() {
@@ -555,8 +563,8 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(150, 100, 0);
@@ -581,7 +589,7 @@ public class ImageModelTest {
   /**
    * Test combinedCommand. Image does not exist.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testImageDoesNotExistCombineCommand() {
     String imageName = "testImage";
     String redImageName = "redImage";
@@ -605,7 +613,7 @@ public class ImageModelTest {
   /**
    * Test combinedCommand. Image does not exist.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testDifferentImageDimensionsCombineCommand() {
     Pixel[][] pixelArray = new Pixel[1][3];
 
@@ -652,7 +660,7 @@ public class ImageModelTest {
 
 
     for (int x = 0; x < width; x++) {
-      for(int y = 0; y < height; y++) {
+      for (int y = 0; y < height; y++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(53, 56, 38);
@@ -677,7 +685,7 @@ public class ImageModelTest {
   /**
    * Test blur invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageBlurComponent() {
     String imageName = "testImage";
     String destinationImageName = "blurImage";
@@ -705,7 +713,7 @@ public class ImageModelTest {
     int height = testImage.getPixels()[0].length;
 
     for (int x = 0; x < width; x++) {
-      for(int y = 0; y < height; y++) {
+      for (int y = 0; y < height; y++) {
 
         Pixel[][] expectedArray = new Pixel[3][3];
         expectedArray[0][0] = new Pixel(165, 163, 0);
@@ -731,7 +739,7 @@ public class ImageModelTest {
   /**
    * Test sharpen invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageSharpenComponent() {
     String imageName = "testImage";
     String destinationImageName = "sharpenImage";
@@ -766,7 +774,7 @@ public class ImageModelTest {
         expectedArray[0][1] = new Pixel(126, 112, 87);
         expectedArray[0][2] = new Pixel(146, 130, 101);
 
-        expectedArray[1][0] = new Pixel(0,0,0);
+        expectedArray[1][0] = new Pixel(0, 0, 0);
         expectedArray[1][1] = new Pixel(255, 255, 238);
         expectedArray[1][2] = new Pixel(118, 105, 82);
 
@@ -784,7 +792,7 @@ public class ImageModelTest {
   /**
    * Test sepia invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageSepiaComponent() {
     String imageName = "testImage";
     String destinationImageName = "sepiaImage";
@@ -822,7 +830,7 @@ public class ImageModelTest {
 
         expectedArray[1][0] = new Pixel(10, 100, 200);
         expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(0,0,0);
+        expectedArray[1][2] = new Pixel(0, 0, 0);
 
 
         expectedArray[2][0] = new Pixel(75, 20, 210);
@@ -839,7 +847,7 @@ public class ImageModelTest {
   /**
    * Test VerticalFlip invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageVerticalFlipComponent() {
     String imageName = "testImage";
     String destinationImageName = "verticalFlipImage";
@@ -873,7 +881,7 @@ public class ImageModelTest {
         expectedArray[0][1] = new Pixel(125, 190, 0);
         expectedArray[0][2] = new Pixel(75, 20, 210);
 
-        expectedArray[1][0] = new Pixel(0,0,0);
+        expectedArray[1][0] = new Pixel(0, 0, 0);
         expectedArray[1][1] = new Pixel(255, 255, 255);
         expectedArray[1][2] = new Pixel(10, 100, 200);
 
@@ -892,7 +900,7 @@ public class ImageModelTest {
   /**
    * Test horizontalFlip invalid image.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNoImageHorizontalFlipComponent() {
     String imageName = "testImage";
     String destinationImageName = "horizontalFlipImage";
@@ -935,9 +943,8 @@ public class ImageModelTest {
     expectedArray[2][1] = new Pixel(125, 190, 0);
     expectedArray[2][2] = new Pixel(75, 20, 210);
 
-    for(int i=0; i<widthRed; i++) {
-      for(int j=0; j<heightRed; j++) {
-
+    for (int i = 0; i < widthRed; i++) {
+      for (int j = 0; j < heightRed; j++) {
 
 
         assertEquals(expectedArray[i][j].getRed(), testRedImage.getPixels()[i][j].getRed());
@@ -978,8 +985,8 @@ public class ImageModelTest {
     expectedArray[2][1] = new Pixel(125, 125, 125);
     expectedArray[2][2] = new Pixel(75, 75, 75);
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -1054,7 +1061,7 @@ public class ImageModelTest {
 
     expectedArray[1][0] = new Pixel(10, 100, 200);
     expectedArray[1][1] = new Pixel(255, 255, 255);
-    expectedArray[1][2] = new Pixel(0,0,0);
+    expectedArray[1][2] = new Pixel(0, 0, 0);
 
     expectedArray[2][0] = new Pixel(250, 0, 255);
     expectedArray[2][1] = new Pixel(0, 120, 180);
@@ -1104,8 +1111,8 @@ public class ImageModelTest {
     expectedArray[2][1] = new Pixel(125, 190, 0);
     expectedArray[2][2] = new Pixel(75, 20, 210);
 
-    for(int i=0; i<width; i++) {
-      for(int j=0; j<height; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         assertEquals(expectedArray[i][j].getRed(), combinedImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), combinedImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), combinedImage.getPixels()[i][j].getBlue());
@@ -1145,7 +1152,6 @@ public class ImageModelTest {
     expectedArray[2][2] = new Pixel(60, 54, 42);
 
 
-
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
 
@@ -1155,10 +1161,5 @@ public class ImageModelTest {
       }
     }
   }
-
-
-//  System.out.println("Red: " + testImage.getPixels()[x][y].getRed() +
-//                          " Green: " + testImage.getPixels()[x][y].getGreen() +
-//                          " Blue: " + testImage.getPixels()[x][y].getBlue());
 
 }

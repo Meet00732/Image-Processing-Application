@@ -8,8 +8,16 @@ import controller.commands.AbstractImageFormat;
 import controller.commands.ImagePNG;
 import model.Image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+
+/**
+ * The ImagePNGTest class contains JUnit tests for
+ * the ImagePNG class, which is used to load
+ * and save PNG image files.
+ */
 public class ImagePNGTest {
 
   private final String testImagePath = "res\\nyc.png";
@@ -26,7 +34,7 @@ public class ImagePNGTest {
   }
 
   /**
-   * test load method.
+   * Test load method.
    */
   @Test
   public void testLoad() {
@@ -40,7 +48,7 @@ public class ImagePNGTest {
   }
 
   /**
-   * test save method.
+   * Test save method.
    */
   @Test
   public void testSave() {
@@ -60,7 +68,7 @@ public class ImagePNGTest {
   }
 
   /**
-   * test save method.
+   * Test save method.
    */
   @Test
   public void testSaveJPG() {
@@ -80,9 +88,9 @@ public class ImagePNGTest {
   }
 
   /**
-   * test path empty.
+   * Test path empty.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNullPath() {
     String path = "";
     new ImagePNG(path);

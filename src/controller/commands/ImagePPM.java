@@ -16,7 +16,7 @@ import model.Pixel;
  */
 public class ImagePPM implements ImageParserInterface {
 
-  private String path;
+  private final String path;
 
   /**
    * Constructs a new ImagePPM object with the
@@ -30,7 +30,6 @@ public class ImagePPM implements ImageParserInterface {
     }
     this.path = path;
   }
-
 
   /**
    * Loads image data from the specified PPM file and returns it as an Image object.
