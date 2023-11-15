@@ -1,5 +1,18 @@
 load res\nyc.png testNYC
 save res\imagesPNG\testNYC.png testNYC
+compress 90 testNYC compressedImg90
+save res\imagesPNG\compressedNYC.png compressedImg90
+
+load res\Meet.png testMeet
+save res\imagesPNG\testMeet.png testMeet
+compress 90 testMeet compressedImgMeet90
+save res\imagesPNG\compressedMeet.png compressedImgMeet90
+
+load res\Meet.png testMeet
+save res\imagesPNG\testMeet.png testMeet
+compress 50 testMeet compressedImgMeet50
+save res\imagesPNG\compressedMeet.png compressedImgMeet50
+
 
 blur testNYC testBlur
 save res\imagesPNG\blurNYC.png testBlur

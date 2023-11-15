@@ -96,6 +96,11 @@ public class MockModel implements ImageModelInterface {
     log.append("rgbSplitCommand method is invoked!");
   }
 
+  @Override
+  public void compressImage(String imageName, String destinationImageName, int percentage) {
+    log.append("compress method is invoked!");
+  }
+
   public String getLog() {
     return log.toString();
   }

@@ -10,6 +10,7 @@ import controller.commands.BlurCommand;
 import controller.commands.BrightenCommand;
 import controller.commands.CombineCommand;
 import controller.commands.CommandInterface;
+import controller.commands.CompressCommand;
 import controller.commands.GreenComponentCommand;
 import controller.commands.HorizontalFlipCommand;
 import controller.commands.IntensityComponentCommand;
@@ -182,6 +183,12 @@ public class ImageController implements ImageControllerInterface {
 
         case "run":
           status = runScript(tokens[1]);
+          break;
+
+        case "compress":
+          int percentage = Integer.parseInt(tokens[1]);
+          feature = new CompressCommand(model, percentage, tokens[2], tokens[3]);
+          status = feature.execute();
           break;
 
         default:
