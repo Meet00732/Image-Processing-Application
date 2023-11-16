@@ -452,6 +452,39 @@ public class ImageModel implements ImageModelInterface {
     return channel;
   }
 
+  @Override
+  public void histogramCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
+    Image histogram = image.histogram();
+    this.addImage(destinationImageName,histogram);
+  }
+
+  @Override
+  public void colorCorrectionCommand(String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    Image image = this.imageMap.get(imageName);
+    Image correctedImage = image.correctImage();
+    this.addImage(destinationImageName,correctedImage);
+  }
+
+  @Override
+  public void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName) {
+    if (!imageExists(imageName)) {
+      throw new IllegalArgumentException("Image does not exist!");
+    }
+    if (!(b >= 0 && b < m && m < w && w <= 255)) {
+      throw new IllegalArgumentException("Enter valid values for b, m and w");
+    }
+    Image image = this.imageMap.get(imageName);
+    Image levelsAdjustedImage = image.levelsAdjust(b,m,w);
+    this.addImage(destinationImageName,levelsAdjustedImage);
+  }
+
   /**
    * Checks whether an image with the specified name exists in the image map.
    *

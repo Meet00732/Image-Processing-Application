@@ -1276,4 +1276,116 @@ public class ImageModelTest {
       }
     }
   }
+
+  @Test
+  public void testColorCorrection() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+
+    this.model.addImage(imageName, this.image);
+    this.model.colorCorrectionCommand(imageName, destinationImageName);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(166, 91, 0);
+    expectedArray[0][1] = new Pixel(16, 111, 171);
+    expectedArray[0][2] = new Pixel(255, 0, 246);
+
+    expectedArray[1][0] = new Pixel(16, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 246, 246);
+    expectedArray[1][2] = new Pixel(26, 91, 191);
+
+    expectedArray[2][0] = new Pixel(246, 121, 91);
+    expectedArray[2][1] = new Pixel(141, 181, 0);
+    expectedArray[2][2] = new Pixel(91, 11, 201);
+
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+
+        assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
+        assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
+        assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
+      }
+    }
+  }
+
+  @Test
+  public void testLevelAdjustments() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+
+    this.model.addImage(imageName, this.image);
+    this.model.levelsAdjustmentCommand(20, 100, 255, imageName, destinationImageName);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(186, 136, 0);
+    expectedArray[0][1] = new Pixel(0, 153, 213);
+    expectedArray[0][2] = new Pixel(253, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(0, 136, 228);
+
+    expectedArray[2][0] = new Pixel(245, 165, 136);
+    expectedArray[2][1] = new Pixel(159, 221, 0);
+    expectedArray[2][2] = new Pixel(93, 0, 234);
+
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
+        assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
+        assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
+      }
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNegativeValueOfBMW() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+
+    this.model.levelsAdjustmentCommand(-20,-100,-255,imageName, destinationImageName);
+    fail("This test should have failed!");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidValueOfB() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+
+    this.model.levelsAdjustmentCommand(101,100,255,imageName, destinationImageName);
+    fail("This test should have failed!");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidValueOfM() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+
+    this.model.levelsAdjustmentCommand(20,19,255,imageName, destinationImageName);
+    fail("This test should have failed!");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidValueOfW() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+
+    this.model.levelsAdjustmentCommand(20,100,19,imageName, destinationImageName);
+    fail("This test should have failed!");
+  }
+
 }

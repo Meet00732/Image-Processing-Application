@@ -1,6 +1,7 @@
 package model;
 
 import model.Strategy.SplitStrategy;
+import java.awt.image.BufferedImage;
 
 /**
  * This class represents a two-dimensional array of `Pixel`
@@ -285,6 +286,186 @@ public class Image {
 
   public Image applyFilter(SplitStrategy strategy) {
     return strategy.apply(this);
+  }
+
+  public Image histogram() {
+    BufferedImage histogramBufferedImage = HistogramCreator.createHistogramImage(this);
+    return new Image(convertToPixelsArray(histogramBufferedImage));
+  }
+
+  private Pixel[][] convertToPixelsArray(BufferedImage bufferedImage) {
+    int width = bufferedImage.getWidth();
+    int height = bufferedImage.getHeight();
+    Pixel[][] pixels = new Pixel[height][width];
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int rgb = bufferedImage.getRGB(x, y);
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = (rgb) & 0xFF;
+        pixels[x][y] = new Pixel(red, green, blue);
+      }
+    }
+
+    return pixels;
+  }
+
+  public Image correctImage() {
+    return correctColors(convertToBufferedImage(this));
+  }
+
+  private BufferedImage convertToBufferedImage(Image image) {
+    Pixel[][] pixels = image.getPixels();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        Pixel pixel = pixels[y][x];
+        int rgb = (pixel.getRed() << 16) | (pixel.getGreen() << 8) | pixel.getBlue();
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
+
+    return bufferedImage;
+  }
+
+  public Image correctColors(BufferedImage image) {
+    int width = image.getWidth();
+    int height = image.getHeight();
+    Pixel[][] pixels = new Pixel[height][width];
+
+    int[] redHistogram = new int[256];
+    int[] greenHistogram = new int[256];
+    int[] blueHistogram = new int[256];
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int rgb = image.getRGB(x, y);
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        redHistogram[red]++;
+        greenHistogram[green]++;
+        blueHistogram[blue]++;
+      }
+    }
+
+    int redPeak = findMeaningfulPeak(redHistogram);
+    int greenPeak = findMeaningfulPeak(greenHistogram);
+    int bluePeak = findMeaningfulPeak(blueHistogram);
+
+    int averagePeak = (redPeak + greenPeak + bluePeak) / 3;
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int rgb = image.getRGB(x, y);
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        int correctedRed = offsetValue(red, redPeak, averagePeak);
+        int correctedGreen = offsetValue(green, greenPeak, averagePeak);
+        int correctedBlue = offsetValue(blue, bluePeak, averagePeak);
+
+        pixels[y][x] = new Pixel(correctedRed, correctedGreen, correctedBlue);
+      }
+    }
+
+    return new Image(pixels);
+  }
+
+  private int findMeaningfulPeak(int[] histogram) {
+    int peakValue = -1;
+    int peakFrequency = 0;
+
+    for (int i = 11; i < 245; i++) {
+      if (histogram[i] > peakFrequency) {
+        peakFrequency = histogram[i];
+        peakValue = i;
+      }
+    }
+
+    return peakValue;
+  }
+
+  private int offsetValue(int value, int currentPeak, int averagePeak) {
+    int offset = averagePeak - currentPeak;
+    int newValue = value + offset;
+
+    if (newValue < 0) {
+      newValue = 0;
+    } else if (newValue > 255) {
+      newValue = 255;
+    }
+
+    return newValue;
+  }
+
+  public Image levelsAdjust(int b, int m, int w) {
+    return adjustLevels(convertToBufferedImage(this),b,m,w);
+  }
+
+  public Image adjustLevels(BufferedImage image, int b, int m, int w) {
+    int width = image.getWidth();
+    int height = image.getHeight();
+    Pixel[][] pixels = new Pixel[height][width];
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int rgb = image.getRGB(x, y);
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        pixels[y][x] = new Pixel(
+                applyLevelAdjustment(red, b, m, w),
+                applyLevelAdjustment(green, b, m, w),
+                applyLevelAdjustment(blue, b, m, w)
+        );
+      }
+    }
+
+    return new Image(pixels);
+  }
+
+  private int applyLevelAdjustment(int value, int shadow, int mid, int highlight) {
+    if (value <= shadow) {
+      return 0;
+    } else if (value >= highlight) {
+      return 255;
+    } else if (value <= mid) {
+      return (int) (1.7 * (value - shadow));
+    } else {
+      double a = calculateQuadraticCoefficient(shadow, mid, highlight);
+      double b = calculateLinearCoefficient(shadow, mid, highlight);
+      double c = calculateConstantCoefficient(shadow, mid, highlight);
+      return (int) (a * value * value + b * value + c);
+    }
+  }
+
+  private double calculateQuadraticCoefficient(int shadow, int mid, int highlight) {
+    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
+    double Aa = -shadow * (128 - 255) + 128 * highlight - 255 * mid;
+
+    return Aa / A;
+  }
+
+  private double calculateLinearCoefficient(int shadow, int mid, int highlight) {
+    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
+    double Ab = shadow * shadow * (128 - 255) + 255 * mid * mid - 128 * highlight * highlight;
+
+    return Ab / A;
+  }
+
+  private double calculateConstantCoefficient(int shadow, int mid, int highlight) {
+    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
+    double Ac = shadow * shadow * (255 * mid - 128 * highlight) - shadow * (255 * mid * mid - 128 * highlight * highlight);
+
+    return Ac / A;
   }
 
 }

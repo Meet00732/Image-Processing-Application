@@ -180,4 +180,10 @@ public interface ImageModelInterface {
                        String blueImageName, String imageName);
 
   void compressImage(String imageName, String destinationImageName, double percentage);
+
+  void histogramCommand(String imageName, String destinationImageName);
+
+  void colorCorrectionCommand(String imageName, String destinationImageName);
+
+  void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName);
 }

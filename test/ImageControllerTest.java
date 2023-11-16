@@ -510,4 +510,47 @@ public class ImageControllerTest {
     assertTrue(model.getLog().contains("compress method is invoked!"));
   }
 
+
+  @Test
+  public void testColorCorrectionMethodInvoked() {
+    String inputData = "color-correct testNYC testNYC-color-correct\nq";
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+
+    expectedResult = "color-correct executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    assertTrue(model.getLog().contains("color correction method is invoked!"));
+  }
+
+  @Test
+  public void testLevelAdjustmentsMethodInvoked() {
+    String inputData = "levels-adjust 20 100 255 testNYC testNYC-levels-adjust\nq";
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+    expectedResult = "levels-adjust executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    assertTrue(model.getLog().contains("levels adjustment method is invoked!"));
+  }
 }

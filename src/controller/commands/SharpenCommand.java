@@ -2,7 +2,6 @@ package controller.commands;
 
 import java.util.Optional;
 
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**

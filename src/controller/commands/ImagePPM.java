@@ -16,7 +16,7 @@ import model.Pixel;
  */
 public class ImagePPM implements ImageParserInterface {
 
-  private String path;
+  private final String path;
 
   /**
    * Constructs a new ImagePPM object with the

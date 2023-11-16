@@ -1259,7 +1259,6 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(142, 164, 13);
       expectedArray[2][2] = new Pixel(95, 42, 121);
 
-
       for(int i=0; i<width; i++) {
         for(int j=0; j<height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
@@ -1269,6 +1268,57 @@ public class ImageControllerCompleteTest {
       }
       String expectedResult = "load executed successfully" + lineSeparator +
               "compress executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  @Test
+  public void testColorCorrectionCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testColorCorrectImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "color-correct" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+
+      expectedArray[0][0] = new Pixel(166, 91, 0);
+      expectedArray[0][1] = new Pixel(16, 111, 171);
+      expectedArray[0][2] = new Pixel(255, 0, 246);
+
+      expectedArray[1][0] = new Pixel(16, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 246, 246);
+      expectedArray[1][2] = new Pixel(26, 91, 191);
+
+      expectedArray[2][0] = new Pixel(246, 121, 91);
+      expectedArray[2][1] = new Pixel(141, 181, 0);
+      expectedArray[2][2] = new Pixel(91, 11, 201);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "color-correct executed successfully" + lineSeparator +
               "save executed successfully";
       assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
     } catch (Exception e) {
@@ -1313,7 +1363,6 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(125, 174, 13);
       expectedArray[2][2] = new Pixel(37, 5, 196);
 
-
       for(int i=0; i<width; i++) {
         for(int j=0; j<height; j++) {
           assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
@@ -1323,6 +1372,58 @@ public class ImageControllerCompleteTest {
       }
       String expectedResult = "load executed successfully" + lineSeparator +
               "compress executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  @Test
+  public void testLevelsAdjustmentCommand() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLevelsAdjustImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "levels-adjust" + " 20 100 255" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+
+      expectedArray[0][0] = new Pixel(186, 136, 0);
+      expectedArray[0][1] = new Pixel(0, 153, 213);
+      expectedArray[0][2] = new Pixel(253, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(0, 136, 228);
+
+      expectedArray[2][0] = new Pixel(245, 165, 136);
+      expectedArray[2][1] = new Pixel(159, 221, 0);
+      expectedArray[2][2] = new Pixel(93, 0, 234);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "levels-adjust executed successfully" + lineSeparator +
               "save executed successfully";
       assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
     } catch (Exception e) {
