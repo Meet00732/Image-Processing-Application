@@ -486,4 +486,28 @@ public class ImageControllerTest {
     assertTrue(model.getLog().contains("AddImage method is invoked!"));
   }
 
+  /**
+   * Test compressCommand.
+   */
+  @Test
+  public void testControllerCompressMethodMock() {
+    String inputData = "compress 50 test\\res\\nyc.png testNYC\nq";
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+    expectedResult = "compress executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    assertTrue(model.getLog().contains("compress method is invoked!"));
+  }
+
 }

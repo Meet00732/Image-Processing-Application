@@ -1,5 +1,7 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModel;
 import model.ImageModelInterface;
 
@@ -11,7 +13,7 @@ import model.ImageModelInterface;
  * The value component represents the brightness information in
  * an image while ignoring the color information.
  */
-public class ValueComponentCommand extends AbstractBaseCommand {
+public class ValueComponentCommand extends AbstractSplitCommand {
 
   /**
    * Constructs a new ValueComponentCommand with the
@@ -23,8 +25,10 @@ public class ValueComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to
    *                             save the value component.
    */
-  public ValueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public ValueComponentCommand(ImageModelInterface model, String imageName,
+                               String destinationImageName,
+                               Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -35,6 +39,6 @@ public class ValueComponentCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.valueComponentCommand(this.imageName, this.destinationImageName);
+    this.model.valueComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
   }
 }

@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import model.Image;
 import model.ImageModel;
 import model.ImageModelInterface;
@@ -244,28 +246,29 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "valueImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.valueComponentCommand(imageName, destinationImageName);
+    this.model.valueComponentCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 150, 150);
+    expectedArray[0][1] = new Pixel(180, 180, 180);
+    expectedArray[0][2] = new Pixel(255, 255, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(200, 200, 200);
+
+    expectedArray[2][0] = new Pixel(230, 230, 230);
+    expectedArray[2][1] = new Pixel(190, 190, 190);
+    expectedArray[2][2] = new Pixel(210, 210, 210);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(150, 150, 150);
-        expectedArray[0][1] = new Pixel(180, 180, 180);
-        expectedArray[0][2] = new Pixel(255, 255, 255);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(200, 200, 200);
-
-        expectedArray[2][0] = new Pixel(230, 230, 230);
-        expectedArray[2][1] = new Pixel(190, 190, 190);
-        expectedArray[2][2] = new Pixel(210, 210, 210);
 
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
@@ -284,7 +287,8 @@ public class ImageModelTest {
     this.model.addImage(imageName, this.image);
 
     String imageNotExist = "testImage2";
-    this.model.valueComponentCommand(imageNotExist, destinationImageName);
+    Optional<Double> splitPercentage = Optional.empty();
+    this.model.valueComponentCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -297,28 +301,29 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "intensityImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.intensityComponentCommand(imageName, destinationImageName);
+    this.model.intensityComponentCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(83, 83, 83);
+    expectedArray[0][1] = new Pixel(100, 100, 100);
+    expectedArray[0][2] = new Pixel(168, 168, 168);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(103, 103, 103);
+
+    expectedArray[2][0] = new Pixel(153, 153, 153);
+    expectedArray[2][1] = new Pixel(105, 105, 105);
+    expectedArray[2][2] = new Pixel(101, 101, 101);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(83, 83, 83);
-        expectedArray[0][1] = new Pixel(100, 100, 100);
-        expectedArray[0][2] = new Pixel(168, 168, 168);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(103, 103, 103);
-
-        expectedArray[2][0] = new Pixel(153, 153, 153);
-        expectedArray[2][1] = new Pixel(105, 105, 105);
-        expectedArray[2][2] = new Pixel(101, 101, 101);
 
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
@@ -335,9 +340,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "intensityImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
     String imageNotExist = "testImage2";
-    this.model.intensityComponentCommand(imageNotExist, destinationImageName);
+    this.model.intensityComponentCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -350,28 +356,29 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "lumaImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.lumaComponentCommand(imageName, destinationImageName);
+    this.model.lumaComponentCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(104, 104, 104);
+    expectedArray[0][1] = new Pixel(99, 99, 99);
+    expectedArray[0][2] = new Pixel(71, 71, 71);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(254, 254, 254);
+    expectedArray[1][2] = new Pixel(88, 88, 88);
+
+    expectedArray[2][0] = new Pixel(149, 149, 149);
+    expectedArray[2][1] = new Pixel(163, 163, 163);
+    expectedArray[2][2] = new Pixel(45, 45, 45);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(104, 104, 104);
-        expectedArray[0][1] = new Pixel(99, 99, 99);
-        expectedArray[0][2] = new Pixel(71, 71, 71);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(254, 254, 254);
-        expectedArray[1][2] = new Pixel(88, 88, 88);
-
-        expectedArray[2][0] = new Pixel(149, 149, 149);
-        expectedArray[2][1] = new Pixel(163, 163, 163);
-        expectedArray[2][2] = new Pixel(45, 45, 45);
-
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -387,9 +394,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "lumaImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
     String imageNotExist = "testImage2";
-    this.model.lumaComponentCommand(imageNotExist, destinationImageName);
+    this.model.lumaComponentCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -410,21 +418,21 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(200, 150, 50);
+    expectedArray[0][1] = new Pixel(50, 170, 230);
+    expectedArray[0][2] = new Pixel(255, 50, 255);
+
+    expectedArray[1][0] = new Pixel(50, 50, 50);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(60, 150, 250);
+
+    expectedArray[2][0] = new Pixel(255, 180, 150);
+    expectedArray[2][1] = new Pixel(175, 240, 50);
+    expectedArray[2][2] = new Pixel(125, 70, 260);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(200, 150, 50);
-        expectedArray[0][1] = new Pixel(50, 170, 230);
-        expectedArray[0][2] = new Pixel(255, 50, 255);
-
-        expectedArray[1][0] = new Pixel(50, 50, 50);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(60, 150, 250);
-
-        expectedArray[2][0] = new Pixel(255, 180, 150);
-        expectedArray[2][1] = new Pixel(175, 240, 50);
-        expectedArray[2][2] = new Pixel(125, 70, 260);
 
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
@@ -464,22 +472,21 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(100, 50, 0);
+    expectedArray[0][1] = new Pixel(0, 70, 130);
+    expectedArray[0][2] = new Pixel(200, 0, 205);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(205, 205, 205);
+    expectedArray[1][2] = new Pixel(0, 50, 150);
+
+    expectedArray[2][0] = new Pixel(180, 80, 50);
+    expectedArray[2][1] = new Pixel(75, 140, 0);
+    expectedArray[2][2] = new Pixel(25, 0, 160);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(100, 50, 0);
-        expectedArray[0][1] = new Pixel(0, 70, 130);
-        expectedArray[0][2] = new Pixel(200, 0, 205);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(205, 205, 205);
-        expectedArray[1][2] = new Pixel(0, 50, 150);
-
-        expectedArray[2][0] = new Pixel(180, 80, 50);
-        expectedArray[2][1] = new Pixel(75, 140, 0);
-        expectedArray[2][2] = new Pixel(25, 0, 160);
-
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -563,21 +570,21 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 100, 0);
+    expectedArray[0][1] = new Pixel(0, 120, 180);
+    expectedArray[0][2] = new Pixel(250, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(150, 100, 0);
-        expectedArray[0][1] = new Pixel(0, 120, 180);
-        expectedArray[0][2] = new Pixel(250, 0, 255);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(10, 100, 200);
-
-        expectedArray[2][0] = new Pixel(230, 130, 100);
-        expectedArray[2][1] = new Pixel(125, 190, 0);
-        expectedArray[2][2] = new Pixel(75, 20, 210);
 
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
@@ -650,30 +657,30 @@ public class ImageModelTest {
   public void testBlurCommand() {
     String imageName = "testImage";
     String destinationImageName = "blurImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.blurCommand(imageName, destinationImageName);
+    this.model.blurCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(53, 56, 38);
+    expectedArray[0][1] = new Pixel(83, 81, 121);
+    expectedArray[0][2] = new Pixel(80, 43, 127);
+
+    expectedArray[1][0] = new Pixel(87, 80, 56);
+    expectedArray[1][1] = new Pixel(125, 131, 147);
+    expectedArray[1][2] = new Pixel(83, 79, 151);
+
+    expectedArray[2][0] = new Pixel(89, 72, 41);
+    expectedArray[2][1] = new Pixel(102, 104, 83);
+    expectedArray[2][2] = new Pixel(52, 57, 93);
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(53, 56, 38);
-        expectedArray[0][1] = new Pixel(83, 81, 121);
-        expectedArray[0][2] = new Pixel(80, 43, 127);
-
-        expectedArray[1][0] = new Pixel(87, 80, 56);
-        expectedArray[1][1] = new Pixel(125, 131, 147);
-        expectedArray[1][2] = new Pixel(83, 79, 151);
-
-        expectedArray[2][0] = new Pixel(89, 72, 41);
-        expectedArray[2][1] = new Pixel(102, 104, 83);
-        expectedArray[2][2] = new Pixel(52, 57, 93);
 
         assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
         assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
@@ -689,10 +696,11 @@ public class ImageModelTest {
   public void testNoImageBlurComponent() {
     String imageName = "testImage";
     String destinationImageName = "blurImage";
-    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
+    this.model.addImage(imageName, this.image);
     String imageNotExist = "testImage2";
-    this.model.blurCommand(imageNotExist, destinationImageName);
+    this.model.blurCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -704,29 +712,31 @@ public class ImageModelTest {
   public void testSharpenCommand() {
     String imageName = "testImage";
     String destinationImageName = "sharpenImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.sharpenCommand(imageName, destinationImageName);
+    this.model.sharpenCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(165, 163, 0);
+    expectedArray[0][1] = new Pixel(174, 186, 255);
+    expectedArray[0][2] = new Pixel(219, 9, 255);
+
+    expectedArray[1][0] = new Pixel(15, 64, 13);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(64, 139, 255);
+
+    expectedArray[2][0] = new Pixel(255, 199, 58);
+    expectedArray[2][1] = new Pixel(218, 255, 137);
+    expectedArray[2][2] = new Pixel(94, 113, 255);
+
+
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(165, 163, 0);
-        expectedArray[0][1] = new Pixel(174, 186, 255);
-        expectedArray[0][2] = new Pixel(219, 9, 255);
-
-        expectedArray[1][0] = new Pixel(15, 64, 13);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(64, 139, 255);
-
-        expectedArray[2][0] = new Pixel(255, 199, 58);
-        expectedArray[2][1] = new Pixel(218, 255, 137);
-        expectedArray[2][2] = new Pixel(94, 113, 255);
 
         assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
         assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
@@ -743,10 +753,11 @@ public class ImageModelTest {
   public void testNoImageSharpenComponent() {
     String imageName = "testImage";
     String destinationImageName = "sharpenImage";
+    Optional<Double> splitPercentage = Optional.empty();
     this.model.addImage(imageName, this.image);
 
     String imageNotExist = "testImage2";
-    this.model.sharpenCommand(imageNotExist, destinationImageName);
+    this.model.sharpenCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -758,30 +769,30 @@ public class ImageModelTest {
   public void testSepiaCommand() {
     String imageName = "testImage";
     String destinationImageName = "sepiaImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.sepiaCommand(imageName, destinationImageName);
+    this.model.sepiaCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(135, 120, 94);
+    expectedArray[0][1] = new Pixel(126, 112, 87);
+    expectedArray[0][2] = new Pixel(146, 130, 101);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 238);
+    expectedArray[1][2] = new Pixel(118, 105, 82);
+
+    expectedArray[2][0] = new Pixel(209, 186, 145);
+    expectedArray[2][1] = new Pixel(195, 173, 135);
+    expectedArray[2][2] = new Pixel(84, 75, 58);
+
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(135, 120, 94);
-        expectedArray[0][1] = new Pixel(126, 112, 87);
-        expectedArray[0][2] = new Pixel(146, 130, 101);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 238);
-        expectedArray[1][2] = new Pixel(118, 105, 82);
-
-        expectedArray[2][0] = new Pixel(209, 186, 145);
-        expectedArray[2][1] = new Pixel(195, 173, 135);
-        expectedArray[2][2] = new Pixel(84, 75, 58);
-
         assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
         assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
         assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
@@ -796,10 +807,11 @@ public class ImageModelTest {
   public void testNoImageSepiaComponent() {
     String imageName = "testImage";
     String destinationImageName = "sepiaImage";
+    Optional<Double> splitPercentage = Optional.empty();
     this.model.addImage(imageName, this.image);
 
     String imageNotExist = "testImage2";
-    this.model.sepiaCommand(imageNotExist, destinationImageName);
+    this.model.sepiaCommand(imageNotExist, destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -819,24 +831,23 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(250, 0, 255);
+    expectedArray[0][1] = new Pixel(0, 120, 180);
+    expectedArray[0][2] = new Pixel(150, 100, 0);
+
+
+    expectedArray[1][0] = new Pixel(10, 100, 200);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(0, 0, 0);
+
+
+    expectedArray[2][0] = new Pixel(75, 20, 210);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(230, 130, 100);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(250, 0, 255);
-        expectedArray[0][1] = new Pixel(0, 120, 180);
-        expectedArray[0][2] = new Pixel(150, 100, 0);
-
-
-        expectedArray[1][0] = new Pixel(10, 100, 200);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(0, 0, 0);
-
-
-        expectedArray[2][0] = new Pixel(75, 20, 210);
-        expectedArray[2][1] = new Pixel(125, 190, 0);
-        expectedArray[2][2] = new Pixel(230, 130, 100);
-
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -874,22 +885,21 @@ public class ImageModelTest {
     int width = testImage.getPixels().length;
     int height = testImage.getPixels()[0].length;
 
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(230, 130, 100);
+    expectedArray[0][1] = new Pixel(125, 190, 0);
+    expectedArray[0][2] = new Pixel(75, 20, 210);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(150, 100, 0);
+    expectedArray[2][1] = new Pixel(0, 120, 180);
+    expectedArray[2][2] = new Pixel(250, 0, 255);
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        Pixel[][] expectedArray = new Pixel[3][3];
-        expectedArray[0][0] = new Pixel(230, 130, 100);
-        expectedArray[0][1] = new Pixel(125, 190, 0);
-        expectedArray[0][2] = new Pixel(75, 20, 210);
-
-        expectedArray[1][0] = new Pixel(0, 0, 0);
-        expectedArray[1][1] = new Pixel(255, 255, 255);
-        expectedArray[1][2] = new Pixel(10, 100, 200);
-
-        expectedArray[2][0] = new Pixel(150, 100, 0);
-        expectedArray[2][1] = new Pixel(0, 120, 180);
-        expectedArray[2][2] = new Pixel(250, 0, 255);
-
-
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -962,16 +972,43 @@ public class ImageModelTest {
     String originalImageName = "testImage";
     String redImageName = "redComponentImage";
     String finalImageName = "valueOfRedComponentImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(originalImageName, this.image);
     this.model.redComponentCommand(originalImageName, redImageName);
-    this.model.valueComponentCommand(redImageName, finalImageName);
-
-    Image testImage = this.model.getImage(finalImageName);
-    int width = testImage.getPixels().length;
-    int height = testImage.getPixels()[0].length;
+    Image redImage = this.model.getImage(redImageName);
+    int width = redImage.getPixels().length;
+    int height = redImage.getPixels()[0].length;
 
     Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 0, 0);
+    expectedArray[0][1] = new Pixel(0, 0, 0);
+    expectedArray[0][2] = new Pixel(250, 0, 0);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 0, 0);
+    expectedArray[1][2] = new Pixel(10, 0, 0);
+
+    expectedArray[2][0] = new Pixel(230, 0, 0);
+    expectedArray[2][1] = new Pixel(125, 0, 0);
+    expectedArray[2][2] = new Pixel(75, 0, 0);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), redImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), redImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), redImage.getPixels()[i][j].getBlue());
+      }
+    }
+
+    this.model.valueComponentCommand(redImageName, finalImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(finalImageName);
+    width = testImage.getPixels().length;
+    height = testImage.getPixels()[0].length;
+
+    expectedArray = new Pixel[3][3];
 
     expectedArray[0][0] = new Pixel(150, 150, 150);
     expectedArray[0][1] = new Pixel(0, 0, 0);
@@ -1007,13 +1044,38 @@ public class ImageModelTest {
 
     this.model.addImage(imageName, this.image);
     this.model.blueComponentCommand(imageName, blueImageName);
+    Image blueImage = this.model.getImage(blueImageName);
+    int width = blueImage.getPixels().length;
+    int height = blueImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(0, 0, 0);
+    expectedArray[0][1] = new Pixel(0, 0, 180);
+    expectedArray[0][2] = new Pixel(0, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(0, 0, 255);
+    expectedArray[1][2] = new Pixel(0, 0, 200);
+
+    expectedArray[2][0] = new Pixel(0, 0, 100);
+    expectedArray[2][1] = new Pixel(0, 0, 0);
+    expectedArray[2][2] = new Pixel(0, 0, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), blueImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), blueImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), blueImage.getPixels()[i][j].getBlue());
+      }
+    }
+
     this.model.brightenCommand(blueImageName, brightenedImageName, increment);
 
     Image testImage = this.model.getImage(brightenedImageName);
-    int width = testImage.getPixels().length;
-    int height = testImage.getPixels()[0].length;
+    width = testImage.getPixels().length;
+    height = testImage.getPixels()[0].length;
 
-    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray = new Pixel[3][3];
 
     expectedArray[0][0] = new Pixel(35, 35, 35);
     expectedArray[0][1] = new Pixel(35, 35, 215);
@@ -1048,13 +1110,39 @@ public class ImageModelTest {
 
     this.model.addImage(imageName, this.image);
     this.model.horizontalFlipCommand(imageName, horizontalFlipImageName);
-    this.model.verticalFlipCommand(horizontalFlipImageName, finalFlippedImageName);
+    Image horizontalImage = this.model.getImage(horizontalFlipImageName);
 
-    Image testImage = this.model.getImage(finalFlippedImageName);
-    int width = testImage.getPixels().length;
-    int height = testImage.getPixels()[0].length;
+    int width = horizontalImage.getPixels().length;
+    int height = horizontalImage.getPixels()[0].length;
 
     Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(230, 130, 100);
+    expectedArray[0][1] = new Pixel(125, 190, 0);
+    expectedArray[0][2] = new Pixel(75, 20, 210);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(150, 100, 0);
+    expectedArray[2][1] = new Pixel(0, 120, 180);
+    expectedArray[2][2] = new Pixel(250, 0, 255);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), horizontalImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), horizontalImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), horizontalImage.getPixels()[i][j].getBlue());
+      }
+    }
+
+    this.model.verticalFlipCommand(horizontalFlipImageName, finalFlippedImageName);
+    Image testImage = this.model.getImage(finalFlippedImageName);
+    width = testImage.getPixels().length;
+    height = testImage.getPixels()[0].length;
+
+    expectedArray = new Pixel[3][3];
     expectedArray[0][0] = new Pixel(75, 20, 210);
     expectedArray[0][1] = new Pixel(125, 190, 0);
     expectedArray[0][2] = new Pixel(230, 130, 100);
@@ -1129,16 +1217,43 @@ public class ImageModelTest {
     String imageName = "testImage";
     String lumaImageName = "lumaImage";
     String sepiaImageName = "sepiaFromLumaImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.lumaComponentCommand(imageName, lumaImageName);
-    this.model.sepiaCommand(lumaImageName, sepiaImageName);
-
-    Image testImage = this.model.getImage(sepiaImageName);
-    int width = testImage.getPixels().length;
-    int height = testImage.getPixels()[0].length;
+    this.model.lumaComponentCommand(imageName, lumaImageName, splitPercentage);
+    Image lumaImage = this.model.getImage(lumaImageName);
+    int width = lumaImage.getPixels().length;
+    int height = lumaImage.getPixels()[0].length;
 
     Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(104, 104, 104);
+    expectedArray[0][1] = new Pixel(99, 99, 99);
+    expectedArray[0][2] = new Pixel(71, 71, 71);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(254, 254, 254);
+    expectedArray[1][2] = new Pixel(88, 88, 88);
+
+    expectedArray[2][0] = new Pixel(149, 149, 149);
+    expectedArray[2][1] = new Pixel(163, 163, 163);
+    expectedArray[2][2] = new Pixel(45, 45, 45);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), lumaImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), lumaImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), lumaImage.getPixels()[i][j].getBlue());
+      }
+    }
+
+    this.model.sepiaCommand(lumaImageName, sepiaImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(sepiaImageName);
+    width = testImage.getPixels().length;
+    height = testImage.getPixels()[0].length;
+
+    expectedArray = new Pixel[3][3];
     expectedArray[0][0] = new Pixel(140, 125, 97);
     expectedArray[0][1] = new Pixel(133, 119, 92);
     expectedArray[0][2] = new Pixel(95, 85, 66);
@@ -1161,5 +1276,4 @@ public class ImageModelTest {
       }
     }
   }
-
 }

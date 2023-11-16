@@ -1,6 +1,7 @@
 package controller.commands;
 
-import model.ImageModel;
+import java.util.Optional;
+
 import model.ImageModelInterface;
 
 /**
@@ -9,8 +10,7 @@ import model.ImageModelInterface;
  * and saving the result as a new image using an ImageModel.
  * Sepia is a brownish-gray tint that gives images an old-fashioned, vintage appearance.
  */
-public class SepiaCommand extends AbstractBaseCommand {
-
+public class SepiaCommand extends AbstractSplitCommand {
   /**
    * Constructs a new SepiaCommand with the given ImageModel, source image name,
    * and destination image name.
@@ -20,9 +20,11 @@ public class SepiaCommand extends AbstractBaseCommand {
    *                             the sepia effect will be applied.
    * @param destinationImageName The name of the destination image to save
    *                             the sepia-processed image.
+   * @param splitPercentage      The Percentage value in which image to split.
    */
-  public SepiaCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public SepiaCommand(ImageModelInterface model, String imageName, String destinationImageName,
+                      Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -33,6 +35,6 @@ public class SepiaCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.sepiaCommand(this.imageName, this.destinationImageName);
+    this.model.sepiaCommand(this.imageName, this.destinationImageName, splitPercentage);
   }
 }

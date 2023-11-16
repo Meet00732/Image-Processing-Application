@@ -1,5 +1,7 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModel;
 import model.ImageModelInterface;
 
@@ -9,7 +11,7 @@ import model.ImageModelInterface;
  * and saving the result as a new image using an ImageModel.
  * Sharpening enhances the edges and details in an image, making it appear more focused.
  */
-public class SharpenCommand extends AbstractBaseCommand {
+public class SharpenCommand extends AbstractSplitCommand {
 
   /**
    * Constructs a new SharpenCommand with the given ImageModel, source image name,
@@ -21,8 +23,9 @@ public class SharpenCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save
    *                             the sharpened image.
    */
-  public SharpenCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public SharpenCommand(ImageModelInterface model, String imageName, String destinationImageName,
+                        Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -33,6 +36,6 @@ public class SharpenCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.sharpenCommand(this.imageName, this.destinationImageName);
+    this.model.sharpenCommand(this.imageName, this.destinationImageName, this.splitPercentage);
   }
 }

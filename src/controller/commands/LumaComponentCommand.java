@@ -1,5 +1,7 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModel;
 import model.ImageModelInterface;
 
@@ -12,7 +14,7 @@ import model.ImageModelInterface;
  * @author Your Name
  * @version 1.0
  */
-public class LumaComponentCommand extends AbstractBaseCommand {
+public class LumaComponentCommand extends AbstractSplitCommand {
 
   /**
    * Constructs a new LumaComponentCommand with the given
@@ -25,8 +27,10 @@ public class LumaComponentCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image
    *                             to save the luma component.
    */
-  public LumaComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public LumaComponentCommand(ImageModelInterface model, String imageName,
+                              String destinationImageName,
+                              Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -37,6 +41,6 @@ public class LumaComponentCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.lumaComponentCommand(this.imageName, this.destinationImageName);
+    this.model.lumaComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
   }
 }

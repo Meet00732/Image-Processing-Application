@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 /**
  * The ImageModelInterface is an interface that defines a set of
  * methods for managing and manipulating images.
@@ -53,7 +55,8 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image.
    */
-  void valueComponentCommand(String imageName, String destinationImageName);
+  void valueComponentCommand(String imageName, String destinationImageName,
+                             Optional<Double> splitPercentage);
 
   /**
    * Creates a new image where each pixel's color components have the
@@ -62,8 +65,9 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             grayscale intensity image will be stored.
+   * @param splitPercentage
    */
-  void intensityComponentCommand(String imageName, String destinationImageName);
+  void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
   /**
    * Creates a new image where each pixel's color components are
@@ -72,8 +76,9 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the luma image will be stored.
+   * @param splitPercentage
    */
-  void lumaComponentCommand(String imageName, String destinationImageName);
+  void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
   /**
    * Brightens the image by adding a specified increment to the
@@ -104,8 +109,9 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the blurred image will be stored.
+   * @param splitPercentage
    */
-  void blurCommand(String imageName, String destinationImageName);
+  void blurCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
   /**
    * Applies a sharpening filter to the image, creating a new image with enhanced sharpness.
@@ -113,8 +119,9 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the sharpened image will be stored.
+   * @param splitPercentage
    */
-  void sharpenCommand(String imageName, String destinationImageName);
+  void sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
 
   /**
@@ -123,8 +130,9 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             sepia-toned image will be stored.
+   * @param splitPercentage
    */
-  void sepiaCommand(String imageName, String destinationImageName);
+  void sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
   /**
    * Flips the specified image vertically and stores the result in the destination image.
@@ -171,5 +179,5 @@ public interface ImageModelInterface {
   void rgbSplitCommand(String redImageName, String greenImageName,
                        String blueImageName, String imageName);
 
-  void compressImage(String imageName, String destinationImageName, int percentage);
+  void compressImage(String imageName, String destinationImageName, double percentage);
 }

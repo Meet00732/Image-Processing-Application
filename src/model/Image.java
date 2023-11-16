@@ -1,5 +1,7 @@
 package model;
 
+import model.Strategy.SplitStrategy;
+
 /**
  * This class represents a two-dimensional array of `Pixel`
  * objects, forming an image. It provides methods to access and
@@ -279,6 +281,10 @@ public class Image {
             {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8}
     };
     return applyKernel(kernel);
+  }
+
+  public Image applyFilter(SplitStrategy strategy) {
+    return strategy.apply(this);
   }
 
 }

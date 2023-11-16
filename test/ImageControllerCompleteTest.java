@@ -1221,4 +1221,113 @@ public class ImageControllerCompleteTest {
     }
   }
 
+
+  /**
+   * test compressCommand.
+   */
+  @Test
+  public void testCompressCommandPercentage60() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testCompressImage";
+    int percentage = 60;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "compress" + " " + percentage + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(159, 135, 0);
+      expectedArray[0][1] = new Pixel(0, 101, 217);
+      expectedArray[0][2] = new Pixel(210, 0, 196);
+
+      expectedArray[1][0] = new Pixel(43, 18, 0);
+      expectedArray[1][1] = new Pixel(245, 219, 217);
+      expectedArray[1][2] = new Pixel(3, 0, 196);
+
+      expectedArray[2][0] = new Pixel(142, 80, 63);
+      expectedArray[2][1] = new Pixel(142, 164, 13);
+      expectedArray[2][2] = new Pixel(95, 42, 121);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "compress executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test compressCommand.
+   */
+  @Test
+  public void testCompressCommandPercentage30() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testCompressImage";
+    int percentage = 30;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "compress" + " " + percentage + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 91, 0);
+      expectedArray[0][1] = new Pixel(0, 111, 201);
+      expectedArray[0][2] = new Pixel(250, 0, 243);
+
+      expectedArray[1][0] = new Pixel(0, 8, 16);
+      expectedArray[1][1] = new Pixel(255, 255, 233);
+      expectedArray[1][2] = new Pixel(9, 66, 211);
+
+      expectedArray[2][0] = new Pixel(230, 145, 113);
+      expectedArray[2][1] = new Pixel(125, 174, 13);
+      expectedArray[2][2] = new Pixel(37, 5, 196);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "compress executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
 }

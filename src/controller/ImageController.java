@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Optional;
 
 import controller.commands.BlueComponentCommand;
 import controller.commands.BlurCommand;
@@ -95,7 +96,7 @@ public class ImageController implements ImageControllerInterface {
   public boolean processor(String command) {
     boolean status = false;
     CommandInterface feature;
-
+    Optional<Double> splitPercentage;
     try {
 
       String[] tokens = command.split(" ");
@@ -111,17 +112,29 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "blur":
-          feature = new BlurCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new BlurCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
         case "sharpen":
-          feature = new SharpenCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new SharpenCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
         case "sepia":
-          feature = new SepiaCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new SepiaCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
@@ -141,17 +154,29 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "value-component":
-          feature = new ValueComponentCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new ValueComponentCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
         case "intensity-component":
-          feature = new IntensityComponentCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new IntensityComponentCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
         case "luma-component":
-          feature = new LumaComponentCommand(model, tokens[1], tokens[2]);
+          splitPercentage = Optional.empty();
+          if (tokens.length > 3) {
+            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
+          }
+          feature = new LumaComponentCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
@@ -186,7 +211,7 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "compress":
-          int percentage = Integer.parseInt(tokens[1]);
+          double percentage = Double.parseDouble(tokens[1]);
           feature = new CompressCommand(model, percentage, tokens[2], tokens[3]);
           status = feature.execute();
           break;
@@ -212,7 +237,8 @@ public class ImageController implements ImageControllerInterface {
    *         successfully, false otherwise.
    * @throws FileNotFoundException when an invalid path is given.
    */
-  private boolean runScript(String path) throws FileNotFoundException {
+  @Override
+  public boolean runScript(String path) throws FileNotFoundException {
     boolean status = false;
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
       String line;

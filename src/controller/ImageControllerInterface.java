@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.FileNotFoundException;
+
 /**
  * The ImageControllerInterface defines the contract for an image controller in the
  * context of an image processing application. It specifies two essential methods
@@ -26,4 +28,15 @@ public interface ImageControllerInterface {
    * @return True if the command was executed successfully, false otherwise.
    */
   boolean processor(String command);
+
+  /**
+   * Executes a script file containing a sequence of
+   * image processing commands.
+   *
+   * @param path The path to the script file.
+   * @return True if all commands in the script were executed
+   *         successfully, false otherwise.
+   * @throws FileNotFoundException when an invalid path is given.
+   */
+  public boolean runScript(String path) throws FileNotFoundException;
 }

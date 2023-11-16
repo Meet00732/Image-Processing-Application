@@ -13,6 +13,14 @@ save res\imagesPNG\testMeet.png testMeet
 compress 50 testMeet compressedImgMeet50
 save res\imagesPNG\compressedMeet.png compressedImgMeet50
 
+load res\imagesPNG\spider.jpg testSpider
+save res\imagesPNG\testSpider.png testSpider
+compress 50 testSpider compressedImgSpider50
+save res\imagesPNG\compressedSpider50.png compressedImgSpider50
+
+load res\imagesPNG\testSpider.png testSpider
+compress 100 testSpider compressedImgSpider100
+save res\imagesPNG\compressedSpider100.png compressedImgSpider100
 
 blur testNYC testBlur
 save res\imagesPNG\blurNYC.png testBlur
@@ -72,3 +80,24 @@ save res\imagesPNG\testHorizontalNYC.png testHorizontalNYC
 save res\imagesPNG\testNYCJPG.jpg testNYC
 save res\imagesPNG\testNYCJPEG.jpeg testNYC
 save res\imagesPNG\testNYCPPM.ppm testNYC
+
+
+load res\nyc.png testNYC
+sepia testNYC testSepiaSplit split 40
+save res\imagesPNG\sepiaSplitNYC.png testSepiaSplit
+
+load res\nyc.png testNYC
+blur testNYC testBlurSplit split 50
+save res\imagesPNG\blurSplitNYC.png testBlurSplit
+
+load res\nyc.png testNYC
+sharpen testNYC testSharpenSplit split 50
+save res\imagesPNG\sharpenSplitNYC.png testSharpenSplit
+
+load res\nyc.png testNYC
+value-component testNYC testValueSplit split 50
+save res\imagesPNG\valueSplitNYC.png testValueSplit
+
+load res\nyc.png testNYC
+intensity-component testNYC testIntensitySplit split 50
+save res\imagesPNG\intensitySplitNYC.png testIntensitySplit

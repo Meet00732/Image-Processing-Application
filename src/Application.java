@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+
 import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.ImageModel;
@@ -12,12 +14,17 @@ import view.ImageViewInterface;
  * and starts the image processing.
  */
 public class Application {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws FileNotFoundException {
     ImageViewInterface view = new ImageView();
     ImageModelInterface model = new ImageModel();
 
     ImageControllerInterface controller = new ImageController(view,model);
 
-    controller.process();
+    if (args.length == 2 && args[0].equals("-file")) {
+      controller.runScript(args[1]);
+    }
+    else {
+      controller.process();
+    }
   }
 }

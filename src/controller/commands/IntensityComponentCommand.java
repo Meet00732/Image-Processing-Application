@@ -1,5 +1,7 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModel;
 import model.ImageModelInterface;
 
@@ -10,7 +12,7 @@ import model.ImageModelInterface;
  * and saving the result as a new image using an ImageModel.
  * The intensity component represents the luminance or brightness information of an image.
  */
-public class IntensityComponentCommand extends AbstractBaseCommand {
+public class IntensityComponentCommand extends AbstractSplitCommand {
 
   /**
    * The IntensityComponentCommand class is a concrete
@@ -19,8 +21,10 @@ public class IntensityComponentCommand extends AbstractBaseCommand {
    * the result as a new image using an ImageModel. The intensity component
    * represents the luminance or brightness information of an image.
    */
-  public IntensityComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public IntensityComponentCommand(ImageModelInterface model, String imageName,
+                                   String destinationImageName,
+                                   Optional <Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -32,6 +36,6 @@ public class IntensityComponentCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.intensityComponentCommand(this.imageName, this.destinationImageName);
+    this.model.intensityComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
   }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 public class MockModel implements ImageModelInterface {
 
   private static StringBuilder log = new StringBuilder();
@@ -29,17 +31,18 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void valueComponentCommand(String imageName, String destinationImageName) {
+  public void valueComponentCommand(String imageName, String destinationImageName,
+                                    Optional<Double> splitPercentage) {
     log.append("valueComponentCommand method is invoked!");
   }
 
   @Override
-  public void intensityComponentCommand(String imageName, String destinationImageName) {
+  public void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("intensityComponentCommand method is invoked!");
   }
 
   @Override
-  public void lumaComponentCommand(String imageName, String destinationImageName) {
+  public void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("lumaComponentCommand method is invoked!");
   }
 
@@ -54,17 +57,17 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void blurCommand(String imageName, String destinationImageName) {
+  public void blurCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("blurCommand method is invoked!");
   }
 
   @Override
-  public void sharpenCommand(String imageName, String destinationImageName) {
+  public void sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("sharpenCommand method is invoked!");
   }
 
   @Override
-  public void sepiaCommand(String imageName, String destinationImageName) {
+  public void sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("sepiaCommand method is invoked!");
   }
 
@@ -97,7 +100,7 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void compressImage(String imageName, String destinationImageName, int percentage) {
+  public void compressImage(String imageName, String destinationImageName, double percentage) {
     log.append("compress method is invoked!");
   }
 

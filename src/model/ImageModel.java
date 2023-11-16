@@ -2,6 +2,16 @@ package model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import model.Strategy.IntensityStrategy;
+import model.Strategy.LumaStrategy;
+import model.Strategy.SharpenStrategy;
+import model.Strategy.SplitDecorator;
+import model.Strategy.SplitStrategy;
+import model.Strategy.BlurStrategy;
+import model.Strategy.SepiaStrategy;
+import model.Strategy.ValueStrategy;
 
 /**
  * This class represents the model for managing and manipulating images.
@@ -94,12 +104,19 @@ public class ImageModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void valueComponentCommand(String imageName, String destinationImageName) {
+  public void valueComponentCommand(String imageName, String destinationImageName,
+                                    Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.valueComponent();
+    SplitStrategy valueStrategy = new ValueStrategy();
+
+    if (splitPercentage.isPresent()) {
+      valueStrategy = new SplitDecorator(valueStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(valueStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -110,14 +127,21 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             grayscale intensity image will be stored.
+   * @param splitPercentage
    */
   @Override
-  public void intensityComponentCommand(String imageName, String destinationImageName) {
+  public void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.intensityComponent();
+    SplitStrategy intensityStrategy = new IntensityStrategy();
+
+    if (splitPercentage.isPresent()) {
+      intensityStrategy = new SplitDecorator(intensityStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(intensityStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -128,14 +152,22 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the luma image will be stored.
+   * @param splitPercentage
    */
   @Override
-  public void lumaComponentCommand(String imageName, String destinationImageName) {
+  public void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
+
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.lumaComponent();
+    SplitStrategy lumaStrategy = new LumaStrategy();
+
+    if (splitPercentage.isPresent()) {
+      lumaStrategy = new SplitDecorator(lumaStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(lumaStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -222,14 +254,22 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the blurred image will be stored.
+   * @param splitPercentage
    */
   @Override
-  public void blurCommand(String imageName, String destinationImageName) {
+  public void blurCommand(String imageName, String destinationImageName,
+                          Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.blur();
+    SplitStrategy blurStrategy = new BlurStrategy();
+
+    if (splitPercentage.isPresent()) {
+      blurStrategy = new SplitDecorator(blurStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(blurStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -240,14 +280,21 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the sharpened image will be stored.
+   * @param splitPercentage
    */
   @Override
-  public void sharpenCommand(String imageName, String destinationImageName) {
+  public void sharpenCommand(String imageName, String destinationImageName,
+                             Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.sharpen();
+    SplitStrategy sharpenStrategy = new SharpenStrategy();
+
+    if (splitPercentage.isPresent()) {
+      sharpenStrategy = new SplitDecorator(sharpenStrategy, splitPercentage.get());
+    }
+    Image newImage = image.applyFilter(sharpenStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -257,14 +304,22 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             sepia-toned image will be stored.
+   * @param splitPercentage      The Percentage value in which image to split.
    */
   @Override
-  public void sepiaCommand(String imageName, String destinationImageName) {
+  public void sepiaCommand(String imageName, String destinationImageName,
+                           Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image newImage = image.sepia();
+    SplitStrategy sepiaStrategy = new SepiaStrategy();
+
+    if (splitPercentage.isPresent()) {
+      sepiaStrategy = new SplitDecorator(sepiaStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(sepiaStrategy);
     this.addImage(destinationImageName, newImage);
   }
 
@@ -320,16 +375,38 @@ public class ImageModel implements ImageModelInterface {
   }
 
   @Override
-  public void compressImage(String imageName, String destinationImageName, int percentage) {
+  public void compressImage(String imageName, String destinationImageName, double percentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
-    Image image = this.imageMap.get(imageName);
 
+    if (percentage < 0 || percentage > 100) {
+      throw new IllegalArgumentException("Invalid percentage entered!");
+    }
+
+    Image image = this.imageMap.get(imageName);
+    Pixel[][] pixels = image.getPixels();
     int width = image.getPixels().length;
     int height = image.getPixels()[0].length;
 
-    Pixel[][] pixels = image.getPixels();
+    double[][][] channels = extractColorChannels(pixels);
+    HaarWaveletTransform haarWaveletTransform = new HaarWaveletTransform();
+
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = haarWaveletTransform.haar(channels[i]);
+    }
+    double threshold = haarWaveletTransform.calculateThreshold(channels, percentage);
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = this.filter(channels[i], threshold);
+      channels[i] = haarWaveletTransform.inverseHaar(channels[i], width, height);
+    }
+    Image compressedImage = imageFromChannels(channels);
+    this.addImage(destinationImageName, compressedImage);
+  }
+
+  private double[][][] extractColorChannels(Pixel[][] pixels) {
+    int width = pixels.length;
+    int height = pixels[0].length;
     double[][] redChannel = new double[width][height];
     double[][] greenChannel = new double[width][height];
     double[][] blueChannel = new double[width][height];
@@ -342,41 +419,38 @@ public class ImageModel implements ImageModelInterface {
         blueChannel[i][j] = pixel.getBlue();
       }
     }
+    return new double[][][]{redChannel, greenChannel, blueChannel};
+  }
 
-    int originalWidth = redChannel.length;
-    int originalHeight = redChannel[0].length;
-
-    redChannel = HaarWavelet.haar(redChannel);
-    greenChannel = HaarWavelet.haar(greenChannel);
-    blueChannel = HaarWavelet.haar(blueChannel);
-
-
-    double threshold = HaarWavelet.calculateThreshold(redChannel, greenChannel, blueChannel, percentage);
-
-    redChannel = HaarWavelet.truncate(redChannel, threshold);
-    greenChannel = HaarWavelet.truncate(greenChannel, threshold);
-    blueChannel = HaarWavelet.truncate(blueChannel, threshold);
-
-
-    redChannel = HaarWavelet.inverseHaar(redChannel, originalWidth, originalHeight);
-    greenChannel = HaarWavelet.inverseHaar(greenChannel, originalWidth, originalHeight);
-    blueChannel = HaarWavelet.inverseHaar(blueChannel, originalWidth, originalHeight);
-
+  private Image imageFromChannels(double[][][] channels) {
+    int width = channels[0].length;
+    int height = channels[0][0].length;
     Pixel[][] compressedPixels = new Pixel[width][height];
+
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        int red = (int) Math.round(Math.max(0, Math.min(255, redChannel[i][j])));
-        int green = (int) Math.round(Math.max(0, Math.min(255, greenChannel[i][j])));
-        int blue = (int) Math.round(Math.max(0, Math.min(255, blueChannel[i][j])));
-
+        int red = (int) channels[0][i][j];
+        int green = (int) channels[1][i][j];
+        int blue = (int) channels[2][i][j];
         compressedPixels[i][j] = new Pixel(red, green, blue);
       }
     }
-
-    Image compressedImage = new Image(compressedPixels);
-    this.addImage(destinationImageName, compressedImage);
+    return new Image(compressedPixels);
   }
 
+  private double[][] filter(double[][] channel, double threshold) {
+    int width = channel.length;
+    int height = channel[0].length;
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        if (Math.abs(channel[i][j]) < threshold) {
+          channel[i][j] = 0.0;
+        }
+      }
+    }
+    return channel;
+  }
 
   /**
    * Checks whether an image with the specified name exists in the image map.
