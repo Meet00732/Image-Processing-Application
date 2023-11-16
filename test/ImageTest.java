@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import model.Image;
 import model.ImageModel;
 import model.Pixel;
@@ -667,4 +669,49 @@ public class ImageTest {
       }
     }
   }
+
+  /**
+   * Test for multiple commands. (luma + sepia)
+   */
+  @Test
+  public void testHistogram() {
+    int[][] result = this.image.histogram();
+
+    int[][] expectedArray = new int[3][256];
+    for (int[] row : expectedArray) {
+      Arrays.fill(row, 0);
+    }
+
+    expectedArray[0][0] = 2;
+    expectedArray[0][10] = 1;
+    expectedArray[0][75] = 1;
+    expectedArray[0][125] = 1;
+    expectedArray[0][150] = 1;
+    expectedArray[0][230] = 1;
+    expectedArray[0][250] = 1;
+    expectedArray[0][255] = 1;
+
+    expectedArray[1][0] = 2;
+    expectedArray[1][20] = 1;
+    expectedArray[1][100] = 2;
+    expectedArray[1][120] = 1;
+    expectedArray[1][130] = 1;
+    expectedArray[1][190] = 1;
+    expectedArray[1][255] = 1;
+
+    expectedArray[2][0] = 3;
+    expectedArray[2][100] = 1;
+    expectedArray[2][180] = 1;
+    expectedArray[2][200] = 1;
+    expectedArray[2][210] = 1;
+    expectedArray[2][255] = 2;
+
+
+    for (int i = 0; i < expectedArray.length; i++) {
+      for (int j = 0; j < expectedArray[i].length; j++) {
+        assertEquals(expectedArray[i][j], result[i][j]);
+      }
+    }
+  }
+
 }

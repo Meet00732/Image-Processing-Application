@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import model.Image;
@@ -278,6 +279,44 @@ public class ImageModelTest {
   }
 
   /**
+   * Test valueComponent with splitPercentage.
+   */
+  @Test
+  public void testValueComponentWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "valueImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.of(50.0);
+
+    this.model.valueComponentCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 150, 150);
+    expectedArray[0][1] = new Pixel(180, 180, 180);
+    expectedArray[0][2] = new Pixel(255, 255, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
    * Test valueComponent invalid image.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -333,6 +372,47 @@ public class ImageModelTest {
   }
 
   /**
+   * Test intensityComponent with splitPercentage.
+   */
+  @Test
+  public void testIntensityComponentWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "intensityImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.of(40.5);
+
+    this.model.intensityComponentCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(83, 83, 83);
+    expectedArray[0][1] = new Pixel(100, 100, 100);
+    expectedArray[0][2] = new Pixel(168, 168, 168);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+
+
+  /**
    * Test intensityComponent invalid image.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -379,6 +459,46 @@ public class ImageModelTest {
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+
+  /**
+   * Test lumaComponent with splitPercentage.
+   */
+  @Test
+  public void testLumaComponentWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "lumaImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.of(20.5);
+
+    this.model.lumaComponentCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 100, 0);
+    expectedArray[0][1] = new Pixel(0, 120, 180);
+    expectedArray[0][2] = new Pixel(250, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -689,6 +809,46 @@ public class ImageModelTest {
     }
   }
 
+
+  /**
+   * Test blurCommand with splitPercentage.
+   */
+  @Test
+  public void testBlurCommandWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "blurImage";
+    Optional<Double> splitPercentage = Optional.of(70.3);
+
+    this.model.addImage(imageName, this.image);
+    this.model.blurCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(53, 56, 38);
+    expectedArray[0][1] = new Pixel(83, 81, 121);
+    expectedArray[0][2] = new Pixel(80, 43, 127);
+
+    expectedArray[1][0] = new Pixel(87, 80, 56);
+    expectedArray[1][1] = new Pixel(125, 131, 147);
+    expectedArray[1][2] = new Pixel(83, 79, 151);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
   /**
    * Test blur invalid image.
    */
@@ -697,6 +857,21 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "blurImage";
     Optional<Double> splitPercentage = Optional.empty();
+
+    this.model.addImage(imageName, this.image);
+    String imageNotExist = "testImage2";
+    this.model.blurCommand(imageNotExist, destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * Test blur invalid image with splitPercentage.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testNoImageBlurComponentWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "blurImage";
+    Optional<Double> splitPercentage = Optional.of(40.0);
 
     this.model.addImage(imageName, this.image);
     String imageNotExist = "testImage2";
@@ -735,16 +910,55 @@ public class ImageModelTest {
     expectedArray[2][2] = new Pixel(94, 113, 255);
 
 
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
 
-        assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
-        assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
-        assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
       }
     }
   }
 
+
+  /**
+   * Test sharpenCommand with splitPercentage.
+   */
+  @Test
+  public void testSharpenCommandWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "sharpenImage";
+    Optional<Double> splitPercentage = Optional.of(90.2);
+
+    this.model.addImage(imageName, this.image);
+    this.model.sharpenCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(165, 163, 0);
+    expectedArray[0][1] = new Pixel(174, 186, 255);
+    expectedArray[0][2] = new Pixel(219, 9, 255);
+
+    expectedArray[1][0] = new Pixel(15, 64, 13);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(64, 139, 255);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
 
   /**
    * Test sharpen invalid image.
@@ -791,11 +1005,53 @@ public class ImageModelTest {
     expectedArray[2][1] = new Pixel(195, 173, 135);
     expectedArray[2][2] = new Pixel(84, 75, 58);
 
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
-        assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
-        assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+
+
+  /**
+   * Test sepiaCommand with splitPercentage.
+   */
+  @Test
+  public void testSepiaCommandWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "sepiaImage";
+    Optional<Double> splitPercentage = Optional.of(50.0);
+
+    this.model.addImage(imageName, this.image);
+    this.model.sepiaCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(135, 120, 94);
+    expectedArray[0][1] = new Pixel(126, 112, 87);
+    expectedArray[0][2] = new Pixel(146, 130, 101);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
       }
     }
   }
@@ -1277,6 +1533,76 @@ public class ImageModelTest {
     }
   }
 
+  /**
+   * Test for multiple commands with splitPercentage. (luma + sepia)
+   */
+  @Test
+  public void testLumaThenSepiaWithSplitPercentage() {
+    String imageName = "testImage";
+    String lumaImageName = "lumaImage";
+    String sepiaImageName = "sepiaFromLumaImage";
+    Optional<Double> splitPercentage = Optional.of(70.0);
+
+    this.model.addImage(imageName, this.image);
+    this.model.lumaComponentCommand(imageName, lumaImageName, splitPercentage);
+    Image lumaImage = this.model.getImage(lumaImageName);
+    int width = lumaImage.getPixels().length;
+    int height = lumaImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(104, 104, 104);
+    expectedArray[0][1] = new Pixel(99, 99, 99);
+    expectedArray[0][2] = new Pixel(71, 71, 71);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(254, 254, 254);
+    expectedArray[1][2] = new Pixel(88, 88, 88);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), lumaImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), lumaImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), lumaImage.getPixels()[i][j].getBlue());
+      }
+    }
+
+    splitPercentage = Optional.of(40.0);
+    this.model.sepiaCommand(lumaImageName, sepiaImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(sepiaImageName);
+    width = testImage.getPixels().length;
+    height = testImage.getPixels()[0].length;
+
+    expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(140, 125, 97);
+    expectedArray[0][1] = new Pixel(133, 119, 92);
+    expectedArray[0][2] = new Pixel(95, 85, 66);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(254, 254, 254);
+    expectedArray[1][2] = new Pixel(88, 88, 88);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
+   * test ColorCorrection method.
+   */
   @Test
   public void testColorCorrection() {
     String imageName = "testImage";
@@ -1314,6 +1640,64 @@ public class ImageModelTest {
     }
   }
 
+  /**
+   * test ColorCorrection method with splitPercentage.
+   */
+  @Test
+  public void testColorCorrectionWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.of(60.5);
+
+    this.model.addImage(imageName, this.image);
+    this.model.colorCorrectionCommand(imageName, destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(166, 91, 0);
+    expectedArray[0][1] = new Pixel(16, 111, 171);
+    expectedArray[0][2] = new Pixel(255, 0, 246);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(10, 100, 200);
+
+    expectedArray[2][0] = new Pixel(230, 130, 100);
+    expectedArray[2][1] = new Pixel(125, 190, 0);
+    expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
+   * Test horizontalFlip invalid image.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testColorCorrectionNoImageExist() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectionImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.of(10.0);
+
+    String imageNotExist = "testImage2";
+    this.model.colorCorrectionCommand(imageNotExist, destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test levelAdjustments method.
+   */
   @Test
   public void testLevelAdjustments() {
     String imageName = "testImage";
@@ -1342,15 +1726,259 @@ public class ImageModelTest {
     expectedArray[2][2] = new Pixel(93, 0, 234);
 
 
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        assertEquals(expectedArray[x][y].getRed(), testImage.getPixels()[x][y].getRed());
-        assertEquals(expectedArray[x][y].getGreen(), testImage.getPixels()[x][y].getGreen());
-        assertEquals(expectedArray[x][y].getBlue(), testImage.getPixels()[x][y].getBlue());
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
       }
     }
   }
 
+
+
+
+  /**
+   * test levelAdjustments method with splitPercentage.
+   */
+  @Test
+  public void testLevelAdjustmentsWithSplitPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.of(100.0);
+
+    this.model.addImage(imageName, this.image);
+    this.model.levelsAdjustmentCommand(20, 100, 255, imageName,
+            destinationImageName, splitPercentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(186, 136, 0);
+    expectedArray[0][1] = new Pixel(0, 153, 213);
+    expectedArray[0][2] = new Pixel(253, 0, 255);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 255, 255);
+    expectedArray[1][2] = new Pixel(0, 136, 228);
+
+    expectedArray[2][0] = new Pixel(245, 165, 136);
+    expectedArray[2][1] = new Pixel(159, 221, 0);
+    expectedArray[2][2] = new Pixel(93, 0, 234);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
+   * test compressImage method.
+   */
+  @Test
+  public void testCompress() {
+    String imageName = "testImage";
+    String destinationImageName = "compressedImage";
+    double percentage = 50;
+
+    this.model.addImage(imageName, this.image);
+    this.model.compressImage(imageName, destinationImageName, percentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(159, 135, 0);
+    expectedArray[0][1] = new Pixel(0, 101, 217);
+    expectedArray[0][2] = new Pixel(210, 0, 227);
+
+    expectedArray[1][0] = new Pixel(43, 18, 0);
+    expectedArray[1][1] = new Pixel(245, 219, 217);
+    expectedArray[1][2] = new Pixel(3, 0, 227);
+
+    expectedArray[2][0] = new Pixel(177, 118, 63);
+    expectedArray[2][1] = new Pixel(177, 201, 13);
+    expectedArray[2][2] = new Pixel(60, 5, 196);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
+   * test compressImage method.
+   */
+  @Test
+  public void testCompress2() {
+    String imageName = "testImage";
+    String destinationImageName = "compressedImage";
+    double percentage = 35.8;
+
+    this.model.addImage(imageName, this.image);
+    this.model.compressImage(imageName, destinationImageName, percentage);
+
+    Image testImage = this.model.getImage(destinationImageName);
+    int width = testImage.getPixels().length;
+    int height = testImage.getPixels()[0].length;
+
+    Pixel[][] expectedArray = new Pixel[3][3];
+    expectedArray[0][0] = new Pixel(150, 108, 0);
+    expectedArray[0][1] = new Pixel(0, 128, 217);
+    expectedArray[0][2] = new Pixel(250, 0, 227);
+
+    expectedArray[1][0] = new Pixel(0, 0, 0);
+    expectedArray[1][1] = new Pixel(255, 246, 217);
+    expectedArray[1][2] = new Pixel(9, 50, 227);
+
+    expectedArray[2][0] = new Pixel(230, 145, 113);
+    expectedArray[2][1] = new Pixel(125, 174, 13);
+    expectedArray[2][2] = new Pixel(37, 5, 196);
+
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+//                  System.out.println(testImage.getPixels()[i][j].getRed() + " "
+//                            + testImage.getPixels()[i][j].getGreen() + " "
+//                            + testImage.getPixels()[i][j].getBlue());
+        assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+        assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+        assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+      }
+    }
+  }
+
+  /**
+   * test histogram method.
+   */
+  @Test
+  public void testHistogram() {
+    String imageName = "testImage";
+    String destinationImageName = "histogramImage";
+
+    this.model.addImage(imageName, this.image);
+    try {
+      int[][] result = this.model.histogramCommand(imageName, destinationImageName);
+
+      int width = result.length;
+      int height = result[0].length;
+
+      int[][] expectedArray = new int[3][256];
+      for (int[] row : expectedArray) {
+        Arrays.fill(row, 0);
+      }
+
+      expectedArray[0][0] = 2;
+      expectedArray[0][10] = 1;
+      expectedArray[0][75] = 1;
+      expectedArray[0][125] = 1;
+      expectedArray[0][150] = 1;
+      expectedArray[0][230] = 1;
+      expectedArray[0][250] = 1;
+      expectedArray[0][255] = 1;
+
+      expectedArray[1][0] = 2;
+      expectedArray[1][20] = 1;
+      expectedArray[1][100] = 2;
+      expectedArray[1][120] = 1;
+      expectedArray[1][130] = 1;
+      expectedArray[1][190] = 1;
+      expectedArray[1][255] = 1;
+
+      expectedArray[2][0] = 3;
+      expectedArray[2][100] = 1;
+      expectedArray[2][180] = 1;
+      expectedArray[2][200] = 1;
+      expectedArray[2][210] = 1;
+      expectedArray[2][255] = 2;
+
+
+      for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+          assertEquals(expectedArray[i][j], result[i][j]);
+        }
+      }
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+  }
+
+  /**
+   * test compressImage invalid image.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testCompressNoImageExist() {
+    String imageName = "testImage";
+    String destinationImageName = "compressImage";
+    double percentage = 50.7;
+    this.model.addImage(imageName, this.image);
+
+
+    String imageNotExist = "testImage2";
+    this.model.compressImage(imageNotExist, destinationImageName, percentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test compressImage invalid percentage.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testCompressImageInvalidPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "compressImage";
+    double percentage = 101.7;
+    this.model.addImage(imageName, this.image);
+
+    this.model.compressImage(imageName, destinationImageName, percentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test compressImage invalid percentage.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testCompressImageInvalidPercentageNeg() {
+    String imageName = "testImage";
+    String destinationImageName = "compressImage";
+    double percentage = -11.7;
+    this.model.addImage(imageName, this.image);
+
+    this.model.compressImage(imageName, destinationImageName, percentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test LevelAdjustments invalid image.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentsNoImageExist() {
+    String imageName = "testImage";
+    String destinationImageName = "horizontalFlipImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.of(10.0);
+
+    String imageNotExist = "testImage2";
+    this.model.levelsAdjustmentCommand(20, 100, 255, imageNotExist,
+            destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test invalid b, m, w value.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeValueOfBMW() {
     String imageName = "testImage";
@@ -1363,6 +1991,9 @@ public class ImageModelTest {
     fail("This test should have failed!");
   }
 
+  /**
+   * test invalid value of b.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidValueOfB() {
     String imageName = "testImage";
@@ -1375,6 +2006,9 @@ public class ImageModelTest {
     fail("This test should have failed!");
   }
 
+  /**
+   * test invalid value of m.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidValueOfM() {
     String imageName = "testImage";
@@ -1387,6 +2021,9 @@ public class ImageModelTest {
     fail("This test should have failed!");
   }
 
+  /**
+   * test invalid value of w.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidValueOfW() {
     String imageName = "testImage";
@@ -1398,5 +2035,4 @@ public class ImageModelTest {
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
-
 }

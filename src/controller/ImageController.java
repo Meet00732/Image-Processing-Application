@@ -241,6 +241,8 @@ public class ImageController implements ImageControllerInterface {
                   Integer.parseInt(tokens[3]),tokens[4],tokens[5],splitPercentage);
           status = feature.execute();
           break;
+        case "q":
+          break;
 
         default:
           throw new IllegalArgumentException("Invalid Input: " + tokens[0]);

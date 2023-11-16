@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import controller.ImageController;
@@ -20,6 +21,8 @@ import view.ImageView;
 import view.ImageViewInterface;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 
@@ -1431,4 +1434,89 @@ public class ImageControllerCompleteTest {
     }
   }
 
+  /**
+   * test compress method.
+   */
+  @Test
+  public void testCompressMethod() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testCompressedImage";
+    int percentage = 50;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "compress" + " " + percentage + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+
+      expectedArray[0][0] = new Pixel(159, 135, 0);
+      expectedArray[0][1] = new Pixel(0, 101, 217);
+      expectedArray[0][2] = new Pixel(210, 0, 227);
+
+      expectedArray[1][0] = new Pixel(43, 18, 0);
+      expectedArray[1][1] = new Pixel(245, 219, 217);
+      expectedArray[1][2] = new Pixel(3, 0, 227);
+
+      expectedArray[2][0] = new Pixel(177, 118, 63);
+      expectedArray[2][1] = new Pixel(177, 201, 13);
+      expectedArray[2][2] = new Pixel(60, 5, 196);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "compress executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test histogram method.
+   */
+  @Test
+  public void testHistogramMethod() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testHistogramImage";
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "histogram" + " " + interMediateImage + " " + destinationImage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+
+      assertNotNull(testImage);
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "histogram executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
 }

@@ -387,81 +387,17 @@ public class ImageModel implements ImageModelInterface {
     }
 
     Image image = this.imageMap.get(imageName);
-    Pixel[][] pixels = image.getPixels();
-    int width = image.getPixels().length;
-    int height = image.getPixels()[0].length;
-
-    double[][][] channels = extractColorChannels(pixels);
-    HaarWaveletTransform haarWaveletTransform = new HaarWaveletTransform();
-
-    for (int i = 0; i < channels.length; i++) {
-      channels[i] = haarWaveletTransform.haar(channels[i]);
-    }
-    double threshold = haarWaveletTransform.calculateThreshold(channels, percentage);
-    for (int i = 0; i < channels.length; i++) {
-      channels[i] = this.filter(channels[i], threshold);
-      channels[i] = haarWaveletTransform.inverseHaar(channels[i], width, height);
-    }
-    Image compressedImage = imageFromChannels(channels);
+    Image compressedImage = image.compress(percentage);
     this.addImage(destinationImageName, compressedImage);
   }
 
-  private double[][][] extractColorChannels(Pixel[][] pixels) {
-    int width = pixels.length;
-    int height = pixels[0].length;
-    double[][] redChannel = new double[width][height];
-    double[][] greenChannel = new double[width][height];
-    double[][] blueChannel = new double[width][height];
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        Pixel pixel = pixels[i][j];
-        redChannel[i][j] = pixel.getRed();
-        greenChannel[i][j] = pixel.getGreen();
-        blueChannel[i][j] = pixel.getBlue();
-      }
-    }
-    return new double[][][]{redChannel, greenChannel, blueChannel};
-  }
-
-  private Image imageFromChannels(double[][][] channels) {
-    int width = channels[0].length;
-    int height = channels[0][0].length;
-    Pixel[][] compressedPixels = new Pixel[width][height];
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        int red = (int) channels[0][i][j];
-        int green = (int) channels[1][i][j];
-        int blue = (int) channels[2][i][j];
-        compressedPixels[i][j] = new Pixel(red, green, blue);
-      }
-    }
-    return new Image(compressedPixels);
-  }
-
-  private double[][] filter(double[][] channel, double threshold) {
-    int width = channel.length;
-    int height = channel[0].length;
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        if (Math.abs(channel[i][j]) < threshold) {
-          channel[i][j] = 0.0;
-        }
-      }
-    }
-    return channel;
-  }
-
   @Override
-  public void histogramCommand(String imageName, String destinationImageName) {
-    if (!imageExists(imageName)) {
-      throw new IllegalArgumentException("Image does not exist!");
+  public int[][] histogramCommand(String imageName, String destinationImageName) throws Exception {
+    if (!this.imageExists(imageName)) {
+      throw new Exception("Image does not exists!");
     }
-    Image image = this.imageMap.get(imageName);
-    Image histogram = image.histogram();
-    this.addImage(destinationImageName,histogram);
+    Image image = this.getImage(imageName);
+    return image.histogram();
   }
 
   @Override

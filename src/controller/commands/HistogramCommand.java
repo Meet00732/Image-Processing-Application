@@ -1,6 +1,9 @@
 package controller.commands;
 
+import model.HistogramCreator;
+import model.Image;
 import model.ImageModelInterface;
+import model.Pixel;
 
 public class HistogramCommand extends AbstractBaseCommand {
 
@@ -16,7 +19,15 @@ public class HistogramCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.histogramCommand(this.imageName,this.destinationImageName);
+    this.histogramCommand(this.imageName,this.destinationImageName);
   }
 
+  public void histogramCommand(String imageName, String destinationImageName) throws Exception {
+    int[][] channels = this.model.histogramCommand(imageName, destinationImageName);
+    if (channels != null) {
+      Pixel[][] histogram = HistogramCreator.createHistogramImage(channels);
+      Image histImage = new Image(histogram);
+      this.model.addImage(destinationImageName,histImage);
+    }
+  }
 }

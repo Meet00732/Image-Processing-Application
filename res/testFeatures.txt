@@ -1,0 +1,126 @@
+load res\nyc.png testNYC
+
+blur testNYC testBlur
+save res\testAllFeatures\blurNYC.png testBlur
+
+sharpen testNYC testSharpen
+save res\testAllFeatures\sharpenNYC.png testSharpen
+
+sepia testNYC testSepia
+save res\testAllFeatures\sepiaNYC.png testSepia
+
+red-component testNYC testRed
+save res\testAllFeatures\redNYC.png testRed
+
+green-component testNYC testGreen
+save res\testAllFeatures\greenNYC.png testGreen
+
+blue-component testNYC testBlue
+save res\testAllFeatures\blueNYC.png testBlue
+
+value-component testNYC testValue
+save res\testAllFeatures\valueNYC.png testValue
+
+intensity-component testNYC testIntensity
+save res\testAllFeatures\intensityNYC.png testIntensity
+
+luma-component testNYC testLuma
+save res\testAllFeatures\lumaNYC.png testLuma
+
+brighten 50 testNYC Brighten50Man
+save res\testAllFeatures\NYCBrighten50Man.png Brighten50Man
+
+brighten -50 testNYC Brighten-50Man
+save res\testAllFeatures\NYCBrighten-50Man.png Brighten-50Man
+
+brighten 500 testNYC Brighten500Man
+save res\testAllFeatures\NYCBrighten500Man.png Brighten500Man
+
+brighten -500 testNYC Brighten-500Man
+save res\testAllFeatures\NYCBrighten-500Man.png Brighten-500Man
+
+
+rgb-split testNYC splitRed splitGreen splitBlue
+save res\testAllFeatures\NYCSplitRed.png splitRed
+save res\testAllFeatures\NYCSplitGreen.png splitGreen
+save res\testAllFeatures\NYCSplitBlue.png splitBlue
+
+rgb-combine testCombineNYC testRed testGreen testBlue
+save res\testAllFeatures\testCombineNYC.png testCombineNYC
+
+vertical-flip testNYC testVerticalNYC
+save res\testAllFeatures\testVerticalNYC.png testVerticalNYC
+
+horizontal-flip testNYC testHorizontalNYC
+save res\testAllFeatures\testHorizontalNYC.png testHorizontalNYC
+
+
+
+load res\nyc.png testNYC
+color-correct testNYC testColorCorrection
+save res\testAllFeatures\colorCorrectionNYC.png testColorCorrection
+histogram testColorCorrection testHistogramNYC
+save res\testAllFeatures\histogramColorCorrectionNYC.png testHistogramNYC
+
+
+load res\nyc.png testNYC
+levels-adjust 20 100 255 testNYC testLevelAdjustment
+save res\testAllFeatures\levelAdjustmentNYC.png testLevelAdjustment
+histogram testLevelAdjustment testHistogramNYC
+save res\testAllFeatures\histogramLevelsAdjustNYC.png testHistogramNYC
+
+load res\nyc.png testNYC
+levels-adjust 30 150 245 testNYC testLevelAdjustment2
+save res\testAllFeatures\levelAdjustmentNYC2.png testLevelAdjustment2
+histogram testLevelAdjustment2 testHistogramNYC
+save res\testAllFeatures\histogramLevelsAdjustNYC2.png testHistogramNYC
+
+
+load res\nyc.png testNYC
+compress 50 testNYC compressedImg50
+save res\testAllFeatures\testCompressedNYC50.png compressedImg50
+histogram compressedImg50 testHistogramNYC
+save res\testAllFeatures\histogramCompressedNYC.png testHistogramNYC
+
+compress 30 testNYC compressedImg30
+save res\testAllFeatures\testCompressedNYC30.png compressedImg30
+histogram compressedImg30 testHistogramNYC
+save res\testAllFeatures\histogramCompressedNYC2.png testHistogramNYC
+
+
+load res\nyc.png testNYC
+histogram testNYC testHistogramNYC
+save res\testAllFeatures\histogramNYC.png testHistogramNYC
+
+
+load res\nyc.png testNYC
+sepia testNYC testSepiaSplit split 40
+save res\testAllFeatures\sepiaSplitNYC.png testSepiaSplit
+
+load res\nyc.png testNYC
+blur testNYC testBlurSplit split 50
+save res\testAllFeatures\blurSplitNYC.png testBlurSplit
+
+load res\nyc.png testNYC
+luma-component testNYC testLumaSplit split 50
+save res\testAllFeatures\lumaSplitNYC.png testLumaSplit
+
+load res\nyc.png testNYC
+sharpen testNYC testSharpenSplit split 50
+save res\testAllFeatures\sharpenSplitNYC.png testSharpenSplit
+
+load res\nyc.png testNYC
+value-component testNYC testValueSplit split 50
+save res\testAllFeatures\valueSplitNYC.png testValueSplit
+
+load res\nyc.png testNYC
+intensity-component testNYC testIntensitySplit split 50
+save res\testAllFeatures\intensitySplitNYC.png testIntensitySplit
+
+load res\nyc.png testNYC
+color-correct testNYC testColorCorrectionSplit split 50
+save res\testAllFeatures\colorCorrectionSplitNYC.png testColorCorrectionSplit
+
+load res\nyc.png testNYC
+levels-adjust 20 100 255 testNYC testLevelAdjustmentSplit split 50
+save res\testAllFeatures\levelAdjustmentSplitNYC.png testLevelAdjustmentSplit

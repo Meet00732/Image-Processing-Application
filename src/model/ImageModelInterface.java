@@ -14,7 +14,7 @@ public interface ImageModelInterface {
    * Adds an image to the model with the given name.
    *
    * @param name  The name or identifier for the image.
-   * @param image The Image object to be added to the model.
+   * @param image The ImageInterface object to be added to the model.
    */
   void addImage(String name, Image image);
 
@@ -164,7 +164,7 @@ public interface ImageModelInterface {
    * Retrieves the image with the specified image name from the image map.
    *
    * @param imageName The name of the image to retrieve.
-   * @return The Image object associated with the given image name.
+   * @return The ImageInterface object associated with the given image name.
    */
   Image getImage(String imageName);
 
@@ -181,7 +181,7 @@ public interface ImageModelInterface {
 
   void compressImage(String imageName, String destinationImageName, double percentage);
 
-  void histogramCommand(String imageName, String destinationImageName);
+  int[][] histogramCommand(String imageName, String destinationImageName) throws Exception;
 
   void colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 

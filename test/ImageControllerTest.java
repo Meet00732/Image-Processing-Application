@@ -439,6 +439,30 @@ public class ImageControllerTest {
     fail("this test should have failed!");
   }
 
+
+  /**
+   * Test runCommand.
+   */
+  @Test
+  public void testControllerRunCommand() {
+    String inputData = "run res\\runCommand.txt\nq";
+
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    controller.process();
+    String expectedResult = "load executed successfully" + System.lineSeparator()
+            + "sepia executed successfully" + System.lineSeparator()
+            + "run executed successfully";
+
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+
+  }
+
   /**
    * Test runCommand
    */
@@ -511,6 +535,9 @@ public class ImageControllerTest {
   }
 
 
+  /**
+   * test colorCorrectionMethod invoked.
+   */
   @Test
   public void testColorCorrectionMethodInvoked() {
     String inputData = "color-correct testNYC testNYC-color-correct\nq";
@@ -533,6 +560,9 @@ public class ImageControllerTest {
     assertTrue(model.getLog().contains("color correction method is invoked!"));
   }
 
+  /**
+   * test levelAdjustments invoked.
+   */
   @Test
   public void testLevelAdjustmentsMethodInvoked() {
     String inputData = "levels-adjust 20 100 255 testNYC testNYC-levels-adjust\nq";
@@ -552,5 +582,53 @@ public class ImageControllerTest {
     expectedResult = "levels-adjust executed successfully";
     assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
     assertTrue(model.getLog().contains("levels adjustment method is invoked!"));
+  }
+
+  /**
+   * test compressImageMethod invoked.
+   */
+  @Test
+  public void testCompressImageMethod() {
+    String inputData = "compress 50 testNYC testNYC-levels-adjust\nq";
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+    expectedResult = "compress executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    assertTrue(model.getLog().contains("compress method is invoked!"));
+  }
+
+  /**
+   * test histogramMethod invoked.
+   */
+  @Test
+  public void testHistogramMethod() {
+    String inputData = "histogram testNYC testNYC-levels-adjust\nq";
+    ByteArrayInputStream inContent = new ByteArrayInputStream(inputData.getBytes());
+    System.setIn(inContent);
+
+    ImageViewInterface view = new ImageView();
+    MockModel model = new MockModel();
+    String expectedResult;
+    ImageControllerInterface controller = new ImageController(view, model);
+    try {
+      controller.process();
+    }
+    catch (Exception e) {
+      fail("This test should have passed!");
+    }
+    expectedResult = "histogram executed successfully";
+    assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    assertTrue(model.getLog().contains("histogram method is invoked!"));
   }
 }

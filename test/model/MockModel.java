@@ -222,8 +222,9 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void histogramCommand(String imageName, String destinationImageName) {
+  public int[][] histogramCommand(String imageName, String destinationImageName) {
     log.append("histogram method is invoked!");
+    return null;
   }
 
   @Override

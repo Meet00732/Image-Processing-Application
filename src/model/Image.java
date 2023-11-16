@@ -288,31 +288,31 @@ public class Image {
     return strategy.apply(this);
   }
 
-  public Image histogram() {
-    BufferedImage histogramBufferedImage = HistogramCreator.createHistogramImage(this);
-    return new Image(convertToPixelsArray(histogramBufferedImage));
-  }
+  public int[][] histogram() {
+    int[] redFrequency = new int[256];
+    int[] greenFrequency = new int[256];
+    int[] blueFrequency = new int[256];
+    int[][] channels = new int[3][256];
 
-  private Pixel[][] convertToPixelsArray(BufferedImage bufferedImage) {
-    int width = bufferedImage.getWidth();
-    int height = bufferedImage.getHeight();
-    Pixel[][] pixels = new Pixel[height][width];
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        int rgb = bufferedImage.getRGB(x, y);
-        int red = (rgb >> 16) & 0xFF;
-        int green = (rgb >> 8) & 0xFF;
-        int blue = (rgb) & 0xFF;
-        pixels[x][y] = new Pixel(red, green, blue);
+    Pixel[][] pixels = this.getPixels();
+    for (int i = 0; i < pixels.length; i++) {
+      for (int j = 0; j < pixels[i].length; j++) {
+        Pixel pixel = pixels[i][j];
+        redFrequency[pixel.getRed()]++;
+        greenFrequency[pixel.getGreen()]++;
+        blueFrequency[pixel.getBlue()]++;
       }
     }
+    channels[0] = redFrequency;
+    channels[1] = greenFrequency;
+    channels[2] = blueFrequency;
 
-    return pixels;
+    return channels;
   }
 
+
   public Image correctImage() {
-    return correctColors(convertToBufferedImage(this));
+    return correctColors();
   }
 
   private BufferedImage convertToBufferedImage(Image image) {
@@ -332,7 +332,8 @@ public class Image {
     return bufferedImage;
   }
 
-  public Image correctColors(BufferedImage image) {
+  private Image correctColors() {
+    BufferedImage image = convertToBufferedImage(this);
     int width = image.getWidth();
     int height = image.getHeight();
     Pixel[][] pixels = new Pixel[height][width];
@@ -409,7 +410,7 @@ public class Image {
     return adjustLevels(convertToBufferedImage(this),b,m,w);
   }
 
-  public Image adjustLevels(BufferedImage image, int b, int m, int w) {
+  private Image adjustLevels(BufferedImage image, int b, int m, int w) {
     int width = image.getWidth();
     int height = image.getHeight();
     Pixel[][] pixels = new Pixel[height][width];
@@ -448,24 +449,99 @@ public class Image {
   }
 
   private double calculateQuadraticCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
+    double A = shadow * shadow * (mid - highlight) - shadow
+            * (mid * mid - highlight * highlight)
+            + mid * mid * highlight - mid * highlight * highlight;
     double Aa = -shadow * (128 - 255) + 128 * highlight - 255 * mid;
 
     return Aa / A;
   }
 
   private double calculateLinearCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
-    double Ab = shadow * shadow * (128 - 255) + 255 * mid * mid - 128 * highlight * highlight;
+    double A = shadow * shadow * (mid - highlight) - shadow
+            * (mid * mid - highlight * highlight)
+            + mid * mid * highlight - mid * highlight * highlight;
+    double Ab = shadow * shadow * (128 - 255)
+            + 255 * mid * mid - 128 * highlight * highlight;
 
     return Ab / A;
   }
 
   private double calculateConstantCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight) - shadow * (mid * mid - highlight * highlight) + mid * mid * highlight - mid * highlight * highlight;
-    double Ac = shadow * shadow * (255 * mid - 128 * highlight) - shadow * (255 * mid * mid - 128 * highlight * highlight);
+    double A = shadow * shadow * (mid - highlight)
+            - shadow * (mid * mid - highlight * highlight)
+            + mid * mid * highlight - mid * highlight * highlight;
+    double Ac = shadow * shadow * (255 * mid - 128 * highlight)
+            - shadow * (255 * mid * mid - 128 * highlight * highlight);
 
     return Ac / A;
+  }
+
+  public Image compress(double percentage) {
+    Pixel[][] pixels = this.getPixels();
+    int width = this.getPixels().length;
+    int height = this.getPixels()[0].length;
+
+    double[][][] channels = extractColorChannels(pixels);
+    HaarWaveletTransform haarWaveletTransform = new HaarWaveletTransform();
+
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = haarWaveletTransform.haar(channels[i]);
+    }
+    double threshold = haarWaveletTransform.calculateThreshold(channels, percentage);
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = this.filter(channels[i], threshold);
+      channels[i] = haarWaveletTransform.inverseHaar(channels[i], width, height);
+    }
+    return imageFromChannels(channels);
+  }
+
+  private double[][][] extractColorChannels(Pixel[][] pixels) {
+    int width = pixels.length;
+    int height = pixels[0].length;
+    double[][] redChannel = new double[width][height];
+    double[][] greenChannel = new double[width][height];
+    double[][] blueChannel = new double[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Pixel pixel = pixels[i][j];
+        redChannel[i][j] = pixel.getRed();
+        greenChannel[i][j] = pixel.getGreen();
+        blueChannel[i][j] = pixel.getBlue();
+      }
+    }
+    return new double[][][]{redChannel, greenChannel, blueChannel};
+  }
+
+  private Image imageFromChannels(double[][][] channels) {
+    int width = channels[0].length;
+    int height = channels[0][0].length;
+    Pixel[][] compressedPixels = new Pixel[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        int red = (int) channels[0][i][j];
+        int green = (int) channels[1][i][j];
+        int blue = (int) channels[2][i][j];
+        compressedPixels[i][j] = new Pixel(red, green, blue);
+      }
+    }
+    return new Image(compressedPixels);
+  }
+
+  private double[][] filter(double[][] channel, double threshold) {
+    int width = channel.length;
+    int height = channel[0].length;
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        if (Math.abs(channel[i][j]) < threshold) {
+          channel[i][j] = 0.0;
+        }
+      }
+    }
+    return channel;
   }
 
 }
