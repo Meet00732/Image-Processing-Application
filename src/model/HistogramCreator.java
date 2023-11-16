@@ -1,13 +1,25 @@
 package model;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+/**
+ * The HistogramCreator class provides methods for creating
+ * a histogram image from an input image.
+ */
 public class HistogramCreator {
 
+  /**
+   * Creates a histogram image from the provided Image object.
+   *
+   * @param channels The three red, green and blue channels.
+   * @return A BufferedImage representing the histogram.
+   */
   public static Pixel[][] createHistogramImage(int[][] channels) {
 //    int[][] channels = image.getFrequencies();
     int maxFrequency = getMaxFrequency(channels[0], channels[1], channels[2]);
+
 
     BufferedImage histogramImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = histogramImage.createGraphics();
@@ -24,6 +36,11 @@ public class HistogramCreator {
     return convertToPixelsArray(histogramImage);
   }
 
+  /**
+   * Draws a grid on the given Graphics2D object.
+   *
+   * @param g2d The Graphics2D object to draw on.
+   */
   private static void drawGrid(Graphics2D g2d) {
     g2d.setColor(Color.LIGHT_GRAY);
     for (int i = 0; i < 256; i += 16) {
@@ -32,6 +49,14 @@ public class HistogramCreator {
     }
   }
 
+  /**
+   * Draws a histogram on the given Graphics2D object using the provided frequency data and color.
+   *
+   * @param g2d          The Graphics2D object to draw on.
+   * @param frequency    The frequency data for the histogram.
+   * @param maxFrequency The maximum frequency among all color channels.
+   * @param color        The color of the histogram.
+   */
   private static void drawHistogram(Graphics2D g2d, int[] frequency, int maxFrequency, Color color) {
     g2d.setColor(color);
     int prevX = 0;
@@ -48,6 +73,12 @@ public class HistogramCreator {
     }
   }
 
+  /**
+   * Finds the maximum frequency among the provided frequency arrays.
+   *
+   * @param frequencies Arrays containing frequency data.
+   * @return The maximum frequency.
+   */
   private static int getMaxFrequency(int[]... frequencies) {
     int max = 0;
     for (int[] frequency : frequencies) {

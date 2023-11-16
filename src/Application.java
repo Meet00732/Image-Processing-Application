@@ -14,16 +14,27 @@ import view.ImageViewInterface;
  * and starts the image processing.
  */
 public class Application {
+
+  /**
+   * The main method of the application, serving as the entry point.
+   * It initializes the view, model, and controller components,
+   * and starts the image processing based on command-line arguments.
+   *
+   * @param args Command-line arguments, where the first argument can be "-file"
+   *             followed by the path to a script file containing image processing commands.
+   *             If no command-line arguments are provided, the application processes
+   *             images interactively.
+   * @throws FileNotFoundException If a specified script file is not found.
+   */
   public static void main(String[] args) throws FileNotFoundException {
     ImageViewInterface view = new ImageView();
     ImageModelInterface model = new ImageModel();
 
-    ImageControllerInterface controller = new ImageController(view,model);
+    ImageControllerInterface controller = new ImageController(view, model);
 
     if (args.length == 2 && args[0].equals("-file")) {
       controller.runScript(args[1]);
-    }
-    else {
+    } else {
       controller.process();
     }
   }

@@ -179,12 +179,50 @@ public interface ImageModelInterface {
   void rgbSplitCommand(String redImageName, String greenImageName,
                        String blueImageName, String imageName);
 
+  /**
+   * Compresses the specified image using the Haar Wavelet Transform and stores the result
+   * in the destination image with the specified compression percentage.
+   *
+   * @param imageName            The name of the source image to be compressed.
+   * @param destinationImageName The name of the destination image where the compressed
+   *                             image will be stored.
+   * @param percentage           The compression percentage.
+   */
   void compressImage(String imageName, String destinationImageName, double percentage);
 
+  /**
+   * Displays the histogram of the specified image and stores the result
+   * in the destination image.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the histogram image will be stored.
+   */
   int[][] histogramCommand(String imageName, String destinationImageName) throws Exception;
 
+  /**
+   * Applies color correction to the specified image and stores the result
+   * in the destination image with the specified split percentage.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the color-corrected image will be stored.
+   * @param splitPercentage      An optional percentage value for splitting the image.
+   */
   void colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
 
+  /**
+   * Adjusts the levels of the specified image and stores the result
+   * in the destination image with the specified parameters and split percentage.
+   *
+   * @param b                    The black point level.
+   * @param m                    The mid point level.
+   * @param w                    The white point level.
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the color-corrected image will be stored.
+   * @param splitPercentage      An optional percentage value for splitting the image.
+   */
   void levelsAdjustmentCommand(int b, int m, int w, String imageName,
                                String destinationImageName, Optional<Double> splitPercentage);
 }

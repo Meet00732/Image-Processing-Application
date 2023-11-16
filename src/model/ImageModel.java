@@ -129,7 +129,7 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             grayscale intensity image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
   public void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
@@ -154,7 +154,7 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the luma image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
   public void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
@@ -256,7 +256,7 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the blurred image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
   public void blurCommand(String imageName, String destinationImageName,
@@ -282,7 +282,7 @@ public class ImageModel implements ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the sharpened image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
   public void sharpenCommand(String imageName, String destinationImageName,
@@ -376,6 +376,15 @@ public class ImageModel implements ImageModelInterface {
     this.blueComponentCommand(imageName, blueImageName);
   }
 
+  /**
+   * Compresses the specified image using the Haar Wavelet Transform and stores the result
+   * in the destination image with the specified compression percentage.
+   *
+   * @param imageName            The name of the source image to be compressed.
+   * @param destinationImageName The name of the destination image where the compressed
+   *                             image will be stored.
+   * @param percentage           The compression percentage.
+   */
   @Override
   public void compressImage(String imageName, String destinationImageName, double percentage) {
     if (!imageExists(imageName)) {
@@ -391,6 +400,62 @@ public class ImageModel implements ImageModelInterface {
     this.addImage(destinationImageName, compressedImage);
   }
 
+  private double[][][] extractColorChannels(Pixel[][] pixels) {
+    int width = pixels.length;
+    int height = pixels[0].length;
+    double[][] redChannel = new double[width][height];
+    double[][] greenChannel = new double[width][height];
+    double[][] blueChannel = new double[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Pixel pixel = pixels[i][j];
+        redChannel[i][j] = pixel.getRed();
+        greenChannel[i][j] = pixel.getGreen();
+        blueChannel[i][j] = pixel.getBlue();
+      }
+    }
+    return new double[][][]{redChannel, greenChannel, blueChannel};
+  }
+
+  private Image imageFromChannels(double[][][] channels) {
+    int width = channels[0].length;
+    int height = channels[0][0].length;
+    Pixel[][] compressedPixels = new Pixel[width][height];
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        int red = (int) channels[0][i][j];
+        int green = (int) channels[1][i][j];
+        int blue = (int) channels[2][i][j];
+        compressedPixels[i][j] = new Pixel(red, green, blue);
+      }
+    }
+    return new Image(compressedPixels);
+  }
+
+  private double[][] filter(double[][] channel, double threshold) {
+    int width = channel.length;
+    int height = channel[0].length;
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        if (Math.abs(channel[i][j]) < threshold) {
+          channel[i][j] = 0.0;
+        }
+      }
+    }
+    return channel;
+  }
+
+  /**
+   * Displays the histogram of the specified image and stores the result
+   * in the destination image.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the histogram image will be stored.
+   */
   @Override
   public int[][] histogramCommand(String imageName, String destinationImageName) throws Exception {
     if (!this.imageExists(imageName)) {
@@ -400,6 +465,15 @@ public class ImageModel implements ImageModelInterface {
     return image.histogram();
   }
 
+  /**
+   * Applies color correction to the specified image and stores the result
+   * in the destination image with the specified split percentage.
+   *
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the color-corrected image will be stored.
+   * @param splitPercentage      A percentage value for splitting the image.
+   */
   @Override
   public void colorCorrectionCommand(String imageName, String destinationImageName,
                                      Optional<Double> splitPercentage) {
@@ -417,6 +491,18 @@ public class ImageModel implements ImageModelInterface {
     this.addImage(destinationImageName, newImage);
   }
 
+  /**
+   * Adjusts the levels of the specified image and stores the result
+   * in the destination image with the specified parameters and split percentage.
+   *
+   * @param b                     The black point level.
+   * @param m                     The mid point level.
+   * @param w                     The white point level.
+   * @param imageName             The name of the source image.
+   * @param destinationImageName  The name of the destination image where
+   *                              the color-corrected image will be stored.
+   * @param splitPercentage       A percentage value for splitting the image.
+   */
   @Override
   public void levelsAdjustmentCommand(int b, int m, int w, String imageName,
                                       String destinationImageName,

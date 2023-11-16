@@ -284,10 +284,21 @@ public class Image {
     return applyKernel(kernel);
   }
 
+  /**
+   * Applies a specified strategy to the image, creating a new image as a result.
+   *
+   * @param strategy The strategy to be applied.
+   * @return A new image after applying the strategy.
+   */
   public Image applyFilter(SplitStrategy strategy) {
     return strategy.apply(this);
   }
 
+  /**
+   * Creates a histogram image representation of the image.
+   *
+   * @return A new image representing the histogram of the original image.
+   */
   public int[][] histogram() {
     int[] redFrequency = new int[256];
     int[] greenFrequency = new int[256];
@@ -311,10 +322,21 @@ public class Image {
   }
 
 
+  /**
+   * Corrects the colors of the image based on a specified correction algorithm.
+   *
+   * @return A new image with corrected colors.
+   */
   public Image correctImage() {
     return correctColors();
   }
 
+  /**
+   * Converts an Image to a BufferedImage.
+   *
+   * @param image The Image to convert.
+   * @return The converted BufferedImage.
+   */
   private BufferedImage convertToBufferedImage(Image image) {
     Pixel[][] pixels = image.getPixels();
     int height = pixels.length;
@@ -379,6 +401,12 @@ public class Image {
     return new Image(pixels);
   }
 
+  /**
+   * Finds the meaningful peak in a histogram for color correction.
+   *
+   * @param histogram The histogram to analyze.
+   * @return The meaningful peak value.
+   */
   private int findMeaningfulPeak(int[] histogram) {
     int peakValue = -1;
     int peakFrequency = 0;
@@ -393,6 +421,14 @@ public class Image {
     return peakValue;
   }
 
+  /**
+   * Offsets a color value based on a specified peak and average value.
+   *
+   * @param value      The original color value.
+   * @param currentPeak The current peak value.
+   * @param averagePeak The average peak value.
+   * @return The offset color value.
+   */
   private int offsetValue(int value, int currentPeak, int averagePeak) {
     int offset = averagePeak - currentPeak;
     int newValue = value + offset;
@@ -406,9 +442,18 @@ public class Image {
     return newValue;
   }
 
+  /**
+   * Adjusts the levels of the image by manipulating pixel values.
+   *
+   * @param b The shadow level.
+   * @param m The mid-level.
+   * @param w The highlight level.
+   * @return A new image with adjusted levels.
+   */
   public Image levelsAdjust(int b, int m, int w) {
     return adjustLevels(convertToBufferedImage(this),b,m,w);
   }
+
 
   private Image adjustLevels(BufferedImage image, int b, int m, int w) {
     int width = image.getWidth();
@@ -433,6 +478,15 @@ public class Image {
     return new Image(pixels);
   }
 
+  /**
+   * Applies a level adjustment to a color value based on shadow, mid, and highlight levels.
+   *
+   * @param value    The original color value.
+   * @param shadow   The shadow level.
+   * @param mid      The mid-level.
+   * @param highlight The highlight level.
+   * @return The adjusted color value.
+   */
   private int applyLevelAdjustment(int value, int shadow, int mid, int highlight) {
     if (value <= shadow) {
       return 0;
@@ -448,6 +502,14 @@ public class Image {
     }
   }
 
+  /**
+   * Calculates the quadratic coefficient for level adjustment.
+   *
+   * @param shadow   The shadow level.
+   * @param mid      The mid-level.
+   * @param highlight The highlight level.
+   * @return The quadratic coefficient.
+   */
   private double calculateQuadraticCoefficient(int shadow, int mid, int highlight) {
     double A = shadow * shadow * (mid - highlight) - shadow
             * (mid * mid - highlight * highlight)
@@ -457,6 +519,14 @@ public class Image {
     return Aa / A;
   }
 
+  /**
+   * Calculates the linear coefficient for level adjustment.
+   *
+   * @param shadow   The shadow level.
+   * @param mid      The mid-level.
+   * @param highlight The highlight level.
+   * @return The linear coefficient.
+   */
   private double calculateLinearCoefficient(int shadow, int mid, int highlight) {
     double A = shadow * shadow * (mid - highlight) - shadow
             * (mid * mid - highlight * highlight)
@@ -467,6 +537,14 @@ public class Image {
     return Ab / A;
   }
 
+  /**
+   * Calculates the constant coefficient for level adjustment.
+   *
+   * @param shadow   The shadow level.
+   * @param mid      The mid-level.
+   * @param highlight The highlight level.
+   * @return The constant coefficient.
+   */
   private double calculateConstantCoefficient(int shadow, int mid, int highlight) {
     double A = shadow * shadow * (mid - highlight)
             - shadow * (mid * mid - highlight * highlight)

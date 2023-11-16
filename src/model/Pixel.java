@@ -5,9 +5,9 @@ package model;
  * Each component is an integer value ranging from 0 to 255.
  */
 public class Pixel {
-  private int red;
-  private int green;
-  private int blue;
+  private final int red;
+  private final int green;
+  private final int blue;
 
   /**
    * Constructs a Pixel object with specified red, green, and blue components.

@@ -6,7 +6,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The HaarWaveletTransform class provides methods for performing the Haar wavelet transform
+ * and its inverse on a 2D array, as well as calculating a threshold value based on a given
+ * percentage of unique absolute values within a set of channels.
+ */
 public class HaarWaveletTransform {
+
+  /**
+   * Applies the Haar wavelet transform on a given sequence.
+   *
+   * @param s The input sequence.
+   * @return The transformed sequence.
+   */
   private List<Double> T(List<Double> s) {
     List<Double> avg = new ArrayList<>();
     List<Double> diff = new ArrayList<>();
@@ -30,6 +42,12 @@ public class HaarWaveletTransform {
   }
 
 
+  /**
+   * Applies the inverse Haar wavelet transform on a given sequence.
+   *
+   * @param s The input sequence.
+   * @return The original sequence.
+   */
   private List<Double> I(List<Double> s) {
     List<Double> originalSequence = new ArrayList<>();
     int halfSize = s.size() / 2;
@@ -51,6 +69,12 @@ public class HaarWaveletTransform {
     return originalSequence;
   }
 
+  /**
+   * Pads a 2D array to the nearest power of two.
+   *
+   * @param X The input 2D array.
+   * @return The padded 2D array.
+   */
   private double[][] padArray(double[][] X) {
     int width = X.length;
     int height = X[0].length;
@@ -63,6 +87,12 @@ public class HaarWaveletTransform {
     return paddedArray;
   }
 
+  /**
+   * Finds the nearest power of two greater than or equal to a given number.
+   *
+   * @param number The input number.
+   * @return The nearest power of two.
+   */
   private int powerOfTwo(int number) {
     int power = 1;
     while (power < number) {
@@ -72,6 +102,13 @@ public class HaarWaveletTransform {
   }
 
 
+  /**
+   * Transforms a given sequence using the Haar wavelet transform.
+   *
+   * @param s The input sequence.
+   * @param l The length of the sequence.
+   * @return The transformed sequence.
+   */
   private List<Double> transform(List<Double> s, int l) {
     List<Double> transformedS = new ArrayList<>(s);
     int m = l;
@@ -85,6 +122,13 @@ public class HaarWaveletTransform {
     return transformedS;
   }
 
+  /**
+   * Inverts a transformed sequence using the inverse Haar wavelet transform.
+   *
+   * @param transformedSequence The transformed sequence.
+   * @param l                   The length of the sequence.
+   * @return The original sequence.
+   */
   private List<Double> invert(List<Double> transformedSequence, int l) {
     List<Double> originalSequence = new ArrayList<>(transformedSequence);
     int m = 2;
@@ -98,6 +142,12 @@ public class HaarWaveletTransform {
     return originalSequence;
   }
 
+  /**
+   * Performs the Haar wavelet transform on a 2D array.
+   *
+   * @param X The input 2D array.
+   * @return The transformed 2D array.
+   */
   public double[][] haar(double[][] X) {
     X = padArray(X);
     int c = X.length;
@@ -127,6 +177,15 @@ public class HaarWaveletTransform {
     return X;
   }
 
+
+  /**
+   * Removes padding from a 2D array to restore its original dimensions.
+   *
+   * @param X              The padded 2D array to be unpadded.
+   * @param originalWidth  The original width of the array before padding.
+   * @param originalHeight The original height of the array before padding.
+   * @return The unpadded 2D array with dimensions specified by originalWidth and originalHeight.
+   */
   private double[][] unpadArray(double[][] X, int originalWidth, int originalHeight) {
     double[][] unpaddedArray = new double[originalWidth][originalHeight];
     for (int i = 0; i < originalWidth; i++) {
@@ -135,6 +194,14 @@ public class HaarWaveletTransform {
     return unpaddedArray;
   }
 
+  /**
+   * Removes padding and performs the inverse Haar wavelet transform on a 2D array.
+   *
+   * @param X              The transformed 2D array.
+   * @param originalWidth  The original width of the array.
+   * @param originalHeight The original height of the array.
+   * @return The inverse transformed 2D array.
+   */
   public double[][] inverseHaar(double[][] X, int originalWidth, int originalHeight) {
     int c = 2;
     int s = X.length;
@@ -164,6 +231,14 @@ public class HaarWaveletTransform {
     return unpadArray(X, originalWidth, originalHeight);
   }
 
+  /**
+   * Calculates a threshold value based on a given percentage of unique absolute values
+   * within a set of channels.
+   *
+   * @param channels   The input channels.
+   * @param percentage The percentage of unique absolute values to consider.
+   * @return The calculated threshold value.
+   */
   public double calculateThreshold(double[][][] channels, double percentage) {
     if (percentage == 100.0) {
       return Double.MAX_VALUE;
@@ -185,44 +260,4 @@ public class HaarWaveletTransform {
     return sortedUniqueValues.get(thresholdIndex);
   }
 
-
-
-
-//  public static void main(String[] args) {
-//    double[][] originalArray = {
-//            {5, 2, 1, 4},
-//            {3, 8, 6, 7},
-//            {2, 1, 4, 0},
-//            {9, 5, 3, 2}
-//
-////            {5,3,2,4,2,1,0,3}
-//    };
-//
-//    int size = originalArray.length;
-//
-//
-//    System.out.println("Padded Array:");
-//    printArray(originalArray);
-//
-//    double[][] transformedArray = haar(originalArray);
-//
-//    System.out.println("Transformed Array:");
-//    printArray(transformedArray);
-//
-//
-//    double[][] recoveredArray = inverseHaar(transformedArray);
-//
-//    System.out.println("Recovered Array:");
-//    printArray(recoveredArray);
-//  }
-//
-//  public static void printArray(double[][] array) {
-//    for (int i = 0; i < array.length; i++) {
-//      for (int j = 0; j < array[i].length; j++) {
-//        System.out.print(array[i][j] + "\t");
-//      }
-//      System.out.println();
-//    }
-//    System.out.println();
-//  }
 }

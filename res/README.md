@@ -60,6 +60,8 @@ The `Image` class represents a two-dimensional array of `Pixel` objects, forming
 
 - **`sharpen()`:** Applies a sharpening filter to the image, creating a new image with enhanced sharpness.
 
+- **`applyFilter(SplitStrategy strategy)`:** Applies a filter to the image using the specified `SplitStrategy` and returns the filtered image.
+
 - **`histogram()`:** Generates a histogram image representing the pixel value distribution of the original image. Returns the histogram image as a new image.
 
 - **`correctImage()`:** Corrects the colors of the image by aligning the meaningful peaks of its histogram. Returns the corrected image as a new image.
@@ -98,21 +100,21 @@ The `ImageModelInterface` defines a set of methods for managing and manipulating
 
 - **`blueComponentCommand(String imageName, String destinationImageName)`:** Extracts the blue component, creating a new image with only the blue component.
 
-- **`valueComponentCommand(String imageName, String destinationImageName)`:** Creates a new image where all color components (red, green, and blue) have the same value.
+- **`valueComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Creates a new image where all color components (red, green, and blue) have the same value.
 
-- **`intensityComponentCommand(String imageName, String destinationImageName)`:** Creates a grayscale intensity image.
+- **`intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Creates a grayscale intensity image.
 
-- **`lumaComponentCommand(String imageName, String destinationImageName)`:** Transforms to represent the luma (brightness) of the image.
+- **`lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Transforms to represent the luma (brightness) of the image.
 
 - **`brightenCommand(String imageName, String destinationImageName, int increment)`:** Brightens the image by adding a specified increment to the pixel color components.
 
 - **`combineCommand(String imageRed, String imageGreen, String imageBlue, String imageName)`:** Combines three images (red, green, blue channels) into one color image.
 
-- **`blurCommand(String imageName, String destinationImageName)`:** Applies a blur filter.
+- **`blurCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Applies a blur filter.
 
-- **`sharpenCommand(String imageName, String destinationImageName)`:** Enhances sharpness using a sharpening filter.
+- **`sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Enhances sharpness using a sharpening filter.
 
-- **`sepiaCommand(String imageName, String destinationImageName)`:** Applies a sepia tone, giving the image a brownish tint.
+- **`sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Applies a sepia tone, giving the image a brownish tint.
 
 - **`verticalFlipCommand(String imageName, String destinationImageName)`:** Flips the image vertically.
 
@@ -124,33 +126,51 @@ The `ImageModelInterface` defines a set of methods for managing and manipulating
 
 - **`rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName)`:** Splits an image into its RGB components.
 
-#### ImageModel Class
 
+### ImageModel Class
 **Package:** `model`
 
-The `ImageModel` class serves as a container and manipulator for multiple `Image` objects. It allows for the execution of various image processing commands on these images, such as combining color channels, applying filters, or performing transformations like flips or rotations. It also provides methods to check the existence of images and retrieve them based on their names.
+The `ImageModel` class represents a model for managing and manipulating images. It implements the `ImageModelInterface` and provides various methods for image processing and manipulation.
 
-**Methods:**
+- **`redComponentCommand(String imageName, String destinationImageName)`:** Extracts the red component of the specified image, creating a new image with only the red component.
 
-- **`combineCommand(String imageRedName, String imageGreenName, String imageBlueName, String destinationImageName)`:** Combines three separate images representing the red, green, and blue color channels into a single color image.
+- **`greenComponentCommand(String imageName, String destinationImageName)`:** Extracts the green component, creating a new image with only the green component.
 
-- **`blurCommand(String imageName, String destinationImageName)`:** Applies a blur filter to an image, producing a blurred version of the original.
+- **`blueComponentCommand(String imageName, String destinationImageName)`:** Extracts the blue component, creating a new image with only the blue component.
 
-- **`sharpenCommand(String imageName, String destinationImageName)`:** Applies a sharpening filter to an image, enhancing its sharpness.
+- **`valueComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Creates a new image where all color components (red, green, and blue) have the same value.
 
-- **`sepiaCommand(String imageName, String destinationImageName)`:** Applies a sepia tone filter to an image, giving it a warm brownish tint.
+- **`intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Creates a grayscale intensity image.
 
-- **`verticalFlipCommand(String imageName, String destinationImageName)`:** Flips an image vertically and stores the result in a new image.
+- **`lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Transforms to represent the luma (brightness) of the image.
 
-- **`horizontalFlipCommand(String imageName, String destinationImageName)`:** Flips an image horizontally and stores the result in a new image.
+- **`brightenCommand(String imageName, String destinationImageName, int increment)`:** Brightens the image by adding a specified increment to the pixel color components.
 
-- **`rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName)`:** Splits an image into its red, green, and blue components, storing each as a separate image.
+- **`combineCommand(String imageRed, String imageGreen, String imageBlue, String imageName)`:** Combines three images (red, green, blue channels) into one color image.
 
-- **`imageExists(String imageName)`:** Checks if an image with the specified name exists in the model.
+- **`blurCommand(String imageName, String destinationImageName)`:** Applies a blur filter.
 
-- **`getImage(String imageName)`:** Retrieves the `Image` object associated with the given image name.
+- **`sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Enhances sharpness using a sharpening filter.
 
-- **`addImage(String imageName, Image image)`:** Adds an `Image` object to the model under the specified image name.
+- **`sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Applies a sepia tone, giving the image a brownish tint.
+
+- **`verticalFlipCommand(String imageName, String destinationImageName)`:** Flips the image vertically.
+
+- **`horizontalFlipCommand(String imageName, String destinationImageName)`:** Flips the image horizontally.
+
+- **`imageExists(String imageName):`** Checks if an image with the specified name exists.
+
+- **`getImage(String imageName):`** Retrieves the Image object associated with a given name.
+
+- **`rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName)`:** Splits an image into its RGB components.
+
+- **`compressImage(String imageName, String destinationImageName, double percentage)`:** Compresses the specified image using the Haar Wavelet Transform with the given compression percentage.
+
+- **`histogramCommand(String imageName, String destinationImageName)`:** Displays the histogram of the specified image.
+
+- **`colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Applies color correction to the specified image.
+
+- **`levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName, Optional<Double> splitPercentage)`:** Adjusts the levels of the specified image.
 
 ---
 
