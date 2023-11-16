@@ -227,12 +227,12 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void colorCorrectionCommand(String imageName, String destinationImageName) {
+  public void colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("color correction method is invoked!");
   }
 
   @Override
-  public void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName) {
+  public void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName, Optional<Double> splitPercentage) {
     log.append("levels adjustment method is invoked!");
   }
 

@@ -101,3 +101,11 @@ save res\imagesPNG\valueSplitNYC.png testValueSplit
 load res\nyc.png testNYC
 intensity-component testNYC testIntensitySplit split 50
 save res\imagesPNG\intensitySplitNYC.png testIntensitySplit
+
+load res\nyc.png testNYC
+color-correct testNYC testColorCorrectionSplit split 50
+save res\imagesPNG\colorCorrectionSplitNYC.png testColorCorrectionSplit
+
+load res\nyc.png testNYC
+levels-adjust 20 100 255 testNYC testLevelAdjustmentSplit split 50
+save res\imagesPNG\levelAdjustmentSplitNYC.png testLevelAdjustmentSplit

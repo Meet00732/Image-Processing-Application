@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import model.Strategy.ColorCorrectionStrategy;
 import model.Strategy.IntensityStrategy;
+import model.Strategy.LevelAdjustmentStrategy;
 import model.Strategy.LumaStrategy;
 import model.Strategy.SharpenStrategy;
 import model.Strategy.SplitDecorator;
@@ -463,17 +465,26 @@ public class ImageModel implements ImageModelInterface {
   }
 
   @Override
-  public void colorCorrectionCommand(String imageName, String destinationImageName) {
+  public void colorCorrectionCommand(String imageName, String destinationImageName,
+                                     Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
     Image image = this.imageMap.get(imageName);
-    Image correctedImage = image.correctImage();
-    this.addImage(destinationImageName,correctedImage);
+    SplitStrategy colorCorrectionStrategy = new ColorCorrectionStrategy();
+
+    if (splitPercentage.isPresent()) {
+      colorCorrectionStrategy = new SplitDecorator(colorCorrectionStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(colorCorrectionStrategy);
+    this.addImage(destinationImageName, newImage);
   }
 
   @Override
-  public void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName) {
+  public void levelsAdjustmentCommand(int b, int m, int w, String imageName,
+                                      String destinationImageName,
+                                      Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
@@ -481,8 +492,14 @@ public class ImageModel implements ImageModelInterface {
       throw new IllegalArgumentException("Enter valid values for b, m and w");
     }
     Image image = this.imageMap.get(imageName);
-    Image levelsAdjustedImage = image.levelsAdjust(b,m,w);
-    this.addImage(destinationImageName,levelsAdjustedImage);
+    SplitStrategy levelAdjustmentStrategy = new LevelAdjustmentStrategy(b, m, w);
+
+    if (splitPercentage.isPresent()) {
+      levelAdjustmentStrategy = new SplitDecorator(levelAdjustmentStrategy, splitPercentage.get());
+    }
+
+    Image newImage = image.applyFilter(levelAdjustmentStrategy);
+    this.addImage(destinationImageName, newImage);
   }
 
   /**

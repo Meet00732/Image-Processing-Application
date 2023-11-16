@@ -1,15 +1,19 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModelInterface;
 
-public class LevelsAdjustmentCommand extends AbstractBaseCommand {
+public class LevelsAdjustmentCommand extends AbstractSplitCommand {
 
   private int b;
   private int m;
   private int w;
 
-  public LevelsAdjustmentCommand(ImageModelInterface model, int b, int m, int w, String imageName, String destinationImageName) {
-    super(model, imageName, destinationImageName);
+  public LevelsAdjustmentCommand(ImageModelInterface model, int b, int m, int w, String imageName,
+                                 String destinationImageName,
+                                 Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
     this.b = b;
     this.m = m;
     this.w = w;
@@ -23,6 +27,7 @@ public class LevelsAdjustmentCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.levelsAdjustmentCommand(this.b,this.m,this.w,this.imageName,this.destinationImageName);
+    this.model.levelsAdjustmentCommand(this.b,this.m,this.w,this.imageName,
+            this.destinationImageName, this.splitPercentage);
   }
 }

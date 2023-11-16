@@ -1281,9 +1281,10 @@ public class ImageModelTest {
   public void testColorCorrection() {
     String imageName = "testImage";
     String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.colorCorrectionCommand(imageName, destinationImageName);
+    this.model.colorCorrectionCommand(imageName, destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
@@ -1317,9 +1318,11 @@ public class ImageModelTest {
   public void testLevelAdjustments() {
     String imageName = "testImage";
     String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.empty();
 
     this.model.addImage(imageName, this.image);
-    this.model.levelsAdjustmentCommand(20, 100, 255, imageName, destinationImageName);
+    this.model.levelsAdjustmentCommand(20, 100, 255, imageName,
+            destinationImageName, splitPercentage);
 
     Image testImage = this.model.getImage(destinationImageName);
     int width = testImage.getPixels().length;
@@ -1353,8 +1356,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "redImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(-20,-100,-255,imageName, destinationImageName);
+    this.model.levelsAdjustmentCommand(-20,-100,-255,imageName,
+            destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -1363,8 +1368,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "redImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(101,100,255,imageName, destinationImageName);
+    this.model.levelsAdjustmentCommand(101,100,255,imageName,
+            destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -1373,8 +1380,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "redImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(20,19,255,imageName, destinationImageName);
+    this.model.levelsAdjustmentCommand(20,19,255,imageName,
+            destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 
@@ -1383,8 +1392,10 @@ public class ImageModelTest {
     String imageName = "testImage";
     String destinationImageName = "redImage";
     this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(20,100,19,imageName, destinationImageName);
+    this.model.levelsAdjustmentCommand(20,100,19,imageName,
+            destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
 

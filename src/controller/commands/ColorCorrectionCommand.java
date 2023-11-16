@@ -1,11 +1,15 @@
 package controller.commands;
 
+import java.util.Optional;
+
 import model.ImageModelInterface;
 
-public class ColorCorrectionCommand extends AbstractBaseCommand {
+public class ColorCorrectionCommand extends AbstractSplitCommand {
 
-  public ColorCorrectionCommand(ImageModelInterface model, String imageName, String destinationImageName) {
-    super(model,imageName,destinationImageName);
+  public ColorCorrectionCommand(ImageModelInterface model, String imageName,
+                                String destinationImageName,
+                                Optional<Double> splitPercentage) {
+    super(model, imageName, destinationImageName, splitPercentage);
   }
 
   /**
@@ -16,6 +20,6 @@ public class ColorCorrectionCommand extends AbstractBaseCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.colorCorrectionCommand(this.imageName,this.destinationImageName);
+    this.model.colorCorrectionCommand(this.imageName,this.destinationImageName, this.splitPercentage);
   }
 }
