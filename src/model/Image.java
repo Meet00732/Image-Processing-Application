@@ -1,6 +1,6 @@
 package model;
 
-import model.Strategy.SplitStrategy;
+import model.strategy.SplitStrategy;
 import java.awt.image.BufferedImage;
 
 /**

@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import model.Strategy.ColorCorrectionStrategy;
-import model.Strategy.IntensityStrategy;
-import model.Strategy.LevelAdjustmentStrategy;
-import model.Strategy.LumaStrategy;
-import model.Strategy.SharpenStrategy;
-import model.Strategy.SplitDecorator;
-import model.Strategy.SplitStrategy;
-import model.Strategy.BlurStrategy;
-import model.Strategy.SepiaStrategy;
-import model.Strategy.ValueStrategy;
+import model.strategy.ColorCorrectionStrategy;
+import model.strategy.IntensityStrategy;
+import model.strategy.LevelAdjustmentStrategy;
+import model.strategy.LumaStrategy;
+import model.strategy.SharpenStrategy;
+import model.strategy.SplitDecorator;
+import model.strategy.SplitStrategy;
+import model.strategy.BlurStrategy;
+import model.strategy.SepiaStrategy;
+import model.strategy.ValueStrategy;
 
 /**
  * This class represents the model for managing and manipulating images.

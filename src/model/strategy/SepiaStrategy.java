@@ -1,4 +1,4 @@
-package model.Strategy;
+package model.strategy;
 
 import model.Image;
 
