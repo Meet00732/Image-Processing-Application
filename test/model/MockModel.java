@@ -75,7 +75,8 @@ public class MockModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void intensityComponentCommand(String imageName, String destinationImageName,
+                                        Optional<Double> splitPercentage) {
     log.append("intensityComponentCommand method is invoked!");
   }
 
@@ -86,7 +87,8 @@ public class MockModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void lumaComponentCommand(String imageName, String destinationImageName,
+                                   Optional<Double> splitPercentage) {
     log.append("lumaComponentCommand method is invoked!");
   }
 
@@ -111,7 +113,8 @@ public class MockModel implements ImageModelInterface {
    * @param imageName  The name of the combined image.
    */
   @Override
-  public void combineCommand(String imageRed, String imageGreen, String imageBlue, String imageName) {
+  public void combineCommand(String imageRed, String imageGreen, String imageBlue,
+                             String imageName) {
     log.append("combineCommand method is invoked!");
   }
 
@@ -122,7 +125,8 @@ public class MockModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void blurCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void blurCommand(String imageName, String destinationImageName,
+                          Optional<Double> splitPercentage) {
     log.append("blurCommand method is invoked!");
   }
 
@@ -133,7 +137,8 @@ public class MockModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void sharpenCommand(String imageName, String destinationImageName,
+                             Optional<Double> splitPercentage) {
     log.append("sharpenCommand method is invoked!");
   }
 
@@ -144,7 +149,8 @@ public class MockModel implements ImageModelInterface {
    * @param destinationImageName The name of the destination image.
    */
   @Override
-  public void sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void sepiaCommand(String imageName, String destinationImageName,
+                           Optional<Double> splitPercentage) {
     log.append("sepiaCommand method is invoked!");
   }
 
@@ -204,7 +210,8 @@ public class MockModel implements ImageModelInterface {
    * @param imageName      The name of the combined image.
    */
   @Override
-  public void rgbSplitCommand(String redImageName, String greenImageName, String blueImageName, String imageName) {
+  public void rgbSplitCommand(String redImageName, String greenImageName,
+                              String blueImageName, String imageName) {
     log.append("rgbSplitCommand method is invoked!");
   }
 
@@ -228,12 +235,15 @@ public class MockModel implements ImageModelInterface {
   }
 
   @Override
-  public void colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void colorCorrectionCommand(String imageName, String destinationImageName,
+                                     Optional<Double> splitPercentage) {
     log.append("color correction method is invoked!");
   }
 
   @Override
-  public void levelsAdjustmentCommand(int b, int m, int w, String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void levelsAdjustmentCommand(int b, int m, int w,
+                                      String imageName, String destinationImageName,
+                                      Optional<Double> splitPercentage) {
     log.append("levels adjustment method is invoked!");
   }
 

@@ -51,10 +51,11 @@ public class ImageController implements ImageControllerInterface {
    * @param model The ImageModel for image processing operations.
    * @throws IllegalArgumentException when model or view is null.
    */
-  public ImageController(ImageViewInterface view, ImageModelInterface model) throws IllegalArgumentException {
-      if (view == null) {
-        throw new IllegalArgumentException("View Object is missing!");
-      }
+  public ImageController(ImageViewInterface view,
+                         ImageModelInterface model) throws IllegalArgumentException {
+    if (view == null) {
+      throw new IllegalArgumentException("View Object is missing!");
+    }
     if (model == null) {
       throw new IllegalArgumentException("Model Object is missing!");
     }
@@ -218,7 +219,7 @@ public class ImageController implements ImageControllerInterface {
           break;
 
         case "histogram":
-          feature = new HistogramCommand(model,tokens[1],tokens[2]);
+          feature = new HistogramCommand(model, tokens[1], tokens[2]);
           status = feature.execute();
           break;
 
@@ -227,7 +228,7 @@ public class ImageController implements ImageControllerInterface {
           if (tokens.length > 3) {
             splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
           }
-          feature = new ColorCorrectionCommand(model,tokens[1],tokens[2], splitPercentage);
+          feature = new ColorCorrectionCommand(model, tokens[1], tokens[2], splitPercentage);
           status = feature.execute();
           break;
 
@@ -236,9 +237,9 @@ public class ImageController implements ImageControllerInterface {
           if (tokens.length > 6) {
             splitPercentage = Optional.of(Double.parseDouble(tokens[7]));
           }
-          feature = new LevelsAdjustmentCommand(model,Integer.parseInt(tokens[1]),
+          feature = new LevelsAdjustmentCommand(model, Integer.parseInt(tokens[1]),
                   Integer.parseInt(tokens[2]),
-                  Integer.parseInt(tokens[3]),tokens[4],tokens[5],splitPercentage);
+                  Integer.parseInt(tokens[3]), tokens[4], tokens[5], splitPercentage);
           status = feature.execute();
           break;
 

@@ -20,7 +20,8 @@ public class VerticalFlipCommand extends AbstractBaseCommand {
    * @param destinationImageName The name of the destination image to save the
    *                             vertically flipped image.
    */
-  public VerticalFlipCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public VerticalFlipCommand(ImageModelInterface model, String imageName,
+                             String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

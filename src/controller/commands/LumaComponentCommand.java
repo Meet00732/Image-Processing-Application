@@ -40,6 +40,7 @@ public class LumaComponentCommand extends AbstractSplitCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.lumaComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
+    this.model.lumaComponentCommand(this.imageName, this.destinationImageName,
+            this.splitPercentage);
   }
 }

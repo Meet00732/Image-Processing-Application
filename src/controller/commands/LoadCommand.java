@@ -3,7 +3,6 @@ package controller.commands;
 import java.io.IOException;
 
 import model.Image;
-import model.ImageModel;
 import model.ImageModelInterface;
 
 /**

@@ -29,7 +29,8 @@ public class CombineCommand extends AbstractBaseCommand {
                         String destinationImageGreenName,
                         String destinationImageBlueName) {
 
-    super(model, imageName, destinationImageRedName, destinationImageGreenName, destinationImageBlueName);
+    super(model, imageName, destinationImageRedName,
+            destinationImageGreenName, destinationImageBlueName);
   }
 
   /**

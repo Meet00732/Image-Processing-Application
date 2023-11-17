@@ -8,8 +8,14 @@ import java.io.PrintStream;
 
 import view.ImageView;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * The ImageViewTest class contains JUnit tests for the
+ * functionality of the ImageView class. It includes tests for
+ * the constructor, getting user input command, and displaying messages.
+ */
 public class ImageViewTest {
   private final ByteArrayOutputStream outResult = new ByteArrayOutputStream();
 
@@ -32,8 +38,7 @@ public class ImageViewTest {
   public void testConstructor() {
     try {
       new ImageView();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
   }

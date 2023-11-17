@@ -410,7 +410,6 @@ public class ImageModelTest {
   }
 
 
-
   /**
    * Test intensityComponent invalid image.
    */
@@ -1012,7 +1011,6 @@ public class ImageModelTest {
       }
     }
   }
-
 
 
   /**
@@ -1847,9 +1845,6 @@ public class ImageModelTest {
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-//                  System.out.println(testImage.getPixels()[i][j].getRed() + " "
-//                            + testImage.getPixels()[i][j].getGreen() + " "
-//                            + testImage.getPixels()[i][j].getBlue());
         assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
         assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
         assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
@@ -1907,8 +1902,7 @@ public class ImageModelTest {
           assertEquals(expectedArray[i][j], result[i][j]);
         }
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       fail("This test should have passed!");
     }
   }
@@ -1983,7 +1977,7 @@ public class ImageModelTest {
     this.model.addImage(imageName, this.image);
     Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(-20,-100,-255,imageName,
+    this.model.levelsAdjustmentCommand(-20, -100, -255, imageName,
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
@@ -1998,7 +1992,7 @@ public class ImageModelTest {
     this.model.addImage(imageName, this.image);
     Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(101,100,255,imageName,
+    this.model.levelsAdjustmentCommand(101, 100, 255, imageName,
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
@@ -2013,7 +2007,7 @@ public class ImageModelTest {
     this.model.addImage(imageName, this.image);
     Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(20,19,255,imageName,
+    this.model.levelsAdjustmentCommand(20, 19, 255, imageName,
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }
@@ -2028,7 +2022,7 @@ public class ImageModelTest {
     this.model.addImage(imageName, this.image);
     Optional<Double> splitPercentage = Optional.empty();
 
-    this.model.levelsAdjustmentCommand(20,100,19,imageName,
+    this.model.levelsAdjustmentCommand(20, 100, 19, imageName,
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }

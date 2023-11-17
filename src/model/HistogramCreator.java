@@ -17,7 +17,6 @@ public class HistogramCreator {
    * @return A BufferedImage representing the histogram.
    */
   public static Pixel[][] createHistogramImage(int[][] channels) {
-//    int[][] channels = image.getFrequencies();
     int maxFrequency = getMaxFrequency(channels[0], channels[1], channels[2]);
 
 
@@ -57,7 +56,8 @@ public class HistogramCreator {
    * @param maxFrequency The maximum frequency among all color channels.
    * @param color        The color of the histogram.
    */
-  private static void drawHistogram(Graphics2D g2d, int[] frequency, int maxFrequency, Color color) {
+  private static void drawHistogram(Graphics2D g2d, int[] frequency,
+                                    int maxFrequency, Color color) {
     g2d.setColor(color);
     int prevX = 0;
     int prevY = 255;

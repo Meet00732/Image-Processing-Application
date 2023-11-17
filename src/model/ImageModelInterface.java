@@ -65,9 +65,10 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             grayscale intensity image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
-  void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void intensityComponentCommand(String imageName, String destinationImageName,
+                                 Optional<Double> splitPercentage);
 
   /**
    * Creates a new image where each pixel's color components are
@@ -76,9 +77,10 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the luma image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
-  void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void lumaComponentCommand(String imageName, String destinationImageName,
+                            Optional<Double> splitPercentage);
 
   /**
    * Brightens the image by adding a specified increment to the
@@ -109,9 +111,10 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the blurred image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
-  void blurCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void blurCommand(String imageName, String destinationImageName,
+                   Optional<Double> splitPercentage);
 
   /**
    * Applies a sharpening filter to the image, creating a new image with enhanced sharpness.
@@ -119,9 +122,10 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where
    *                             the sharpened image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
-  void sharpenCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void sharpenCommand(String imageName, String destinationImageName,
+                      Optional<Double> splitPercentage);
 
 
   /**
@@ -130,9 +134,10 @@ public interface ImageModelInterface {
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where the
    *                             sepia-toned image will be stored.
-   * @param splitPercentage
+   * @param splitPercentage      a percentage value for splitting the image.
    */
-  void sepiaCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void sepiaCommand(String imageName, String destinationImageName,
+                    Optional<Double> splitPercentage);
 
   /**
    * Flips the specified image vertically and stores the result in the destination image.
@@ -209,14 +214,15 @@ public interface ImageModelInterface {
    *                             the color-corrected image will be stored.
    * @param splitPercentage      An optional percentage value for splitting the image.
    */
-  void colorCorrectionCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage);
+  void colorCorrectionCommand(String imageName, String destinationImageName,
+                              Optional<Double> splitPercentage);
 
   /**
    * Adjusts the levels of the specified image and stores the result
    * in the destination image with the specified parameters and split percentage.
    *
    * @param b                    The black point level.
-   * @param m                    The mid point level.
+   * @param m                    The mid-point level.
    * @param w                    The white point level.
    * @param imageName            The name of the source image.
    * @param destinationImageName The name of the destination image where

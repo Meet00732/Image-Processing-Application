@@ -22,7 +22,7 @@ public class IntensityComponentCommand extends AbstractSplitCommand {
    */
   public IntensityComponentCommand(ImageModelInterface model, String imageName,
                                    String destinationImageName,
-                                   Optional <Double> splitPercentage) {
+                                   Optional<Double> splitPercentage) {
     super(model, imageName, destinationImageName, splitPercentage);
   }
 
@@ -35,6 +35,7 @@ public class IntensityComponentCommand extends AbstractSplitCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.intensityComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
+    this.model.intensityComponentCommand(this.imageName, this.destinationImageName,
+            this.splitPercentage);
   }
 }

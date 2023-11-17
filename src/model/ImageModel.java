@@ -132,7 +132,8 @@ public class ImageModel implements ImageModelInterface {
    * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
-  public void intensityComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void intensityComponentCommand(String imageName, String destinationImageName,
+                                        Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
@@ -157,7 +158,8 @@ public class ImageModel implements ImageModelInterface {
    * @param splitPercentage      a percentage value for splitting the image.
    */
   @Override
-  public void lumaComponentCommand(String imageName, String destinationImageName, Optional<Double> splitPercentage) {
+  public void lumaComponentCommand(String imageName, String destinationImageName,
+                                   Optional<Double> splitPercentage) {
     if (!imageExists(imageName)) {
       throw new IllegalArgumentException("Image does not exist!");
     }
@@ -447,13 +449,13 @@ public class ImageModel implements ImageModelInterface {
    * Adjusts the levels of the specified image and stores the result
    * in the destination image with the specified parameters and split percentage.
    *
-   * @param b                     The black point level.
-   * @param m                     The mid point level.
-   * @param w                     The white point level.
-   * @param imageName             The name of the source image.
-   * @param destinationImageName  The name of the destination image where
-   *                              the color-corrected image will be stored.
-   * @param splitPercentage       A percentage value for splitting the image.
+   * @param b                    The black point level.
+   * @param m                    The mid point level.
+   * @param w                    The white point level.
+   * @param imageName            The name of the source image.
+   * @param destinationImageName The name of the destination image where
+   *                             the color-corrected image will be stored.
+   * @param splitPercentage      A percentage value for splitting the image.
    */
   @Override
   public void levelsAdjustmentCommand(int b, int m, int w, String imageName,

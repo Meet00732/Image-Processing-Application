@@ -1,6 +1,7 @@
 package model;
 
 import model.strategy.SplitStrategy;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -32,7 +33,7 @@ public class Image {
   }
 
 
-  private Image extractComponent(ColorComponent component) {
+  private Image extractComponent(ColorComponent component) throws UnsupportedOperationException {
     int width = pixels.length;
     int height = pixels[0].length;
     Pixel[][] componentPixels = new Pixel[width][height];
@@ -104,6 +105,9 @@ public class Image {
             break;
           case HORIZONTALFLIP:
             componentPixels[i][j] = this.getPixels()[width - i - 1][j];
+            break;
+          default:
+            throw new UnsupportedOperationException("Enter a Valid Command!");
         }
       }
     }
@@ -113,7 +117,6 @@ public class Image {
   /**
    * Extracts the red component of the specified image and
    * creates a new image with only the red component.
-   *
    */
   public Image redComponent() {
     return extractComponent(ColorComponent.RED);
@@ -185,8 +188,8 @@ public class Image {
    * Brightens the image by adding a specified increment to the
    * red, green, and blue components of each pixel.
    *
-   * @param increment            The increment to be added to the red, green,
-   *                             and blue components.
+   * @param increment The increment to be added to the red, green,
+   *                  and blue components.
    */
   public Image brighten(int increment) {
     int width = this.getPixels().length;
@@ -231,7 +234,9 @@ public class Image {
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        double redSum = 0, greenSum = 0, blueSum = 0;
+        double redSum = 0;
+        double greenSum = 0;
+        double blueSum = 0;
 
         for (int x = 0; x < kernelWidth; x++) {
           for (int y = 0; y < kernelHeight; y++) {
@@ -424,7 +429,7 @@ public class Image {
   /**
    * Offsets a color value based on a specified peak and average value.
    *
-   * @param value      The original color value.
+   * @param value       The original color value.
    * @param currentPeak The current peak value.
    * @param averagePeak The average peak value.
    * @return The offset color value.
@@ -451,7 +456,7 @@ public class Image {
    * @return A new image with adjusted levels.
    */
   public Image levelsAdjust(int b, int m, int w) {
-    return adjustLevels(convertToBufferedImage(this),b,m,w);
+    return adjustLevels(convertToBufferedImage(this), b, m, w);
   }
 
 
@@ -481,9 +486,9 @@ public class Image {
   /**
    * Applies a level adjustment to a color value based on shadow, mid, and highlight levels.
    *
-   * @param value    The original color value.
-   * @param shadow   The shadow level.
-   * @param mid      The mid-level.
+   * @param value     The original color value.
+   * @param shadow    The shadow level.
+   * @param mid       The mid-level.
    * @param highlight The highlight level.
    * @return The adjusted color value.
    */
@@ -505,56 +510,68 @@ public class Image {
   /**
    * Calculates the quadratic coefficient for level adjustment.
    *
-   * @param shadow   The shadow level.
-   * @param mid      The mid-level.
+   * @param shadow    The shadow level.
+   * @param mid       The mid-level.
    * @param highlight The highlight level.
    * @return The quadratic coefficient.
    */
   private double calculateQuadraticCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight) - shadow
+    double a = shadow * shadow * (mid - highlight) - shadow
             * (mid * mid - highlight * highlight)
             + mid * mid * highlight - mid * highlight * highlight;
-    double Aa = -shadow * (128 - 255) + 128 * highlight - 255 * mid;
+    double aA = -shadow * (128 - 255) + 128 * highlight - 255 * mid;
 
-    return Aa / A;
+    return aA / a;
   }
 
   /**
    * Calculates the linear coefficient for level adjustment.
    *
-   * @param shadow   The shadow level.
-   * @param mid      The mid-level.
+   * @param shadow    The shadow level.
+   * @param mid       The mid-level.
    * @param highlight The highlight level.
    * @return The linear coefficient.
    */
   private double calculateLinearCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight) - shadow
+    double a = shadow * shadow * (mid - highlight) - shadow
             * (mid * mid - highlight * highlight)
             + mid * mid * highlight - mid * highlight * highlight;
-    double Ab = shadow * shadow * (128 - 255)
+    double aB = shadow * shadow * (128 - 255)
             + 255 * mid * mid - 128 * highlight * highlight;
 
-    return Ab / A;
+    return aB / a;
   }
 
   /**
    * Calculates the constant coefficient for level adjustment.
    *
-   * @param shadow   The shadow level.
-   * @param mid      The mid-level.
+   * @param shadow    The shadow level.
+   * @param mid       The mid-level.
    * @param highlight The highlight level.
    * @return The constant coefficient.
    */
   private double calculateConstantCoefficient(int shadow, int mid, int highlight) {
-    double A = shadow * shadow * (mid - highlight)
+    double a = shadow * shadow * (mid - highlight)
             - shadow * (mid * mid - highlight * highlight)
             + mid * mid * highlight - mid * highlight * highlight;
-    double Ac = shadow * shadow * (255 * mid - 128 * highlight)
+    double aC = shadow * shadow * (255 * mid - 128 * highlight)
             - shadow * (255 * mid * mid - 128 * highlight * highlight);
 
-    return Ac / A;
+    return aC / a;
   }
 
+  /**
+   * The Image class provides methods for compressing an
+   * image using the Haar wavelet transform. Compression is
+   * achieved by applying the Haar wavelet transform to the
+   * color channels of the image, filtering out high-frequency
+   * components based on a specified percentage threshold, and then
+   * reconstructing the image from the compressed channels.
+   *
+   * @param percentage The compression percentage, indicating
+   *                   the level of compression to be applied.
+   * @return A new Image object representing the compressed image.
+   */
   public Image compress(double percentage) {
     Pixel[][] pixels = this.getPixels();
     int width = this.getPixels().length;
@@ -574,6 +591,12 @@ public class Image {
     return imageFromChannels(channels);
   }
 
+  /**
+   * Extracts the color channels (red, green, and blue) from a 2D array of pixels.
+   *
+   * @param pixels The 2D array of Pixel objects representing the image.
+   * @return A three-dimensional array containing the red, green, and blue color channels.
+   */
   private double[][][] extractColorChannels(Pixel[][] pixels) {
     int width = pixels.length;
     int height = pixels[0].length;
@@ -592,6 +615,12 @@ public class Image {
     return new double[][][]{redChannel, greenChannel, blueChannel};
   }
 
+  /**
+   * Creates a new Image object from the color channels.
+   *
+   * @param channels The three-dimensional array containing the red, green, and blue color channels.
+   * @return A new Image object representing the image reconstructed from the color channels.
+   */
   private Image imageFromChannels(double[][][] channels) {
     int width = channels[0].length;
     int height = channels[0][0].length;
@@ -608,6 +637,13 @@ public class Image {
     return new Image(compressedPixels);
   }
 
+  /**
+   * Filters the coefficients of a color channel based on a specified threshold.
+   *
+   * @param channel   The color channel to be filtered.
+   * @param threshold The threshold for filtering coefficients.
+   * @return The filtered color channel.
+   */
   private double[][] filter(double[][] channel, double threshold) {
     int width = channel.length;
     int height = channel[0].length;

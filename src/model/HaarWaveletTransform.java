@@ -19,7 +19,7 @@ public class HaarWaveletTransform {
    * @param s The input sequence.
    * @return The transformed sequence.
    */
-  private List<Double> T(List<Double> s) {
+  private List<Double> avgDiffTransform(List<Double> s) {
     List<Double> avg = new ArrayList<>();
     List<Double> diff = new ArrayList<>();
     double sqrtTwo = Math.sqrt(2);
@@ -48,7 +48,7 @@ public class HaarWaveletTransform {
    * @param s The input sequence.
    * @return The original sequence.
    */
-  private List<Double> I(List<Double> s) {
+  private List<Double> avgDiffInverseTransform(List<Double> s) {
     List<Double> originalSequence = new ArrayList<>();
     int halfSize = s.size() / 2;
     double sqrtTwo = Math.sqrt(2);
@@ -72,17 +72,17 @@ public class HaarWaveletTransform {
   /**
    * Pads a 2D array to the nearest power of two.
    *
-   * @param X The input 2D array.
+   * @param x The input 2D array.
    * @return The padded 2D array.
    */
-  private double[][] padArray(double[][] X) {
-    int width = X.length;
-    int height = X[0].length;
+  private double[][] padArray(double[][] x) {
+    int width = x.length;
+    int height = x[0].length;
     int newDim = powerOfTwo(Math.max(width, height));
 
     double[][] paddedArray = new double[newDim][newDim];
     for (int i = 0; i < width; i++) {
-      System.arraycopy(X[i], 0, paddedArray[i], 0, height);
+      System.arraycopy(x[i], 0, paddedArray[i], 0, height);
     }
     return paddedArray;
   }
@@ -113,7 +113,7 @@ public class HaarWaveletTransform {
     List<Double> transformedS = new ArrayList<>(s);
     int m = l;
     while (m > 1) {
-      List<Double> temp = T(transformedS.subList(0, m));
+      List<Double> temp = avgDiffTransform(transformedS.subList(0, m));
       for (int i = 0; i < m; i++) {
         transformedS.set(i, temp.get(i));
       }
@@ -133,7 +133,7 @@ public class HaarWaveletTransform {
     List<Double> originalSequence = new ArrayList<>(transformedSequence);
     int m = 2;
     while (m <= l) {
-      List<Double> temp = I(originalSequence.subList(0, m));
+      List<Double> temp = avgDiffInverseTransform(originalSequence.subList(0, m));
       for (int i = 0; i < m; i++) {
         originalSequence.set(i, temp.get(i));
       }
@@ -145,51 +145,51 @@ public class HaarWaveletTransform {
   /**
    * Performs the Haar wavelet transform on a 2D array.
    *
-   * @param X The input 2D array.
+   * @param x The input 2D array.
    * @return The transformed 2D array.
    */
-  public double[][] haar(double[][] X) {
-    X = padArray(X);
-    int c = X.length;
+  public double[][] haar(double[][] x) {
+    x = padArray(x);
+    int c = x.length;
     while (c > 1) {
       for (int i = 0; i < c; i++) {
         List<Double> row = new ArrayList<>();
         for (int j = 0; j < c; j++) {
-          row.add(X[i][j]);
+          row.add(x[i][j]);
         }
         List<Double> transformedRow = this.transform(row, c);
         for (int j = 0; j < c; j++) {
-          X[i][j] = transformedRow.get(j);
+          x[i][j] = transformedRow.get(j);
         }
       }
       for (int j = 0; j < c; j++) {
         List<Double> col = new ArrayList<>();
         for (int i = 0; i < c; i++) {
-          col.add(X[i][j]);
+          col.add(x[i][j]);
         }
         List<Double> transformedCol = this.transform(col, c);
         for (int i = 0; i < c; i++) {
-          X[i][j] = transformedCol.get(i);
+          x[i][j] = transformedCol.get(i);
         }
       }
       c = c / 2;
     }
-    return X;
+    return x;
   }
 
 
   /**
    * Removes padding from a 2D array to restore its original dimensions.
    *
-   * @param X              The padded 2D array to be unpadded.
+   * @param x              The padded 2D array to be unpadded.
    * @param originalWidth  The original width of the array before padding.
    * @param originalHeight The original height of the array before padding.
    * @return The unpadded 2D array with dimensions specified by originalWidth and originalHeight.
    */
-  private double[][] unpadArray(double[][] X, int originalWidth, int originalHeight) {
+  private double[][] unpadArray(double[][] x, int originalWidth, int originalHeight) {
     double[][] unpaddedArray = new double[originalWidth][originalHeight];
     for (int i = 0; i < originalWidth; i++) {
-      System.arraycopy(X[i], 0, unpaddedArray[i], 0, originalHeight);
+      System.arraycopy(x[i], 0, unpaddedArray[i], 0, originalHeight);
     }
     return unpaddedArray;
   }
@@ -197,38 +197,38 @@ public class HaarWaveletTransform {
   /**
    * Removes padding and performs the inverse Haar wavelet transform on a 2D array.
    *
-   * @param X              The transformed 2D array.
+   * @param x              The transformed 2D array.
    * @param originalWidth  The original width of the array.
    * @param originalHeight The original height of the array.
    * @return The inverse transformed 2D array.
    */
-  public double[][] inverseHaar(double[][] X, int originalWidth, int originalHeight) {
+  public double[][] inverseHaar(double[][] x, int originalWidth, int originalHeight) {
     int c = 2;
-    int s = X.length;
+    int s = x.length;
     while (c <= s) {
       for (int j = 0; j < c; j++) {
         List<Double> col = new ArrayList<>();
         for (int i = 0; i < c; i++) {
-          col.add(X[i][j]);
+          col.add(x[i][j]);
         }
         List<Double> invertedCol = invert(col, c);
         for (int i = 0; i < c; i++) {
-          X[i][j] = invertedCol.get(i);
+          x[i][j] = invertedCol.get(i);
         }
       }
       for (int i = 0; i < c; i++) {
         List<Double> row = new ArrayList<>();
         for (int j = 0; j < c; j++) {
-          row.add(X[i][j]);
+          row.add(x[i][j]);
         }
         List<Double> invertedRow = invert(row, c);
         for (int j = 0; j < c; j++) {
-          X[i][j] = invertedRow.get(j);
+          x[i][j] = invertedRow.get(j);
         }
       }
       c = c * 2;
     }
-    return unpadArray(X, originalWidth, originalHeight);
+    return unpadArray(x, originalWidth, originalHeight);
   }
 
   /**

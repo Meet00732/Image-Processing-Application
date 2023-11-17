@@ -1,9 +1,14 @@
 import org.junit.Test;
+
 import java.util.Random;
+
 import model.Pixel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/**
+ * A Test class for Pixel.
+ */
 public class PixelTest {
 
   /**
@@ -31,8 +36,7 @@ public class PixelTest {
   private int clamp(int value) {
     if (value < 0) {
       value = 0;
-    }
-    else if (value > 255) {
+    } else if (value > 255) {
       value = 255;
     }
     return value;
@@ -45,7 +49,7 @@ public class PixelTest {
   public void testFuzzyTest() {
     Random r = new Random();
 
-    for (int i=0; i<10000; i++) {
+    for (int i = 0; i < 10000; i++) {
       int red = r.nextInt();
       int green = r.nextInt();
       int blue = r.nextInt();

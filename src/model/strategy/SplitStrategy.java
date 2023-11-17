@@ -3,9 +3,11 @@ package model.strategy;
 import model.Image;
 
 /**
- * The SplitStrategy interface defines a contract for classes that implement image splitting strategies.
- * Image splitting is the process of dividing an image into multiple parts based on a specific strategy.
- * Implementing classes should provide a concrete implementation of the 'apply' method to perform the
+ * The SplitStrategy interface defines a contract for classes
+ * that implement image splitting strategies. Image splitting
+ * is the process of dividing an image into multiple parts
+ * based on a specific strategy. Implementing classes should
+ * provide a concrete implementation of the 'apply' method to perform the
  * image splitting according to the defined strategy.
  */
 public interface SplitStrategy {

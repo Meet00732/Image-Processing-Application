@@ -16,7 +16,7 @@ green-component testNYC testGreen
 save res\testAllFeatures\greenNYC.jpg testGreen
 
 blue-component testNYC testBlue
-save res\testAllFeatures\blueNYC.jpg testBlue
+save res\testAllFeatures\blueNYC.jpg testBluea
 
 value-component testNYC testValue
 save res\testAllFeatures\valueNYC.jpg testValue

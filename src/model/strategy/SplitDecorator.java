@@ -27,7 +27,8 @@ public class SplitDecorator implements SplitStrategy {
    * Applies the decorated splitting strategy to the given Image.
    *
    * @param image The input Image to which the decorated splitting strategy is applied.
-   * @return A new Image resulting from the combination of the base strategy and horizontal splitting.
+   * @return A new Image resulting from the combination of
+   *         the base strategy and horizontal splitting.
    */
   @Override
   public Image apply(Image image) {

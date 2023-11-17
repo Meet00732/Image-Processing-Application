@@ -8,8 +8,16 @@ import controller.commands.AbstractImageFormat;
 import controller.commands.ImageJPG;
 import model.Image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+/**
+ * The ImageJPGTest class contains JUnit tests for the
+ * functionality of the ImageJPG class. It includes tests for
+ * loading JPG images, saving images in JPG format, saving images in PNG format,
+ * and handling scenarios where the file path is empty.
+ */
 public class ImageJPGTest {
   private final String testImagePath = "res\\nyc.jpg";
   File savedFile;
@@ -81,7 +89,7 @@ public class ImageJPGTest {
   /**
    * test path empty.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNullPath() {
     String path = "";
     new ImageJPG(path);

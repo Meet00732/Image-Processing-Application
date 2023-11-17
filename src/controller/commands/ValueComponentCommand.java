@@ -38,6 +38,7 @@ public class ValueComponentCommand extends AbstractSplitCommand {
    */
   @Override
   protected void processImage() throws Exception {
-    this.model.valueComponentCommand(this.imageName, this.destinationImageName, this.splitPercentage);
+    this.model.valueComponentCommand(this.imageName, this.destinationImageName,
+            this.splitPercentage);
   }
 }

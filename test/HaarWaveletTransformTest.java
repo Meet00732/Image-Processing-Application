@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.HaarWaveletTransform;
-import model.Pixel;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,8 +44,8 @@ public class HaarWaveletTransformTest {
 
     double[][] result = haarWaveletTransform.haar(test);
 
-    for (int i=0; i<expected.length; i++) {
-      for(int j=0; j<expected[0].length; j++) {
+    for (int i = 0; i < expected.length; i++) {
+      for (int j = 0; j < expected[0].length; j++) {
         assertEquals(expected[i][j], result[i][j], 0.01);
       }
     }
@@ -73,8 +72,8 @@ public class HaarWaveletTransformTest {
 
     double[][] result = haarWaveletTransform.haar(test);
 
-    for (int i=0; i<expected.length; i++) {
-      for(int j=0; j<expected[0].length; j++) {
+    for (int i = 0; i < expected.length; i++) {
+      for (int j = 0; j < expected[0].length; j++) {
         assertEquals(expected[i][j], result[i][j], 0.01);
       }
     }
@@ -102,8 +101,8 @@ public class HaarWaveletTransformTest {
     double[][] inverseResult = haarWaveletTransform.inverseHaar(result,
             expectedInverse.length, expectedInverse[0].length);
 
-    for (int i=0; i<expectedInverse.length; i++) {
-      for(int j=0; j<expectedInverse[0].length; j++) {
+    for (int i = 0; i < expectedInverse.length; i++) {
+      for (int j = 0; j < expectedInverse[0].length; j++) {
         assertEquals(expectedInverse[i][j], inverseResult[i][j], 0.01);
       }
     }
@@ -131,8 +130,8 @@ public class HaarWaveletTransformTest {
     double[][] inverseResult = haarWaveletTransform.inverseHaar(result,
             expectedInverse.length, expectedInverse[0].length);
 
-    for (int i=0; i<expectedInverse.length; i++) {
-      for(int j=0; j<expectedInverse[0].length; j++) {
+    for (int i = 0; i < expectedInverse.length; i++) {
+      for (int j = 0; j < expectedInverse[0].length; j++) {
         assertEquals(inverseResult[i][j], expectedInverse[i][j], 0.01);
       }
       System.out.println();
@@ -146,21 +145,21 @@ public class HaarWaveletTransformTest {
   @Test
   public void testCalculateThreshold() {
     double[][][] channels = {
-            {
-                    {150, 0, 250},
-                    {0, 255, 10},
-                    {230, 125, 75}
-            },
-            {
-                    {100, 120, 0},
-                    {0, 255, 100},
-                    {130, 190, 20}
-            },
-            {
-                    {0, 180, 255},
-                    {0, 255, 200},
-                    {100, 0, 200}
-            }
+      {
+        {150, 0, 250},
+        {0, 255, 10},
+        {230, 125, 75}
+      },
+      {
+        {100, 120, 0},
+        {0, 255, 100},
+        {130, 190, 20}
+      },
+      {
+        {0, 180, 255},
+        {0, 255, 200},
+        {100, 0, 200}
+      }
     };
 
     int percentage = 50;
@@ -171,29 +170,26 @@ public class HaarWaveletTransformTest {
   }
 
   /**
-   * CalculateThreshold method, percentage != 100.
-   */
-  /**
    * CalculateThreshold method, percentage = 100.
    */
   @Test
   public void testCalculateThresholdPercentage100() {
     double[][][] channels = {
-            {
-                    {150, 0, 250},
-                    {0, 255, 10},
-                    {230, 125, 75}
-            },
-            {
-                    {100, 120, 0},
-                    {0, 255, 100},
-                    {130, 190, 20}
-            },
-            {
-                    {0, 180, 255},
-                    {0, 255, 200},
-                    {100, 0, 200}
-            }
+      {
+        {150, 0, 250},
+        {0, 255, 10},
+        {230, 125, 75}
+      },
+      {
+        {100, 120, 0},
+        {0, 255, 100},
+        {130, 190, 20}
+      },
+      {
+        {0, 180, 255},
+        {0, 255, 200},
+        {100, 0, 200}
+      }
     };
 
     int percentage = 100;

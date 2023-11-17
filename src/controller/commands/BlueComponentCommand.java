@@ -1,4 +1,5 @@
 package controller.commands;
+
 import model.ImageModelInterface;
 
 /**
@@ -16,7 +17,8 @@ public class BlueComponentCommand extends AbstractBaseCommand {
    * @param imageName            The name of the source image to extract the blue component from.
    * @param destinationImageName The name of the destination image to save the blue component.
    */
-  public BlueComponentCommand(ImageModelInterface model, String imageName, String destinationImageName) {
+  public BlueComponentCommand(ImageModelInterface model, String imageName,
+                              String destinationImageName) {
     super(model, imageName, destinationImageName);
   }
 

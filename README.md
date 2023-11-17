@@ -734,11 +734,12 @@ The `Split Command Argument` allows users to provide a percentage as an argument
 ### Running a Script at Program Start:
 To execute a script on start of the application, use the following syntax:
 ```bash
-    java -jar program.jar -file <filename>
+    java -jar Assignment5.jar -file <filename>
 ```
-- Place your script file (example: commands.txt) in the `res` folder of your project.
-- Run the jar file by using the command `java -jar program.jar -file res/commands.txt`.
-- The application will sequentially execute commands from `commands.txt`, storing the results to the specified directory and exit program execution.
+- Use the script file `testNewFeaturesJar.txt` in the `res` folder of the project.
+- Run the jar file by using the command `java -jar Assignment5.jar -file testNewFeaturesJar.txt`, to test the newly added features in the assignment-5.
+- Run the jar file by using the command `java -jar Assignment5.jar -file testFeaturesJar.txt`, to test all the features in the assignment-4 and assignment-5.
+- The application will sequentially execute commands from `testNewFeaturesJar.txt`, storing the results to the specified directory and exit program execution.
 
 ### Running a Script After Program Start:
 A user can also run a script after the application has started by following the below steps:
