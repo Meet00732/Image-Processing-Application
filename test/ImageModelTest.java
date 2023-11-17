@@ -19,7 +19,6 @@ import static org.junit.Assert.fail;
  */
 public class ImageModelTest {
 
-
   private ImageModelInterface model;
   private Image image;
 
@@ -1735,8 +1734,6 @@ public class ImageModelTest {
       }
     }
   }
-
-
 
 
   /**

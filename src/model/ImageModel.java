@@ -400,54 +400,6 @@ public class ImageModel implements ImageModelInterface {
     this.addImage(destinationImageName, compressedImage);
   }
 
-  private double[][][] extractColorChannels(Pixel[][] pixels) {
-    int width = pixels.length;
-    int height = pixels[0].length;
-    double[][] redChannel = new double[width][height];
-    double[][] greenChannel = new double[width][height];
-    double[][] blueChannel = new double[width][height];
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        Pixel pixel = pixels[i][j];
-        redChannel[i][j] = pixel.getRed();
-        greenChannel[i][j] = pixel.getGreen();
-        blueChannel[i][j] = pixel.getBlue();
-      }
-    }
-    return new double[][][]{redChannel, greenChannel, blueChannel};
-  }
-
-  private Image imageFromChannels(double[][][] channels) {
-    int width = channels[0].length;
-    int height = channels[0][0].length;
-    Pixel[][] compressedPixels = new Pixel[width][height];
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        int red = (int) channels[0][i][j];
-        int green = (int) channels[1][i][j];
-        int blue = (int) channels[2][i][j];
-        compressedPixels[i][j] = new Pixel(red, green, blue);
-      }
-    }
-    return new Image(compressedPixels);
-  }
-
-  private double[][] filter(double[][] channel, double threshold) {
-    int width = channel.length;
-    int height = channel[0].length;
-
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        if (Math.abs(channel[i][j]) < threshold) {
-          channel[i][j] = 0.0;
-        }
-      }
-    }
-    return channel;
-  }
-
   /**
    * Displays the histogram of the specified image and stores the result
    * in the destination image.

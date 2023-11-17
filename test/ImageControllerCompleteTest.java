@@ -8,7 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import controller.ImageController;
@@ -21,7 +20,6 @@ import view.ImageView;
 import view.ImageViewInterface;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -63,6 +61,10 @@ public class ImageControllerCompleteTest {
     new File(savePath).delete();
   }
 
+  /**
+   * creates 3x3 image for testing.
+   * @throws IOException if file not found.
+   */
   private void createImage() throws IOException {
     BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
     Pixel[][] pixelArray = new Pixel[3][3];
@@ -90,6 +92,11 @@ public class ImageControllerCompleteTest {
     ImageIO.write(image, "png", outputFile);
   }
 
+  /**
+   * Simulates user input by setting the standard input stream to a provided input string.
+   *
+   * @param input The input string to be simulated as user input.
+   */
   private void simulateUserInput(String input) {
     inResult = new ByteArrayInputStream(input.getBytes());
     System.setIn(inResult);
@@ -390,6 +397,62 @@ public class ImageControllerCompleteTest {
 
 
   /**
+   * test valueComponent with split percentage.
+   */
+  @Test
+  public void testValueComponentCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testValueImage";
+    double percentage = 50.0;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "value-component" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 150, 150);
+      expectedArray[0][1] = new Pixel(180, 180, 180);
+      expectedArray[0][2] = new Pixel(255, 255, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "value-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+
+  /**
    * test intensityComponent.
    */
   @Test
@@ -443,6 +506,61 @@ public class ImageControllerCompleteTest {
   }
 
   /**
+   * test intensityComponent with split percentage.
+   */
+  @Test
+  public void testIntensityComponentCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testIntensityImage";
+    double percentage = 40.5;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "intensity-component" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(83, 83, 83);
+      expectedArray[0][1] = new Pixel(100, 100, 100);
+      expectedArray[0][2] = new Pixel(168, 168, 168);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "intensity-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
    * test lumaComponent.
    */
   @Test
@@ -476,6 +594,61 @@ public class ImageControllerCompleteTest {
       expectedArray[2][0] = new Pixel(149, 149, 149);
       expectedArray[2][1] = new Pixel(163, 163, 163);
       expectedArray[2][2] = new Pixel(45, 45, 45);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "luma-component executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test lumaComponent with split percentage.
+   */
+  @Test
+  public void testLumaComponentCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLumaImage";
+    double percentage = 20.5;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "luma-component" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(150, 100, 0);
+      expectedArray[0][1] = new Pixel(0, 120, 180);
+      expectedArray[0][2] = new Pixel(250, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
 
 
       for(int i=0; i<width; i++) {
@@ -716,6 +889,61 @@ public class ImageControllerCompleteTest {
     }
   }
 
+  /**
+   * test blur with split percentage.
+   */
+  @Test
+  public void testBlurCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testBlurImage";
+    double percentage = 70.3;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "blur" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(53, 56, 38);
+      expectedArray[0][1] = new Pixel(83, 81, 121);
+      expectedArray[0][2] = new Pixel(80, 43, 127);
+
+      expectedArray[1][0] = new Pixel(87, 80, 56);
+      expectedArray[1][1] = new Pixel(125, 131, 147);
+      expectedArray[1][2] = new Pixel(83, 79, 151);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "blur executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
 
   /**
    * test sharpenCommand.
@@ -771,6 +999,60 @@ public class ImageControllerCompleteTest {
   }
 
   /**
+   * test sharpen with split percentage.
+   */
+  @Test
+  public void testSharpenCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testsharpenImage";
+    double percentage = 90.2;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "sharpen" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(165, 163, 0);
+      expectedArray[0][1] = new Pixel(174, 186, 255);
+      expectedArray[0][2] = new Pixel(219, 9, 255);
+
+      expectedArray[1][0] = new Pixel(15, 64, 13);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(64, 139, 255);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "sharpen executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
    * test sepiaCommand.
    */
   @Test
@@ -805,6 +1087,60 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(195, 173, 135);
       expectedArray[2][2] = new Pixel(84, 75, 58);
 
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "sepia executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test sepia with split percentage.
+   */
+  @Test
+  public void testSepiaCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testSepiaImage";
+    double percentage = 50.0;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "sepia" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(135, 120, 94);
+      expectedArray[0][1] = new Pixel(126, 112, 87);
+      expectedArray[0][2] = new Pixel(146, 130, 101);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
 
       for(int i=0; i<width; i++) {
         for(int j=0; j<height; j++) {
@@ -1278,6 +1614,9 @@ public class ImageControllerCompleteTest {
     }
   }
 
+  /**
+   * test Color Correction Command.
+   */
   @Test
   public void testColorCorrectionCommand() {
     String interMediateImage = "testImage";
@@ -1320,6 +1659,60 @@ public class ImageControllerCompleteTest {
           assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
         }
       }
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "color-correct executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test Color Correction Command with split percentage.
+   */
+  @Test
+  public void testColorCorrectionCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testColorCorrectionImage";
+    double percentage = 60.5;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "color-correct" + " " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(166, 91, 0);
+      expectedArray[0][1] = new Pixel(16, 111, 171);
+      expectedArray[0][2] = new Pixel(255, 0, 246);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(10, 100, 200);
+
+      expectedArray[2][0] = new Pixel(230, 130, 100);
+      expectedArray[2][1] = new Pixel(125, 190, 0);
+      expectedArray[2][2] = new Pixel(75, 20, 210);
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
       String expectedResult = "load executed successfully" + lineSeparator +
               "color-correct executed successfully" + lineSeparator +
               "save executed successfully";
@@ -1382,6 +1775,9 @@ public class ImageControllerCompleteTest {
     }
   }
 
+  /**
+   * test level adjustment command.
+   */
   @Test
   public void testLevelsAdjustmentCommand() {
     String interMediateImage = "testImage";
@@ -1416,6 +1812,60 @@ public class ImageControllerCompleteTest {
       expectedArray[2][1] = new Pixel(159, 221, 0);
       expectedArray[2][2] = new Pixel(93, 0, 234);
 
+
+      for(int i=0; i<width; i++) {
+        for(int j=0; j<height; j++) {
+          assertEquals(expectedArray[i][j].getRed(), testImage.getPixels()[i][j].getRed());
+          assertEquals(expectedArray[i][j].getGreen(), testImage.getPixels()[i][j].getGreen());
+          assertEquals(expectedArray[i][j].getBlue(), testImage.getPixels()[i][j].getBlue());
+        }
+      }
+
+      String expectedResult = "load executed successfully" + lineSeparator +
+              "levels-adjust executed successfully" + lineSeparator +
+              "save executed successfully";
+      assertEquals(expectedResult + System.lineSeparator(), outResult.toString());
+    } catch (Exception e) {
+      fail("This test should have failed!");
+    }
+  }
+
+  /**
+   * test level adjustment command with split percentage.
+   */
+  @Test
+  public void testLevelAdjustmentCommandWithSplitPercentage() {
+    String interMediateImage = "testImage";
+    String destinationImage = "testLevelAdjustmentImage";
+    double percentage = 100.0;
+    String inputData = "load " + this.imagePath + " " + interMediateImage + "\n"
+            + "levels-adjust" + " 20 100 255 " + interMediateImage + " " + destinationImage + " split "
+            + percentage + "\n"
+            + "save " + this.savePath + " " + destinationImage + "\nq";
+    simulateUserInput(inputData);
+
+    ImageViewInterface view = new ImageView();
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller = new ImageController(view, model);
+
+    try {
+      controller.process();
+      Image testImage = model.getImage(destinationImage);
+      int width = testImage.getPixels().length;
+      int height = testImage.getPixels()[0].length;
+
+      Pixel[][] expectedArray = new Pixel[3][3];
+      expectedArray[0][0] = new Pixel(186, 136, 0);
+      expectedArray[0][1] = new Pixel(0, 153, 213);
+      expectedArray[0][2] = new Pixel(253, 0, 255);
+
+      expectedArray[1][0] = new Pixel(0, 0, 0);
+      expectedArray[1][1] = new Pixel(255, 255, 255);
+      expectedArray[1][2] = new Pixel(0, 136, 228);
+
+      expectedArray[2][0] = new Pixel(245, 165, 136);
+      expectedArray[2][1] = new Pixel(159, 221, 0);
+      expectedArray[2][2] = new Pixel(93, 0, 234);
 
       for(int i=0; i<width; i++) {
         for(int j=0; j<height; j++) {

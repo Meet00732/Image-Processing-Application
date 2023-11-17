@@ -101,6 +101,7 @@ load res\nyc.png testNYC
 blur testNYC testBlurSplit split 50
 save res\testAllFeatures\blurSplitNYC.png testBlurSplit
 
+
 load res\nyc.png testNYC
 luma-component testNYC testLumaSplit split 50
 save res\testAllFeatures\lumaSplitNYC.png testLumaSplit

@@ -6,11 +6,17 @@ import model.Pixel;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * test class for HaarWaveletTransform compression.
+ */
 public class HaarWaveletTransformTest {
 
   private HaarWaveletTransform haarWaveletTransform;
 
 
+  /**
+   * initializing object before running test.
+   */
   @Before
   public void setup() {
     haarWaveletTransform = new HaarWaveletTransform();
@@ -39,13 +45,6 @@ public class HaarWaveletTransformTest {
 
     double[][] result = haarWaveletTransform.haar(test);
 
-//    for (int i=0; i<result.length; i++) {
-//      for(int j=0; j<result[0].length; j++) {
-//        System.out.print(result[i][j] + " ");
-//      }
-//      System.out.println();
-//    }
-
     for (int i=0; i<expected.length; i++) {
       for(int j=0; j<expected[0].length; j++) {
         assertEquals(expected[i][j], result[i][j], 0.01);
@@ -73,13 +72,6 @@ public class HaarWaveletTransformTest {
     };
 
     double[][] result = haarWaveletTransform.haar(test);
-
-//    for (int i=0; i<result.length; i++) {
-//      for(int j=0; j<result[0].length; j++) {
-//        System.out.print(result[i][j] + " ");
-//      }
-//      System.out.println();
-//    }
 
     for (int i=0; i<expected.length; i++) {
       for(int j=0; j<expected[0].length; j++) {

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import model.ImageModelInterface;
 
-public class AbstractSplitCommand extends AbstractBaseCommand {
+public abstract class AbstractSplitCommand extends AbstractBaseCommand {
   protected Optional<Double> splitPercentage;
   /**
    * Constructs a new AbstractBaseCommand with the given ImageModel and image name.
@@ -21,7 +21,5 @@ public class AbstractSplitCommand extends AbstractBaseCommand {
   }
 
   @Override
-  protected void processImage() throws Exception {
-    this.model.sepiaCommand(imageName, destinationImageName, splitPercentage);
-  }
+  protected abstract void processImage() throws Exception;
 }
