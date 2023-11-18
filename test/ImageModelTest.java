@@ -1638,6 +1638,34 @@ public class ImageModelTest {
   }
 
   /**
+   * test ColorCorrection method invalid percentage.
+   */
+  @Test (expected = IllegalArgumentException.class)
+  public void testColorCorrectionInvalidPercentage() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.of(-30.2);
+
+    this.model.addImage(imageName, this.image);
+    this.model.colorCorrectionCommand(imageName, destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test ColorCorrection method invalid percentage.
+   */
+  @Test (expected = IllegalArgumentException.class)
+  public void testColorCorrectionInvalidPercentage2() {
+    String imageName = "testImage";
+    String destinationImageName = "colorCorrectedImage";
+    Optional<Double> splitPercentage = Optional.of(130.2);
+
+    this.model.addImage(imageName, this.image);
+    this.model.colorCorrectionCommand(imageName, destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
    * test ColorCorrection method with splitPercentage.
    */
   @Test
@@ -2023,6 +2051,66 @@ public class ImageModelTest {
     Optional<Double> splitPercentage = Optional.empty();
 
     this.model.levelsAdjustmentCommand(20, 100, 19, imageName,
+            destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test value of b,m and w out of order.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidValueOfBMW() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
+
+    this.model.levelsAdjustmentCommand(255, 100, 20, imageName,
+            destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test value of B out of bounds.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testOutOfBoundsB() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
+
+    this.model.levelsAdjustmentCommand(256, 100, 255, imageName,
+            destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test value of M out of bounds.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testOutOfBoundsM() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
+
+    this.model.levelsAdjustmentCommand(20, 256, 255, imageName,
+            destinationImageName, splitPercentage);
+    fail("This test should have failed!");
+  }
+
+  /**
+   * test value of W out of bounds.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testOutOfBoundsW() {
+    String imageName = "testImage";
+    String destinationImageName = "redImage";
+    this.model.addImage(imageName, this.image);
+    Optional<Double> splitPercentage = Optional.empty();
+
+    this.model.levelsAdjustmentCommand(20, 100, 256, imageName,
             destinationImageName, splitPercentage);
     fail("This test should have failed!");
   }

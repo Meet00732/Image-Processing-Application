@@ -18,7 +18,11 @@ public class SplitDecorator implements SplitStrategy {
    * @param strategy        The base SplitStrategy to be decorated.
    * @param splitPercentage The percentage of the image width for horizontal splitting.
    */
-  public SplitDecorator(SplitStrategy strategy, double splitPercentage) {
+  public SplitDecorator(SplitStrategy strategy, double splitPercentage)
+          throws IllegalArgumentException {
+    if (splitPercentage < 0 || splitPercentage > 100) {
+      throw new IllegalArgumentException("Invalid percentage entered!");
+    }
     this.strategy = strategy;
     this.splitPercentage = splitPercentage;
   }
