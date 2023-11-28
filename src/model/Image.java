@@ -355,7 +355,6 @@ public class Image {
         bufferedImage.setRGB(x, y, rgb);
       }
     }
-
     return bufferedImage;
   }
 

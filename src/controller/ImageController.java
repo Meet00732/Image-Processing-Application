@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import controller.commands.BlueComponentCommand;
 import controller.commands.BlurCommand;
@@ -43,6 +46,7 @@ public class ImageController implements ImageControllerInterface {
 
   private final ImageViewInterface view;
   private final ImageModelInterface model;
+  private Map<String, Function<String[], CommandInterface>> commandMap;
 
   /**
    * Constructs a new ImageController with the specified ImageView and ImageModel.
@@ -61,6 +65,78 @@ public class ImageController implements ImageControllerInterface {
     }
     this.view = view;
     this.model = model;
+    initializeCommandMap();
+  }
+
+  private void initializeCommandMap() {
+    commandMap = new HashMap<>();
+
+    commandMap.put("load", tokens -> new LoadCommand(model, tokens[1], tokens[2]));
+    commandMap.put("save", tokens -> new SaveCommand(model, tokens[1], tokens[2]));
+
+    commandMap.put("blur", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new BlurCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("sharpen", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new SharpenCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("sepia", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new SepiaCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("red-component", tokens -> new RedComponentCommand(model, tokens[1], tokens[2]));
+    commandMap.put("green-component", tokens -> new GreenComponentCommand(model, tokens[1], tokens[2]));
+    commandMap.put("blue-component", tokens -> new BlueComponentCommand(model, tokens[1], tokens[2]));
+
+    commandMap.put("value-component", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new ValueComponentCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("intensity-component", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new IntensityComponentCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("luma-component", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new LumaComponentCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("brighten", tokens -> {
+      int increment = Integer.parseInt(tokens[1]);
+      return new BrightenCommand(model, increment, tokens[2], tokens[3]);
+    });
+
+    commandMap.put("horizontal-flip", tokens -> new HorizontalFlipCommand(model, tokens[1], tokens[2]));
+    commandMap.put("vertical-flip", tokens -> new VerticalFlipCommand(model, tokens[1], tokens[2]));
+    commandMap.put("rgb-split", tokens ->  new RGBSplit(model, tokens[1], tokens[2], tokens[3], tokens[4]));
+    commandMap.put("rgb-combine", tokens ->  new CombineCommand(model, tokens[2], tokens[1], tokens[3], tokens[4]));
+
+    commandMap.put("compress", tokens -> {
+      double percentage = Double.parseDouble(tokens[1]);
+      return new CompressCommand(model, percentage, tokens[2], tokens[3]);
+    });
+
+    commandMap.put("histogram", tokens -> new HistogramCommand(model, tokens[1], tokens[2]));
+
+    commandMap.put("color-correct", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 3 ? Optional.of(Double.parseDouble(tokens[4])) : Optional.empty();
+      return new ColorCorrectionCommand(model, tokens[1], tokens[2], splitPercentage);
+    });
+
+    commandMap.put("levels-adjust", tokens -> {
+      Optional<Double> splitPercentage = tokens.length > 6 ? Optional.of(Double.parseDouble(tokens[7])) : Optional.empty();
+      return new LevelsAdjustmentCommand(model, Integer.parseInt(tokens[1]),
+              Integer.parseInt(tokens[2]),
+              Integer.parseInt(tokens[3]), tokens[4], tokens[5], splitPercentage);
+    });
+
   }
 
   /**
@@ -97,163 +173,29 @@ public class ImageController implements ImageControllerInterface {
   @Override
   public boolean processor(String command) {
     boolean status = false;
-    CommandInterface feature;
-    Optional<Double> splitPercentage;
     try {
-
       String[] tokens = command.split(" ");
-
-      switch (tokens[0]) {
-        case "load":
-          feature = new LoadCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-        case "save":
-          feature = new SaveCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "blur":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new BlurCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "sharpen":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new SharpenCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "sepia":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new SepiaCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "red-component":
-          feature = new RedComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "green-component":
-          feature = new GreenComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "blue-component":
-          feature = new BlueComponentCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "value-component":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new ValueComponentCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "intensity-component":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new IntensityComponentCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "luma-component":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new LumaComponentCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "brighten":
-          int increment = Integer.parseInt(tokens[1]);
-          feature = new BrightenCommand(model, increment, tokens[2], tokens[3]);
-          status = feature.execute();
-          break;
-
-        case "vertical-flip":
-          feature = new VerticalFlipCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "horizontal-flip":
-          feature = new HorizontalFlipCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "rgb-split":
-          feature = new RGBSplit(model, tokens[1], tokens[2], tokens[3], tokens[4]);
-          status = feature.execute();
-          break;
-
-        case "rgb-combine":
-          feature = new CombineCommand(model, tokens[2], tokens[1], tokens[3], tokens[4]);
-          status = feature.execute();
-          break;
-
-        case "run":
-          status = runScript(tokens[1]);
-          break;
-
-        case "compress":
-          double percentage = Double.parseDouble(tokens[1]);
-          feature = new CompressCommand(model, percentage, tokens[2], tokens[3]);
-          status = feature.execute();
-          break;
-
-        case "histogram":
-          feature = new HistogramCommand(model, tokens[1], tokens[2]);
-          status = feature.execute();
-          break;
-
-        case "color-correct":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 3) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[4]));
-          }
-          feature = new ColorCorrectionCommand(model, tokens[1], tokens[2], splitPercentage);
-          status = feature.execute();
-          break;
-
-        case "levels-adjust":
-          splitPercentage = Optional.empty();
-          if (tokens.length > 6) {
-            splitPercentage = Optional.of(Double.parseDouble(tokens[7]));
-          }
-          feature = new LevelsAdjustmentCommand(model, Integer.parseInt(tokens[1]),
-                  Integer.parseInt(tokens[2]),
-                  Integer.parseInt(tokens[3]), tokens[4], tokens[5], splitPercentage);
-          status = feature.execute();
-          break;
-
-        default:
-          throw new IllegalArgumentException("Invalid Input: " + tokens[0]);
-      }
-      if (status) {
+      if(tokens[0].equals("run")) {
+        status = runScript(tokens[1]);
         view.display(tokens[0] + " executed successfully");
+      } else {
+        Function<String[], CommandInterface> commandFunction = commandMap.get(tokens[0]);
+        if (commandFunction != null) {
+          CommandInterface feature = commandFunction.apply(tokens);
+          status = feature.execute();
+          if (status) {
+            view.display(tokens[0] + " executed successfully");
+          }
+        } else {
+          throw new IllegalArgumentException("Invalid Input: " + tokens[0]);
+        }
       }
     } catch (Exception e) {
       view.display(e.getMessage());
     }
     return status;
   }
+
 
   /**
    * Executes a script file containing a sequence of
@@ -264,7 +206,6 @@ public class ImageController implements ImageControllerInterface {
    *         successfully, false otherwise.
    * @throws FileNotFoundException when an invalid path is given.
    */
-  @Override
   public boolean runScript(String path) throws FileNotFoundException {
     boolean status = false;
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {

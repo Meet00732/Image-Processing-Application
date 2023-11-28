@@ -29,14 +29,4 @@ public interface ImageControllerInterface {
    */
   boolean processor(String command);
 
-  /**
-   * Executes a script file containing a sequence of
-   * image processing commands.
-   *
-   * @param path The path to the script file.
-   * @return True if all commands in the script were executed
-   *         successfully, false otherwise.
-   * @throws FileNotFoundException when an invalid path is given.
-   */
-  public boolean runScript(String path) throws FileNotFoundException;
 }

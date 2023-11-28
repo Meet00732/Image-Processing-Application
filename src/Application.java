@@ -1,9 +1,11 @@
 import java.io.FileNotFoundException;
 
+import controller.GUIController;
 import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.ImageModel;
 import model.ImageModelInterface;
+import view.GUIView;
 import view.ImageView;
 import view.ImageViewInterface;
 
@@ -27,13 +29,21 @@ public class Application {
    * @throws FileNotFoundException If a specified script file is not found.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    ImageViewInterface view = new ImageView();
-    ImageModelInterface model = new ImageModel();
 
-    ImageControllerInterface controller = new ImageController(view, model);
+    ImageModelInterface model = new ImageModel();
+    ImageControllerInterface controller;
+
+    if (args.length == 0) {
+      GUIView view = new GUIView();
+      controller = new GUIController(view, model);
+    }
+    else {
+      ImageView view = new ImageView();
+      controller = new ImageController(view, model);
+    }
 
     if (args.length == 2 && args[0].equals("-file")) {
-      controller.runScript(args[1]);
+      ((ImageController) controller).runScript(args[1]);
     } else {
       controller.process();
     }
