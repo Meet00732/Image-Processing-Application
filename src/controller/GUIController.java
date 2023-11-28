@@ -9,7 +9,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.commands.CommandFactory;
+import controller.commands.CommandInterface;
 import controller.commands.CommandPair;
+import controller.commands.HistogramCommand;
 import model.Image;
 import model.ImageModelInterface;
 import model.Pixel;
@@ -46,10 +48,20 @@ public class GUIController implements ImageControllerInterface, ActionListener {
   }
 
 
-  private void updateViewWithImage(String imageName) {
+  private void updateViewWithImage(String imageName) throws Exception {
     BufferedImage image = convertToBufferedImage(model.getImage(imageName));
     view.setImage(image);
-//    view.setHistogram(convertToBufferedImage(model.getImage(imageName + "Hist"))); // Assuming "Hist" suffix for histogram images
+    createHistogram(imageName);
+    view.setHistogram(convertToBufferedImage(model.getImage(imageName + "Hist"))); // Assuming "Hist" suffix for histogram images
+  }
+
+  private void createHistogram(String imageName) throws Exception {
+    CommandInterface histogram = new HistogramCommand(model,imageName,"imageHist");
+    try {
+      histogram.execute();
+    } catch (Exception e) {
+      throw new Exception(e);
+    }
   }
 
   /**

@@ -131,6 +131,10 @@ public class GUIView extends JFrame implements ImageViewInterface {
 
   public String loadImage() {
     JFileChooser fileChooser = new JFileChooser();
+
+    String currentDirectory = System.getProperty("user.dir");
+    fileChooser.setCurrentDirectory(new File(currentDirectory));
+
     fileChooser.setDialogTitle("Open Image File");
     fileChooser.setAcceptAllFileFilterUsed(false);
     fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image files",
