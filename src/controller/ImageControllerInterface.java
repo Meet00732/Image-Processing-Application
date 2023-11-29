@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.FileNotFoundException;
 
 /**
  * The ImageControllerInterface defines the contract for an image controller in the
@@ -19,14 +18,5 @@ public interface ImageControllerInterface {
    * executing user commands.
    */
   void process();
-
-  /**
-   * Processes a specific user command by delegating the
-   * execution to the appropriate handlers.
-   *
-   * @param command The user command to process.
-   * @return True if the command was executed successfully, false otherwise.
-   */
-  boolean processor(String command);
 
 }

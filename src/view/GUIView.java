@@ -1,13 +1,14 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import controller.Features;
 
 public class GUIView extends JFrame implements ImageViewInterface {
 
@@ -80,143 +81,87 @@ public class GUIView extends JFrame implements ImageViewInterface {
     int rows = 2;
     int cols = (int) Math.ceil((double) numberOfButtons / rows);
     buttonPanel.setLayout(new GridLayout(rows, cols));
-    
+
     loadButton = new JButton("Load");
     buttonPanel.add(loadButton);
-    loadButton.setActionCommand("load");
 
     redButton = new JButton("Red");
     buttonPanel.add(redButton);
-    redButton.setActionCommand("red");
 
     greenButton = new JButton("Green");
     buttonPanel.add(greenButton);
-    greenButton.setActionCommand("green");
 
     blueButton = new JButton("Blue");
     buttonPanel.add(blueButton);
-    blueButton.setActionCommand("blue");
 
     blurButton = new JButton("Blur");
     buttonPanel.add(blurButton);
-    blurButton.setActionCommand("blur");
 
     sepiaButton = new JButton("Sepia");
     buttonPanel.add(sepiaButton);
-    sepiaButton.setActionCommand("sepia");
 
     lumaButton = new JButton("Luma");
     buttonPanel.add(lumaButton);
-    lumaButton.setActionCommand("luma");
 
     sharpenButton = new JButton("Sharpen");
     buttonPanel.add(sharpenButton);
-    sharpenButton.setActionCommand("sharpen");
 
     horizontalFlipButton = new JButton("Horizontal-Flip");
     buttonPanel.add(horizontalFlipButton);
-    horizontalFlipButton.setActionCommand("horizontal-flip");
 
     verticalFlipButton = new JButton("Vertical-Flip");
     buttonPanel.add(verticalFlipButton);
-    verticalFlipButton.setActionCommand("vertical-flip");
 
     compressButton = new JButton("Compress");
     buttonPanel.add(compressButton);
-    compressButton.setActionCommand("compress");
 
     colorCorrectedButton = new JButton("Color-Corrected");
     buttonPanel.add(colorCorrectedButton);
-    colorCorrectedButton.setActionCommand("color-corrected");
 
     adjustLevelsButton = new JButton("Adjust-Levels");
     buttonPanel.add(adjustLevelsButton);
-    adjustLevelsButton.setActionCommand("adjust-levels");
 
     saveButton = new JButton("Save");
     buttonPanel.add(saveButton);
-    saveButton.setActionCommand("save");
 
     confirmButton = new JButton("Confirm");
-    confirmButton.setActionCommand("confirm");
     confirmButton.setVisible(false);
     buttonPanel.add(confirmButton);
 
     cancelButton = new JButton("Cancel");
-    cancelButton.setActionCommand("cancel");
     cancelButton.setVisible(false);
     buttonPanel.add(cancelButton);
 
+//    getCommand();
+
     add(buttonPanel, BorderLayout.SOUTH);
+
 
     pack();
     setLocationRelativeTo(null);
     setVisible(true);
   }
 
-  public void setLoadButtonActionListener(ActionListener listener) {
-    loadButton.addActionListener(listener);
+
+  public void addFeatures(Features features) {
+    loadButton.addActionListener(evt -> features.loadButton());
+    blurButton.addActionListener(evt -> features.blurButton());
+    sepiaButton.addActionListener(evt -> features.sepiaButton());
+    redButton.addActionListener(evt -> features.redButton());
+    greenButton.addActionListener(evt -> features.greenButton());
+    blueButton.addActionListener(evt -> features.blueButton());
+    lumaButton.addActionListener(evt -> features.lumaButton());
+    sharpenButton.addActionListener(evt -> features.sharpenButton());
+    compressButton.addActionListener(evt -> features.compressButton());
+    colorCorrectedButton.addActionListener(evt -> features.colorCorrectedButton());
+    adjustLevelsButton.addActionListener(evt -> features.adjustLevelsButton());
+    horizontalFlipButton.addActionListener(evt -> features.horizontalFlipButton());
+    verticalFlipButton.addActionListener(evt -> features.verticalFlipButton());
+    saveButton.addActionListener(evt -> features.saveButton());
+    cancelButton.addActionListener(evt -> features.cancelButton());
+    confirmButton.addActionListener(evt -> features.confirmButton());
   }
 
-  public void setRedButtonActionListener(ActionListener listener) {
-    redButton.addActionListener(listener);
-  }
-
-  public void setGreenButtonActionListener(ActionListener listener) {
-    greenButton.addActionListener(listener);
-  }
-
-  public void setBlueButtonActionListener(ActionListener listener) {
-    blueButton.addActionListener(listener);
-  }
-
-  public void setBlurButtonActionListener(ActionListener listener) {
-    blurButton.addActionListener(listener);
-  }
-
-  public void setSepiaButtonActionListener(ActionListener listener) {
-    sepiaButton.addActionListener(listener);
-  }
-
-  public void setLumaButtonActionListener(ActionListener listener) {
-    lumaButton.addActionListener(listener);
-  }
-
-  public void setSharpenButtonActionListener(ActionListener listener) {
-    sharpenButton.addActionListener(listener);
-  }
-
-  public void setHorizontalFlipButtonActionListener(ActionListener listener) {
-    horizontalFlipButton.addActionListener(listener);
-  }
-
-  public void setVerticalFlipButtonActionListener(ActionListener listener) {
-    verticalFlipButton.addActionListener(listener);
-  }
-
-  public void setCompressButtonActionListener(ActionListener listener) {
-    compressButton.addActionListener(listener);
-  }
-
-  public void setColorCorrectedButtonActionListener(ActionListener listener) {
-    colorCorrectedButton.addActionListener(listener);
-  }
-
-  public void setAdjustLevelsButtonActionListener(ActionListener listener) {
-    adjustLevelsButton.addActionListener(listener);
-  }
-
-  public void setSaveButtonActionListener(ActionListener listener) {
-    saveButton.addActionListener(listener);
-  }
-
-  public void setConfirmButtonActionListener(ActionListener listener) {
-    confirmButton.addActionListener(listener);
-  }
-
-  public void setCancelButtonActionListener(ActionListener listener) {
-    cancelButton.addActionListener(listener);
-  }
 
   public void setImage(BufferedImage image) {
     imageDisplay.setIcon(new ImageIcon(image));
@@ -367,6 +312,7 @@ public class GUIView extends JFrame implements ImageViewInterface {
 
   @Override
   public void display(String message) {
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, message, "Error",
+            JOptionPane.ERROR_MESSAGE);
   }
 }

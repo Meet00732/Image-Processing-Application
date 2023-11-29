@@ -32,20 +32,22 @@ public class Application {
 
     ImageModelInterface model = new ImageModel();
     ImageControllerInterface controller;
+    ImageViewInterface view;
 
     if (args.length == 0) {
-      GUIView view = new GUIView();
-      controller = new GUIController(view, model);
+      view = new GUIView();
+      controller = new GUIController((GUIView) view, model);
+      controller.process();
     }
     else {
-      ImageView view = new ImageView();
+      view = new ImageView();
       controller = new ImageController(view, model);
-    }
-
-    if (args.length == 2 && args[0].equals("-file")) {
-      ((ImageController) controller).runScript(args[1]);
-    } else {
-      controller.process();
+      if (args.length == 2 && args[0].equals("-file")){
+        ((ImageController) controller).runScript(args[1]);
+      }
+      else if (args.length == 1 && args[0].equals("-text")) {
+        controller.process();
+      }
     }
   }
 }

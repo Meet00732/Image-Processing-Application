@@ -1,12 +1,6 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.commands.CommandFactory;
 import controller.commands.CommandInterface;
@@ -17,18 +11,18 @@ import model.ImageModelInterface;
 import model.Pixel;
 import view.GUIView;
 
-public class GUIController implements ImageControllerInterface, ActionListener {
+
+public class GUIController implements ImageControllerInterface, Features {
   private final GUIView view;
   private final ImageModelInterface model;
 
+  private String previewImageName;
+  private String displayImageName;
   private CommandFactory commandFactory;
   private CommandPair commandPair;
 
-  private String previewImageName = "previewImage";
-  private String displayImageName = "testImage";
-
   public GUIController(GUIView view,
-                         ImageModelInterface model) throws IllegalArgumentException {
+                       ImageModelInterface model) throws IllegalArgumentException {
     if (view == null) {
       throw new IllegalArgumentException("View Object is missing!");
     }
@@ -38,28 +32,7 @@ public class GUIController implements ImageControllerInterface, ActionListener {
     this.view = view;
     this.model = model;
     commandFactory = new CommandFactory(model, view);
-    initializeButtonsActions();
   }
-
-  private void initializeButtonsActions() {
-    view.setLoadButtonActionListener(this);
-    view.setSaveButtonActionListener(this);
-    view.setBlurButtonActionListener(this);
-    view.setConfirmButtonActionListener(this);
-    view.setCancelButtonActionListener(this);
-    view.setSepiaButtonActionListener(this);
-    view.setRedButtonActionListener(this);
-    view.setGreenButtonActionListener(this);
-    view.setBlueButtonActionListener(this);
-    view.setHorizontalFlipButtonActionListener(this);
-    view.setVerticalFlipButtonActionListener(this);
-    view.setLumaButtonActionListener(this);
-    view.setSharpenButtonActionListener(this);
-    view.setCompressButtonActionListener(this);
-    view.setColorCorrectedButtonActionListener(this);
-    view.setAdjustLevelsButtonActionListener(this);
-  }
-
 
   private void updateViewWithImage(String imageName) throws Exception {
     BufferedImage image = convertToBufferedImage(model.getImage(imageName));
@@ -101,47 +74,164 @@ public class GUIController implements ImageControllerInterface, ActionListener {
 
   @Override
   public void process() {
-
+    previewImageName = "previewImage";
+    displayImageName = "testImage";
+    view.addFeatures(this);
   }
 
-  @Override
-  public boolean processor(String command) {
-    return false;
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    String action = e.getActionCommand();
-
-    System.out.println("Action");
+  private boolean processor(String action) {
     try {
-      if ("confirm".equals(action)) {
-        if (commandPair != null && commandPair.getApplyCommand() != null) {
+      commandPair = commandFactory.invokeCommand(action);
+      if (commandPair != null)
+        if (commandPair.hasPreview()) {
+          boolean previewSuccess = commandPair.getPreviewCommand().execute();
+          if (previewSuccess) {
+            updateViewWithImage(previewImageName);
+            view.showOperationControls(true);
+          }
+        } else if (commandPair.hasApply()) {
           commandPair.getApplyCommand().execute();
           updateViewWithImage(displayImageName);
-          view.showOperationControls(false);
         }
-      } else if ("cancel".equals(action)) {
+    } catch (Exception err) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public void loadButton() {
+    boolean status = processor("load");
+    if (!status) {
+      view.display("Error executing Load!");
+    }
+  }
+
+  @Override
+  public void blurButton() {
+    boolean status = processor("blur");
+    if (!status) {
+      view.display("Error executing Blur!");
+    }
+  }
+
+  @Override
+  public void sepiaButton() {
+    boolean status = processor("sepia");
+    if (!status) {
+      view.display("Error executing Sepia!");
+    }
+  }
+
+  @Override
+  public void lumaButton() {
+    boolean status = processor("luma");
+    if (!status) {
+      view.display("Error executing Luma!");
+    }
+  }
+
+  @Override
+  public void redButton() {
+    boolean status = processor("red");
+    if (!status) {
+      view.display("Error executing Red-Component!");
+    }
+  }
+
+  @Override
+  public void greenButton() {
+    boolean status = processor("green");
+    if (!status) {
+      view.display("Error executing Green-Component!");
+    }
+  }
+
+  @Override
+  public void blueButton() {
+    boolean status = processor("blue");
+    if (!status) {
+      view.display("Error executing Blue-Component!");
+    }
+  }
+
+  @Override
+  public void compressButton() {
+    boolean status = processor("compress");
+    if (!status) {
+      view.display("Error executing Compress!");
+    }
+  }
+
+  @Override
+  public void adjustLevelsButton() {
+    boolean status = processor("adjust-levels");
+    if (!status) {
+      view.display("Error executing Adjust-Levels!");
+    }
+  }
+
+  @Override
+  public void colorCorrectedButton() {
+    boolean status = processor("color-corrected");
+    if (!status) {
+      view.display("Error executing Color-Corrected!");
+    }
+  }
+
+  @Override
+  public void sharpenButton() {
+    boolean status = processor("sharpen");
+    if (!status) {
+      view.display("Error executing Sharpen!");
+    }
+  }
+
+  @Override
+  public void horizontalFlipButton() {
+    boolean status = processor("horizontal-flip");
+    if (!status) {
+      view.display("Error executing Horizontal-Flip!");
+    }
+  }
+
+  @Override
+  public void verticalFlipButton() {
+    boolean status = processor("vertical-flip");
+    if (!status) {
+      view.display("Error executing Vertical-Flip!");
+    }
+  }
+
+  @Override
+  public void saveButton() {
+    boolean status = processor("save");
+    if (!status) {
+      view.display("Error executing Save!");
+    }
+  }
+
+  @Override
+  public void cancelButton() {
+    try {
+      updateViewWithImage(displayImageName);
+    } catch (Exception e) {
+      view.display("Error Executing Cancel!");
+    }
+    view.showOperationControls(false);
+  }
+
+  @Override
+  public void confirmButton() {
+    try {
+      if (commandPair != null && commandPair.getApplyCommand() != null) {
+        commandPair.getApplyCommand().execute();
         updateViewWithImage(displayImageName);
         view.showOperationControls(false);
       }
-      else {
-        commandPair = commandFactory.invokeCommand(action);
-        if (commandPair != null)
-          if (commandPair.hasPreview()) {
-            boolean previewSuccess = commandPair.getPreviewCommand().execute();
-            if (previewSuccess) {
-              updateViewWithImage(previewImageName);
-              view.showOperationControls(true);
-          }
-        }
-        else if (commandPair.hasApply()) {
-          commandPair.getApplyCommand().execute();
-          updateViewWithImage(displayImageName);
-        }
-      }
-    } catch (Exception err) {
-      view.display(err.getMessage());
+    }
+    catch (Exception e) {
+      view.display("Error Executing Confirm!");
     }
   }
 }

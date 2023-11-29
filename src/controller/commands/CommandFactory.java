@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import model.ImageModelInterface;
 import view.GUIView;
+import view.ImageViewInterface;
 
 public class CommandFactory {
 
@@ -94,7 +95,7 @@ public class CommandFactory {
           if (splitPercentage.isPresent()) {
             CommandInterface lumaPrevCommand = new LumaComponentCommand(model, "testImage",
                     "previewImage", splitPercentage);
-            CommandInterface lumaCompleteCommand = new SepiaCommand(model, "testImage",
+            CommandInterface lumaCompleteCommand = new LumaComponentCommand(model, "testImage",
                     "testImage", Optional.of(100.0));
             state = AppState.IMAGE_LOADED;
             return new CommandPair(lumaPrevCommand, lumaCompleteCommand);

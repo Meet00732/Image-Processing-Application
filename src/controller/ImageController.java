@@ -68,6 +68,7 @@ public class ImageController implements ImageControllerInterface {
     initializeCommandMap();
   }
 
+
   private void initializeCommandMap() {
     commandMap = new HashMap<>();
 
@@ -170,8 +171,7 @@ public class ImageController implements ImageControllerInterface {
    * @return True if the command was executed
    *         successfully, false otherwise.
    */
-  @Override
-  public boolean processor(String command) {
+  private boolean processor(String command) {
     boolean status = false;
     try {
       String[] tokens = command.split(" ");
