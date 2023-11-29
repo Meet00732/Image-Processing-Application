@@ -25,7 +25,7 @@ public class GUIController implements ImageControllerInterface, ActionListener {
   private CommandPair commandPair;
 
   private String previewImageName = "previewImage";
-  private String displayImageName = "image";
+  private String displayImageName = "testImage";
 
   public GUIController(GUIView view,
                          ImageModelInterface model) throws IllegalArgumentException {
@@ -45,18 +45,31 @@ public class GUIController implements ImageControllerInterface, ActionListener {
     view.setLoadButtonActionListener(this);
     view.setSaveButtonActionListener(this);
     view.setBlurButtonActionListener(this);
+    view.setConfirmButtonActionListener(this);
+    view.setCancelButtonActionListener(this);
+    view.setSepiaButtonActionListener(this);
+    view.setRedButtonActionListener(this);
+    view.setGreenButtonActionListener(this);
+    view.setBlueButtonActionListener(this);
+    view.setHorizontalFlipButtonActionListener(this);
+    view.setVerticalFlipButtonActionListener(this);
+    view.setLumaButtonActionListener(this);
+    view.setSharpenButtonActionListener(this);
+    view.setCompressButtonActionListener(this);
+    view.setColorCorrectedButtonActionListener(this);
+    view.setAdjustLevelsButtonActionListener(this);
   }
 
 
   private void updateViewWithImage(String imageName) throws Exception {
     BufferedImage image = convertToBufferedImage(model.getImage(imageName));
     view.setImage(image);
-    createHistogram(imageName);
-    view.setHistogram(convertToBufferedImage(model.getImage(imageName + "Hist"))); // Assuming "Hist" suffix for histogram images
+    createHistogram("testImage");
+    view.setHistogram(convertToBufferedImage(model.getImage("testImageHist"))); // Assuming "Hist" suffix for histogram images
   }
 
   private void createHistogram(String imageName) throws Exception {
-    CommandInterface histogram = new HistogramCommand(model,imageName,"imageHist");
+    CommandInterface histogram = new HistogramCommand(model,imageName,"testImageHist");
     try {
       histogram.execute();
     } catch (Exception e) {
@@ -108,24 +121,27 @@ public class GUIController implements ImageControllerInterface, ActionListener {
           updateViewWithImage(displayImageName);
           view.showOperationControls(false);
         }
-        return;
       } else if ("cancel".equals(action)) {
         updateViewWithImage(displayImageName);
         view.showOperationControls(false);
-        return;
       }
       else {
-        commandPair = commandFactory.invokeCommand(action, displayImageName);
-        if (commandPair != null && commandPair.getPreviewCommand() != null) {
-          boolean previewSuccess = commandPair.getPreviewCommand().execute();
-          if (previewSuccess) {
-            updateViewWithImage(displayImageName);
-            view.showOperationControls(true);
+        commandPair = commandFactory.invokeCommand(action);
+        if (commandPair != null)
+          if (commandPair.hasPreview()) {
+            boolean previewSuccess = commandPair.getPreviewCommand().execute();
+            if (previewSuccess) {
+              updateViewWithImage(previewImageName);
+              view.showOperationControls(true);
           }
         }
+        else if (commandPair.hasApply()) {
+          commandPair.getApplyCommand().execute();
+          updateViewWithImage(displayImageName);
+        }
       }
-    } catch (Exception ex) {
-      throw new RuntimeException(ex);
+    } catch (Exception err) {
+      view.display(err.getMessage());
     }
   }
 }
