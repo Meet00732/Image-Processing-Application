@@ -10,13 +10,11 @@ import model.Image;
 import model.ImageModelInterface;
 import model.Pixel;
 import view.GUIInterface;
-import view.GUIView;
 
 
 public class GUIController implements ImageControllerInterface, Features {
   private final GUIInterface view;
   private final ImageModelInterface model;
-
   private String previewImageName;
   private String displayImageName;
   private CommandFactory commandFactory;

@@ -25,10 +25,6 @@ public class GUIControllerTest {
     mockView = new MockView();
     controller = new GUIController(mockView, model);
     mockView.addFeatures(controller);
-  }
-
-  @After
-  public void cleanUp() {
     MockView.clearLog();
   }
 
@@ -57,7 +53,7 @@ public class GUIControllerTest {
 
     String expectedResult = "loadImagePath method is invoked!\n"
             + "display method is invoked!\n"
-            + "confirmImageLoad method is invoked!\n"
+            + "confirmLoadButton method is invoked!\n"
             + "loadImagePath method is invoked!\n"
             + "display method is invoked!\n";
 
@@ -112,7 +108,7 @@ public class GUIControllerTest {
             + "display method is invoked!\n"
             + "promptPercentage method is invoked!\n"
             + "display method is invoked!\n"
-            + "confirmImageLoad method is invoked!\n"
+            + "confirmLoadButton method is invoked!\n"
             + "loadImagePath method is invoked!\n"
             + "display method is invoked!\n";
 

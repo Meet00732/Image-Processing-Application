@@ -1,8 +1,6 @@
 package view;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import controller.Features;
@@ -44,8 +42,8 @@ public class MockView implements GUIInterface {
   }
 
   @Override
-  public boolean confirmImageLoad() {
-    log.append("confirmImageLoad method is invoked!\n");
+  public boolean confirmLoadButton() {
+    log.append("confirmLoadButton method is invoked!\n");
     return true;
   }
 

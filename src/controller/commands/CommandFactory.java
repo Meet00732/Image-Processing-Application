@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import model.ImageModelInterface;
 import view.GUIInterface;
-import view.GUIView;
 
 public class CommandFactory {
 
@@ -18,236 +17,174 @@ public class CommandFactory {
     this.state = AppState.NO_IMAGE_LOADED;
   }
 
+  private boolean checkStatus() {
+    return (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED);
+  }
+
+  private CommandPair handleLoadButton() {
+    if (state == AppState.IMAGE_LOADED) {
+      boolean shouldProceed = view.confirmLoadButton();
+      if (!shouldProceed) {
+        return null;
+      }
+      state = AppState.NO_IMAGE_LOADED;
+    }
+    if (state == AppState.NO_IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+      String path = view.loadImagePath();
+      if (path != null) {
+        CommandInterface loadCommand = new LoadCommand(model, path, "testImage");
+        state = AppState.IMAGE_LOADED;
+        return new CommandPair(null, loadCommand);
+      }
+    } else {
+      view.display("Cannot load another image without saving the image first!");
+    }
+    return null;
+  }
+
+  private CommandPair handleSaveButton() {
+    if (checkStatus()) {
+      String path = view.saveImagePath();
+      if (path != null) {
+        CommandInterface saveCommand = new SaveCommand(model, path, "testImage");
+        state = AppState.IMAGE_SAVED;
+        return new CommandPair(null, saveCommand);
+      }
+    }
+    else {
+      view.display("Cannot save the image without loading the image first!");
+    }
+    return null;
+  }
+
+  private CommandPair handleCompressButton() {
+    if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+      Optional<Double> splitPercentage = view.promptPercentage();
+      if (splitPercentage.isPresent()) {
+        CommandInterface verticalFlipPrevCommand = new CompressCommand(model, splitPercentage.get(),
+                "testImage", "previewImage");
+        CommandInterface verticalFlipCompleteCommand = new CompressCommand(model, splitPercentage.get(),
+                "testImage", "testImage");
+        state = AppState.IMAGE_LOADED;
+        return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
+      }
+    }
+    else {
+      view.display("Cannot apply compress without loading an image first!");
+    }
+    return null;
+  }
+
+  private CommandPair handleAdjustLevels() {
+    if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+      Optional<int[]> adjustLevels = view.promptForAdjustLevels();
+      if (adjustLevels.isPresent()) {
+        Optional<Double> splitPercentage = view.promptPercentage();
+        if (splitPercentage.isPresent()) {
+          CommandInterface colorCorrectedPrevCommand = new LevelsAdjustmentCommand(model,
+                  adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],
+                  "testImage", "previewImage", splitPercentage);
+          CommandInterface colorCorrectedCompleteCommand = new LevelsAdjustmentCommand(model,
+                  adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],
+                  "testImage", "testImage", Optional.of(100.0));
+          state = AppState.IMAGE_LOADED;
+          return new CommandPair(colorCorrectedPrevCommand, colorCorrectedCompleteCommand);
+        }
+      }
+    } else {
+      view.display("Cannot apply adjust-levels without loading an image first!");
+    }
+    return null;
+  }
+
+
+  private CommandInterface createSplitPercentageCommand(String commandType, String targetImageName,
+                                                        Optional<Double> splitPercentage) {
+    switch (commandType) {
+      case "blur":
+        return new BlurCommand(model, "testImage", targetImageName, splitPercentage);
+      case "sepia":
+        return new SepiaCommand(model, "testImage", targetImageName, splitPercentage);
+      case "luma":
+        return new LumaComponentCommand(model, "testImage", targetImageName, splitPercentage);
+      case "sharpen":
+        return new SharpenCommand(model, "testImage", targetImageName, splitPercentage);
+      case "color-corrected":
+        return new ColorCorrectionCommand(model, "testImage", targetImageName, splitPercentage);
+      default:
+        throw new IllegalArgumentException("Unsupported command type: " + commandType);
+    }
+  }
+
+  private CommandInterface createCommand(String commandType, String targetImageName) {
+    switch (commandType) {
+      case "red":
+        return new RedComponentCommand(model, "testImage", targetImageName);
+      case "green":
+        return new GreenComponentCommand(model, "testImage", targetImageName);
+      case "blue":
+        return new BlueComponentCommand(model, "testImage", targetImageName);
+      case "horizontal-flip":
+        return new HorizontalFlipCommand(model, "testImage", targetImageName);
+      case "vertical-flip":
+        return new VerticalFlipCommand(model, "testImage", targetImageName);
+      default:
+        throw new IllegalArgumentException("Unsupported command type: " + commandType);
+    }
+  }
+
+  private CommandPair createSplitFilterCommand(String commandType) {
+    if (!checkStatus()) {
+      view.display("Cannot apply " + commandType + " without loading an image first!");
+      return null;
+    }
+
+    Optional<Double> splitPercentage = view.promptPercentage();
+    if (!splitPercentage.isPresent()) {
+      return null;
+    }
+
+    CommandInterface previewCommand = createSplitPercentageCommand(commandType, "previewImage",
+                                      splitPercentage);
+    CommandInterface completeCommand = createSplitPercentageCommand(commandType, "testImage",
+                                      Optional.of(100.0));
+
+    return new CommandPair(previewCommand, completeCommand);
+  }
+
+  private CommandPair createFilterCommand(String commandType) {
+    if (!checkStatus()) {
+      view.display("Cannot apply " + commandType + " without loading an image first!");
+      return null;
+    }
+
+    CommandInterface previewCommand = createCommand(commandType, "previewImage");
+    CommandInterface completeCommand = createCommand(commandType, "testImage");
+    return new CommandPair(previewCommand, completeCommand);
+  }
 
   public CommandPair invokeCommand(String actionCommand) throws IllegalArgumentException {
-    String path;
     switch (actionCommand) {
       case "load":
-        if (state == AppState.IMAGE_LOADED) {
-          boolean shouldProceed = view.confirmImageLoad();
-          if (!shouldProceed) {
-            return null;
-          }
-          state = AppState.NO_IMAGE_LOADED;
-        }
-        if (state == AppState.NO_IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          path = view.loadImagePath();
-          if (path != null) {
-            CommandInterface loadCommand = new LoadCommand(model, path, "testImage");
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(null, loadCommand);
-          }
-        } else {
-          view.display("Cannot load another image without saving the image first!");
-        }
-      return null;
+        return handleLoadButton();
       case "save":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          path = view.saveImagePath();
-          if (path != null) {
-            CommandInterface saveCommand = new SaveCommand(model, path, "testImage");
-            state = AppState.IMAGE_SAVED;
-            return new CommandPair(null, saveCommand);
-          }
-        }
-        else {
-          view.display("Cannot save the image without loading the image first!");
-        }
-        return null;
+        return handleSaveButton();
       case "blur":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface blurPrevCommand = new BlurCommand(model, "testImage",
-                    "previewImage", splitPercentage);
-            CommandInterface blurCompleteCommand = new BlurCommand(model, "testImage",
-                    "testImage", Optional.of(100.0));
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(blurPrevCommand, blurCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply blur without loading an image first!");
-        }
-        return null;
-
       case "sepia":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface sepiaPrevCommand = new SepiaCommand(model, "testImage",
-                    "previewImage", splitPercentage);
-            CommandInterface sepiaCompleteCommand = new SepiaCommand(model, "testImage",
-                    "testImage", Optional.of(100.0));
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(sepiaPrevCommand, sepiaCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply sepia without loading an image first!");
-        }
-        return null;
-
       case "luma":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface lumaPrevCommand = new LumaComponentCommand(model, "testImage",
-                    "previewImage", splitPercentage);
-            CommandInterface lumaCompleteCommand = new LumaComponentCommand(model, "testImage",
-                    "testImage", Optional.of(100.0));
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(lumaPrevCommand, lumaCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply luma without loading an image first!");
-        }
-        return null;
-
       case "sharpen":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface sharpenPrevCommand = new SharpenCommand(model, "testImage",
-                    "previewImage", splitPercentage);
-            CommandInterface sharpenCompleteCommand = new SharpenCommand(model, "testImage",
-                    "testImage", Optional.of(100.0));
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(sharpenPrevCommand, sharpenCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply sharpen without loading an image first!");
-        }
-        return null;
-
-      case "red":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          CommandInterface redPrevCommand = new RedComponentCommand(model, "testImage",
-                  "previewImage");
-          CommandInterface redCompleteCommand = new RedComponentCommand(model, "testImage",
-                  "testImage");
-          state = AppState.IMAGE_LOADED;
-          return new CommandPair(redPrevCommand, redCompleteCommand);
-          }
-        else {
-          view.display("Cannot apply red-component without loading an image first!");
-        }
-        return null;
-
-      case "green":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          CommandInterface greenPrevCommand = new GreenComponentCommand(model, "testImage",
-                  "previewImage");
-          CommandInterface greenCompleteCommand = new GreenComponentCommand(model, "testImage",
-                  "testImage");
-          state = AppState.IMAGE_LOADED;
-          return new CommandPair(greenPrevCommand, greenCompleteCommand);
-        }
-        else {
-          view.display("Cannot apply green-component without loading an image first!");
-        }
-        return null;
-
-      case "blue":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          CommandInterface bluePrevCommand = new BlueComponentCommand(model, "testImage",
-                  "previewImage");
-          CommandInterface blueCompleteCommand = new BlueComponentCommand(model, "testImage",
-                  "testImage");
-          state = AppState.IMAGE_LOADED;
-          return new CommandPair(bluePrevCommand, blueCompleteCommand);
-        }
-        else {
-          view.display("Cannot apply blue-component without loading an image first!");
-        }
-        return null;
-
-      case "horizontal-flip":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          CommandInterface horizontalFlipPrevCommand = new HorizontalFlipCommand(model, "testImage",
-                  "previewImage");
-          CommandInterface horizontalFlipCompleteCommand = new HorizontalFlipCommand(model, "testImage",
-                  "testImage");
-          state = AppState.IMAGE_LOADED;
-          return new CommandPair(horizontalFlipPrevCommand, horizontalFlipCompleteCommand);
-        }
-        else {
-          view.display("Cannot apply horizontal-flip without loading an image first!");
-        }
-        return null;
-
-      case "vertical-flip":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          CommandInterface verticalFlipPrevCommand = new VerticalFlipCommand(model, "testImage",
-                  "previewImage");
-          CommandInterface verticalFlipCompleteCommand = new VerticalFlipCommand(model, "testImage",
-                  "testImage");
-          state = AppState.IMAGE_LOADED;
-          return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
-        }
-        else {
-          view.display("Cannot apply vertical-flip without loading an image first!");
-        }
-        return null;
-
-      case "compress":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface verticalFlipPrevCommand = new CompressCommand(model, splitPercentage.get(),
-                    "testImage", "previewImage");
-            CommandInterface verticalFlipCompleteCommand = new CompressCommand(model, splitPercentage.get(),
-                    "testImage", "testImage");
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply compress without loading an image first!");
-        }
-        return null;
-
       case "color-corrected":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptPercentage();
-          if (splitPercentage.isPresent()) {
-            CommandInterface colorCorrectedPrevCommand = new ColorCorrectionCommand(model, "testImage",
-                    "previewImage", splitPercentage);
-            CommandInterface colorCorrectedCompleteCommand = new ColorCorrectionCommand(model, "testImage",
-                    "testImage", Optional.of(100.0));
-            state = AppState.IMAGE_LOADED;
-            return new CommandPair(colorCorrectedPrevCommand, colorCorrectedCompleteCommand);
-          }
-        }
-        else {
-          view.display("Cannot apply color-corrected without loading an image first!");
-        }
-        return null;
-
+        return createSplitFilterCommand(actionCommand);
+      case "compress":
+        return handleCompressButton();
+      case "red":
+      case "green":
+      case "blue":
+      case "horizontal-flip":
+      case "vertical-flip":
+        return createFilterCommand(actionCommand);
       case "adjust-levels":
-        if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<int[]> adjustLevels = view.promptForAdjustLevels();
-          if (adjustLevels.isPresent()) {
-            Optional<Double> splitPercentage = view.promptPercentage();
-            if (splitPercentage.isPresent()) {
-              CommandInterface colorCorrectedPrevCommand = new LevelsAdjustmentCommand(model,
-                      adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],
-                      "testImage","previewImage", splitPercentage);
-              CommandInterface colorCorrectedCompleteCommand = new LevelsAdjustmentCommand(model,
-                      adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],
-                      "testImage","testImage", Optional.of(100.0));
-              state = AppState.IMAGE_LOADED;
-              return new CommandPair(colorCorrectedPrevCommand, colorCorrectedCompleteCommand);
-            }
-          }
-        }
-        else {
-          view.display("Cannot apply adjust-levels without loading an image first!");
-        }
-        return null;
-
+        return handleAdjustLevels();
       default:
         throw new IllegalArgumentException("Unknown command " + actionCommand);
     }

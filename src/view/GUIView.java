@@ -238,7 +238,7 @@ public class GUIView extends JFrame implements GUIInterface {
   }
 
   @Override
-  public boolean confirmImageLoad() {
+  public boolean confirmLoadButton() {
     int choice = JOptionPane.showConfirmDialog(
             this,
             "Are you sure? The current image is not saved!",

@@ -18,7 +18,7 @@ public interface GUIInterface extends ImageViewInterface {
 
   void showOperationControls(boolean show);
 
-  boolean confirmImageLoad();
+  boolean confirmLoadButton();
 
   Optional<Double> promptPercentage();
 

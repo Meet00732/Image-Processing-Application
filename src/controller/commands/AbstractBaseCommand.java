@@ -81,4 +81,9 @@ public abstract class AbstractBaseCommand implements CommandInterface {
    * @throws Exception if an error occurs during image processing.
    */
   protected abstract void processImage() throws Exception;
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName();
+  }
 }
