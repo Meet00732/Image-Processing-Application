@@ -5,7 +5,7 @@ import java.util.Optional;
 import model.ImageModelInterface;
 import view.GUIInterface;
 
-public class CommandFactory {
+public class CommandFactory implements CommandFactoryInterface {
 
   private final ImageModelInterface model;
   private final GUIInterface view;
@@ -21,7 +21,7 @@ public class CommandFactory {
     return (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED);
   }
 
-  private CommandPair handleLoadButton() {
+  private CommandGroup handleLoadButton() {
     if (state == AppState.IMAGE_LOADED) {
       boolean shouldProceed = view.confirmLoadButton();
       if (!shouldProceed) {
@@ -34,7 +34,7 @@ public class CommandFactory {
       if (path != null) {
         CommandInterface loadCommand = new LoadCommand(model, path, "testImage");
         state = AppState.IMAGE_LOADED;
-        return new CommandPair(null, loadCommand);
+        return new CommandGroup(null, loadCommand);
       }
     } else {
       view.display("Cannot load another image without saving the image first!");
@@ -42,13 +42,13 @@ public class CommandFactory {
     return null;
   }
 
-  private CommandPair handleSaveButton() {
+  private CommandGroup handleSaveButton() {
     if (checkStatus()) {
       String path = view.saveImagePath();
       if (path != null) {
         CommandInterface saveCommand = new SaveCommand(model, path, "testImage");
         state = AppState.IMAGE_SAVED;
-        return new CommandPair(null, saveCommand);
+        return new CommandGroup(null, saveCommand);
       }
     }
     else {
@@ -57,7 +57,7 @@ public class CommandFactory {
     return null;
   }
 
-  private CommandPair handleCompressButton() {
+  private CommandGroup handleCompressButton() {
     if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
       Optional<Double> splitPercentage = view.promptPercentage();
       if (splitPercentage.isPresent()) {
@@ -66,7 +66,7 @@ public class CommandFactory {
         CommandInterface verticalFlipCompleteCommand = new CompressCommand(model, splitPercentage.get(),
                 "testImage", "testImage");
         state = AppState.IMAGE_LOADED;
-        return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
+        return new CommandGroup(verticalFlipPrevCommand, verticalFlipCompleteCommand);
       }
     }
     else {
@@ -75,7 +75,7 @@ public class CommandFactory {
     return null;
   }
 
-  private CommandPair handleAdjustLevels() {
+  private CommandGroup handleAdjustLevels() {
     if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
       Optional<int[]> adjustLevels = view.promptForAdjustLevels();
       if (adjustLevels.isPresent()) {
@@ -88,7 +88,7 @@ public class CommandFactory {
                   adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],
                   "testImage", "testImage", Optional.of(100.0));
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(colorCorrectedPrevCommand, colorCorrectedCompleteCommand);
+          return new CommandGroup(colorCorrectedPrevCommand, colorCorrectedCompleteCommand);
         }
       }
     } else {
@@ -133,7 +133,7 @@ public class CommandFactory {
     }
   }
 
-  private CommandPair createSplitFilterCommand(String commandType) {
+  private CommandGroup createSplitFilterCommand(String commandType) {
     if (!checkStatus()) {
       view.display("Cannot apply " + commandType + " without loading an image first!");
       return null;
@@ -149,10 +149,10 @@ public class CommandFactory {
     CommandInterface completeCommand = createSplitPercentageCommand(commandType, "testImage",
                                       Optional.of(100.0));
 
-    return new CommandPair(previewCommand, completeCommand);
+    return new CommandGroup(previewCommand, completeCommand);
   }
 
-  private CommandPair createFilterCommand(String commandType) {
+  private CommandGroup createFilterCommand(String commandType){
     if (!checkStatus()) {
       view.display("Cannot apply " + commandType + " without loading an image first!");
       return null;
@@ -160,10 +160,11 @@ public class CommandFactory {
 
     CommandInterface previewCommand = createCommand(commandType, "previewImage");
     CommandInterface completeCommand = createCommand(commandType, "testImage");
-    return new CommandPair(previewCommand, completeCommand);
+    return new CommandGroup(previewCommand, completeCommand);
   }
 
-  public CommandPair invokeCommand(String actionCommand) throws IllegalArgumentException {
+  @Override
+  public CommandGroup invokeCommand(String actionCommand) throws IllegalArgumentException {
     switch (actionCommand) {
       case "load":
         return handleLoadButton();

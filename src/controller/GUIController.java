@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 import controller.commands.CommandFactory;
 import controller.commands.CommandInterface;
-import controller.commands.CommandPair;
+import controller.commands.CommandGroup;
 import controller.commands.HistogramCommand;
 import model.Image;
 import model.ImageModelInterface;
@@ -18,7 +18,7 @@ public class GUIController implements ImageControllerInterface, Features {
   private String previewImageName;
   private String displayImageName;
   private CommandFactory commandFactory;
-  private CommandPair commandPair;
+  private CommandGroup commandGroup;
 
   public GUIController(GUIInterface view,
                        ImageModelInterface model) throws IllegalArgumentException {
@@ -80,16 +80,16 @@ public class GUIController implements ImageControllerInterface, Features {
 
   private boolean processor(String action) {
     try {
-      commandPair = commandFactory.invokeCommand(action);
-      if (commandPair != null)
-        if (commandPair.hasPreview()) {
-          boolean previewSuccess = commandPair.getPreviewCommand().execute();
+      commandGroup = commandFactory.invokeCommand(action);
+      if (commandGroup != null)
+        if (commandGroup.hasPreview()) {
+          boolean previewSuccess = commandGroup.getPreviewCommand().execute();
           if (previewSuccess) {
             updateViewWithImage(previewImageName);
             view.showOperationControls(true);
           }
-        } else if (commandPair.hasApply()) {
-          commandPair.getApplyCommand().execute();
+        } else if (commandGroup.hasApply()) {
+          commandGroup.getApplyCommand().execute();
           updateViewWithImage(displayImageName);
         }
     } catch (Exception err) {
@@ -223,8 +223,8 @@ public class GUIController implements ImageControllerInterface, Features {
   @Override
   public void confirmButton() {
     try {
-      if (commandPair != null && commandPair.getApplyCommand() != null) {
-        commandPair.getApplyCommand().execute();
+      if (commandGroup != null && commandGroup.getApplyCommand() != null) {
+        commandGroup.getApplyCommand().execute();
         updateViewWithImage(displayImageName);
         view.showOperationControls(false);
       }

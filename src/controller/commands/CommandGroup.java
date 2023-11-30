@@ -1,10 +1,10 @@
 package controller.commands;
 
-public class CommandPair {
+public class CommandGroup {
   private CommandInterface previewCommand;
   private CommandInterface applyCommand;
 
-  public CommandPair(CommandInterface previewCommand, CommandInterface applyCommand) {
+  public CommandGroup(CommandInterface previewCommand, CommandInterface applyCommand) {
     this.previewCommand = previewCommand;
     this.applyCommand = applyCommand;
   }

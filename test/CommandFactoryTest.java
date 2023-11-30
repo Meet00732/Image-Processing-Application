@@ -2,7 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import controller.commands.CommandFactory;
-import controller.commands.CommandPair;
+import controller.commands.CommandGroup;
 import model.ImageModelInterface;
 import model.MockModel;
 import view.GUIInterface;
@@ -28,12 +28,12 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeLoadCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -41,19 +41,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeSaveCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("save");
+    commandGroup = commandFactory.invokeCommand("save");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("SaveCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("SaveCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -61,19 +61,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeBlurCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("blur");
+    commandGroup = commandFactory.invokeCommand("blur");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("BlurCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("BlurCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -81,19 +81,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeSepiaCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("sepia");
+    commandGroup = commandFactory.invokeCommand("sepia");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("SepiaCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("SepiaCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -101,19 +101,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeLumaCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("luma");
+    commandGroup = commandFactory.invokeCommand("luma");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LumaComponentCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LumaComponentCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -121,19 +121,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeRedComponentCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("red");
+    commandGroup = commandFactory.invokeCommand("red");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("RedComponentCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("RedComponentCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -141,19 +141,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeGreenComponentCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("green");
+    commandGroup = commandFactory.invokeCommand("green");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("GreenComponentCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("GreenComponentCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -161,19 +161,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeBlueComponentCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("blue");
+    commandGroup = commandFactory.invokeCommand("blue");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("BlueComponentCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("BlueComponentCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -181,19 +181,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeHorizontalFlipCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("horizontal-flip");
+    commandGroup = commandFactory.invokeCommand("horizontal-flip");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("HorizontalFlipCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("HorizontalFlipCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -201,19 +201,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeVerticalFlipCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("vertical-flip");
+    commandGroup = commandFactory.invokeCommand("vertical-flip");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("VerticalFlipCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("VerticalFlipCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -221,19 +221,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeAdjustedLevelsCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("adjust-levels");
+    commandGroup = commandFactory.invokeCommand("adjust-levels");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LevelsAdjustmentCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LevelsAdjustmentCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -241,19 +241,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeColorCorrectedCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("color-corrected");
+    commandGroup = commandFactory.invokeCommand("color-corrected");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("ColorCorrectionCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("ColorCorrectionCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -261,19 +261,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeCompressCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("compress");
+    commandGroup = commandFactory.invokeCommand("compress");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("CompressCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("CompressCommand", commandGroup.getApplyCommand().toString());
   }
 
   /**
@@ -281,19 +281,19 @@ public class CommandFactoryTest {
    */
   @Test
   public void testInvokeSharpenCommand() {
-    CommandPair commandPair = commandFactory.invokeCommand("load");
+    CommandGroup commandGroup = commandFactory.invokeCommand("load");
 
-    assertNotNull(commandPair);
-    assertNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("LoadCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("LoadCommand", commandGroup.getApplyCommand().toString());
 
-    commandPair = commandFactory.invokeCommand("sharpen");
+    commandGroup = commandFactory.invokeCommand("sharpen");
 
-    assertNotNull(commandPair);
-    assertNotNull(commandPair.getPreviewCommand());
-    assertNotNull(commandPair.getApplyCommand());
-    assertEquals("SharpenCommand", commandPair.getApplyCommand().toString());
+    assertNotNull(commandGroup);
+    assertNotNull(commandGroup.getPreviewCommand());
+    assertNotNull(commandGroup.getApplyCommand());
+    assertEquals("SharpenCommand", commandGroup.getApplyCommand().toString());
   }
 
 }

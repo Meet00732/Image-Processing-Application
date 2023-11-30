@@ -254,7 +254,8 @@ public class GUIView extends JFrame implements GUIInterface {
   @Override
   public Optional<Double> promptPercentage() {
     String result = JOptionPane.showInputDialog(this,
-            "Enter percentage:");
+            "Specify the percentage of the image on which you"
+                    +" would like to apply the effect.\n Enter Percentage: ");
     try {
       Optional<Double> percentage = Optional.ofNullable(result).map(Double::parseDouble);
 
