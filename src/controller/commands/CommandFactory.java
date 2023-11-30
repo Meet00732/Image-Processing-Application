@@ -3,16 +3,16 @@ package controller.commands;
 import java.util.Optional;
 
 import model.ImageModelInterface;
+import view.GUIInterface;
 import view.GUIView;
-import view.ImageViewInterface;
 
 public class CommandFactory {
 
   private final ImageModelInterface model;
-  private final GUIView view;
+  private final GUIInterface view;
   private AppState state;
 
-  public CommandFactory(ImageModelInterface model, GUIView view) {
+  public CommandFactory(ImageModelInterface model, GUIInterface view) {
     this.model = model;
     this.view = view;
     this.state = AppState.NO_IMAGE_LOADED;
@@ -31,8 +31,7 @@ public class CommandFactory {
           state = AppState.NO_IMAGE_LOADED;
         }
         if (state == AppState.NO_IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          path = view.loadImage();
-          System.out.println(path);
+          path = view.loadImagePath();
           if (path != null) {
             CommandInterface loadCommand = new LoadCommand(model, path, "testImage");
             state = AppState.IMAGE_LOADED;
@@ -44,7 +43,7 @@ public class CommandFactory {
       return null;
       case "save":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          path = view.saveImage();
+          path = view.saveImagePath();
           if (path != null) {
             CommandInterface saveCommand = new SaveCommand(model, path, "testImage");
             state = AppState.IMAGE_SAVED;
@@ -57,7 +56,7 @@ public class CommandFactory {
         return null;
       case "blur":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
             CommandInterface blurPrevCommand = new BlurCommand(model, "testImage",
                     "previewImage", splitPercentage);
@@ -74,7 +73,7 @@ public class CommandFactory {
 
       case "sepia":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
             CommandInterface sepiaPrevCommand = new SepiaCommand(model, "testImage",
                     "previewImage", splitPercentage);
@@ -91,7 +90,7 @@ public class CommandFactory {
 
       case "luma":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
             CommandInterface lumaPrevCommand = new LumaComponentCommand(model, "testImage",
                     "previewImage", splitPercentage);
@@ -108,7 +107,7 @@ public class CommandFactory {
 
       case "sharpen":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
             CommandInterface sharpenPrevCommand = new SharpenCommand(model, "testImage",
                     "previewImage", splitPercentage);
@@ -125,10 +124,12 @@ public class CommandFactory {
 
       case "red":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+          CommandInterface redPrevCommand = new RedComponentCommand(model, "testImage",
+                  "previewImage");
           CommandInterface redCompleteCommand = new RedComponentCommand(model, "testImage",
                   "testImage");
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(null, redCompleteCommand);
+          return new CommandPair(redPrevCommand, redCompleteCommand);
           }
         else {
           view.display("Cannot apply red-component without loading an image first!");
@@ -137,10 +138,12 @@ public class CommandFactory {
 
       case "green":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+          CommandInterface greenPrevCommand = new GreenComponentCommand(model, "testImage",
+                  "previewImage");
           CommandInterface greenCompleteCommand = new GreenComponentCommand(model, "testImage",
                   "testImage");
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(null, greenCompleteCommand);
+          return new CommandPair(greenPrevCommand, greenCompleteCommand);
         }
         else {
           view.display("Cannot apply green-component without loading an image first!");
@@ -149,10 +152,12 @@ public class CommandFactory {
 
       case "blue":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+          CommandInterface bluePrevCommand = new BlueComponentCommand(model, "testImage",
+                  "previewImage");
           CommandInterface blueCompleteCommand = new BlueComponentCommand(model, "testImage",
                   "testImage");
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(null, blueCompleteCommand);
+          return new CommandPair(bluePrevCommand, blueCompleteCommand);
         }
         else {
           view.display("Cannot apply blue-component without loading an image first!");
@@ -161,10 +166,12 @@ public class CommandFactory {
 
       case "horizontal-flip":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+          CommandInterface horizontalFlipPrevCommand = new HorizontalFlipCommand(model, "testImage",
+                  "previewImage");
           CommandInterface horizontalFlipCompleteCommand = new HorizontalFlipCommand(model, "testImage",
                   "testImage");
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(null, horizontalFlipCompleteCommand);
+          return new CommandPair(horizontalFlipPrevCommand, horizontalFlipCompleteCommand);
         }
         else {
           view.display("Cannot apply horizontal-flip without loading an image first!");
@@ -173,10 +180,12 @@ public class CommandFactory {
 
       case "vertical-flip":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
+          CommandInterface verticalFlipPrevCommand = new VerticalFlipCommand(model, "testImage",
+                  "previewImage");
           CommandInterface verticalFlipCompleteCommand = new VerticalFlipCommand(model, "testImage",
                   "testImage");
           state = AppState.IMAGE_LOADED;
-          return new CommandPair(null, verticalFlipCompleteCommand);
+          return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
         }
         else {
           view.display("Cannot apply vertical-flip without loading an image first!");
@@ -185,12 +194,14 @@ public class CommandFactory {
 
       case "compress":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
+            CommandInterface verticalFlipPrevCommand = new CompressCommand(model, splitPercentage.get(),
+                    "testImage", "previewImage");
             CommandInterface verticalFlipCompleteCommand = new CompressCommand(model, splitPercentage.get(),
                     "testImage", "testImage");
             state = AppState.IMAGE_LOADED;
-            return new CommandPair(null, verticalFlipCompleteCommand);
+            return new CommandPair(verticalFlipPrevCommand, verticalFlipCompleteCommand);
           }
         }
         else {
@@ -200,7 +211,7 @@ public class CommandFactory {
 
       case "color-corrected":
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
-          Optional<Double> splitPercentage = view.promptSplitPercentage();
+          Optional<Double> splitPercentage = view.promptPercentage();
           if (splitPercentage.isPresent()) {
             CommandInterface colorCorrectedPrevCommand = new ColorCorrectionCommand(model, "testImage",
                     "previewImage", splitPercentage);
@@ -219,7 +230,7 @@ public class CommandFactory {
         if (state == AppState.IMAGE_LOADED || state == AppState.IMAGE_SAVED) {
           Optional<int[]> adjustLevels = view.promptForAdjustLevels();
           if (adjustLevels.isPresent()) {
-            Optional<Double> splitPercentage = view.promptSplitPercentage();
+            Optional<Double> splitPercentage = view.promptPercentage();
             if (splitPercentage.isPresent()) {
               CommandInterface colorCorrectedPrevCommand = new LevelsAdjustmentCommand(model,
                       adjustLevels.get()[0], adjustLevels.get()[1], adjustLevels.get()[2],

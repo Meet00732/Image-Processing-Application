@@ -1,8 +1,27 @@
 package Controller;
 
 import controller.Features;
+import model.ImageModelInterface;
+import view.GUIView;
+import view.ImageViewInterface;
 
 public class MockController implements Features {
+
+  GUIView view;
+  ImageModelInterface model;
+
+  public MockController(ImageModelInterface model, GUIView view)
+          throws IllegalArgumentException {
+    if (view == null) {
+      throw new IllegalArgumentException("View Object is missing!");
+    }
+    if (model == null) {
+      throw new IllegalArgumentException("Model Object is missing!");
+    }
+    this.view = view;
+    this.model = model;
+  }
+
   private static final StringBuilder log = new StringBuilder();
   @Override
   public void loadButton() {
@@ -82,5 +101,13 @@ public class MockController implements Features {
   @Override
   public void confirmButton() {
     log.append("ConfirmButton Pressed!");
+  }
+
+  public static void clearLog() {
+    log.setLength(0);
+  }
+
+  public String getLog() {
+    return log.toString();
   }
 }

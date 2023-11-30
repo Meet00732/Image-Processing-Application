@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.Features;
 
-public class GUIView extends JFrame implements ImageViewInterface {
+public class GUIView extends JFrame implements GUIInterface {
 
   private JLabel imageDisplay;
   private JLabel histogramDisplay;
@@ -143,6 +143,7 @@ public class GUIView extends JFrame implements ImageViewInterface {
   }
 
 
+  @Override
   public void addFeatures(Features features) {
     loadButton.addActionListener(evt -> features.loadButton());
     blurButton.addActionListener(evt -> features.blurButton());
@@ -163,15 +164,18 @@ public class GUIView extends JFrame implements ImageViewInterface {
   }
 
 
+  @Override
   public void setImage(BufferedImage image) {
     imageDisplay.setIcon(new ImageIcon(image));
   }
 
+  @Override
   public void setHistogram(BufferedImage histogram) {
     histogramDisplay.setIcon(new ImageIcon(histogram));
   }
 
-  public String loadImage() {
+  @Override
+  public String loadImagePath() {
     JFileChooser fileChooser = new JFileChooser();
 
     String currentDirectory = System.getProperty("user.dir");
@@ -189,7 +193,8 @@ public class GUIView extends JFrame implements ImageViewInterface {
     return null;
   }
 
-  public String saveImage() {
+  @Override
+  public String saveImagePath() {
     JFileChooser fileChooser = new JFileChooser();
     String currentDirectory = System.getProperty("user.dir");
     fileChooser.setCurrentDirectory(new File(currentDirectory));
@@ -199,24 +204,20 @@ public class GUIView extends JFrame implements ImageViewInterface {
     fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image files",
             "jpg", "jpeg", "png", "ppm"));
 
-    // Suggest a default filename, like "Untitled.jpg"
     fileChooser.setSelectedFile(new File("Untitled.jpg"));
 
     if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
-      return null; // User canceled the operation
+      return null;
     }
 
     File file = fileChooser.getSelectedFile();
-    // Ensure the file has an appropriate extension
     if (!file.getName().toLowerCase().matches(".*\\.(jpg|jpeg|png|ppm)$")) {
-      file = new File(file.getAbsolutePath() + ".jpg"); // Default to .jpg if no extension is provided
+      file = new File(file.getAbsolutePath() + ".jpg");
     }
-
     return file.getAbsolutePath();
   }
 
-
-
+  @Override
   public void showOperationControls(boolean show) {
     confirmButton.setVisible(show);
     cancelButton.setVisible(show);
@@ -236,6 +237,7 @@ public class GUIView extends JFrame implements ImageViewInterface {
     adjustLevelsButton.setEnabled(!show);
   }
 
+  @Override
   public boolean confirmImageLoad() {
     int choice = JOptionPane.showConfirmDialog(
             this,
@@ -249,9 +251,10 @@ public class GUIView extends JFrame implements ImageViewInterface {
   }
 
 
-  public Optional<Double> promptSplitPercentage() {
+  @Override
+  public Optional<Double> promptPercentage() {
     String result = JOptionPane.showInputDialog(this,
-            "Enter split percentage:");
+            "Enter percentage:");
     try {
       Optional<Double> percentage = Optional.ofNullable(result).map(Double::parseDouble);
 
@@ -267,6 +270,7 @@ public class GUIView extends JFrame implements ImageViewInterface {
     }
   }
 
+  @Override
   public Optional<int[]> promptForAdjustLevels() {
     int b, m, w;
 
@@ -303,7 +307,6 @@ public class GUIView extends JFrame implements ImageViewInterface {
     }
     return Optional.empty();
   }
-
 
   @Override
   public String getCommand() {

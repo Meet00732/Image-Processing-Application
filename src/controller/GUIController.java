@@ -9,11 +9,12 @@ import controller.commands.HistogramCommand;
 import model.Image;
 import model.ImageModelInterface;
 import model.Pixel;
+import view.GUIInterface;
 import view.GUIView;
 
 
 public class GUIController implements ImageControllerInterface, Features {
-  private final GUIView view;
+  private final GUIInterface view;
   private final ImageModelInterface model;
 
   private String previewImageName;
@@ -21,7 +22,7 @@ public class GUIController implements ImageControllerInterface, Features {
   private CommandFactory commandFactory;
   private CommandPair commandPair;
 
-  public GUIController(GUIView view,
+  public GUIController(GUIInterface view,
                        ImageModelInterface model) throws IllegalArgumentException {
     if (view == null) {
       throw new IllegalArgumentException("View Object is missing!");
